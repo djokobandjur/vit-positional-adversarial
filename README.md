@@ -54,7 +54,9 @@ This is the **exact inverse** of the random noise robustness hierarchy from [1].
 | | RoPE | 73.10% | 73.35% | 73.45% | 73.30 ± 0.15% |
 | | ALiBi | 67.39% | 68.16% | 67.42% | 67.66 ± 0.36% |
 
-Model weights available on [Google Drive](Ahttps://drive.google.com/drive/folders/16pEAbdH4aRpw-3s2vm4TbMey1GPQn2FQ?usp=sharing).
+Model weights available on Google Drive:
+- [ImageNet-100 models](https://drive.google.com/drive/folders/1gPwVSE0qctWVeaGwCv3eGQdQR4IK6Xds?usp=sharing) (12 models, ~3.3 GB)
+- [CIFAR-100 models](Ahttps://drive.google.com/drive/folders/16pEAbdH4aRpw-3s2vm4TbMey1GPQn2FQ?usp=sharing) (12 models, ~3.3 GB)
 
 ## Architecture
 
