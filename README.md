@@ -1,5 +1,7 @@
 # Adversarial Vulnerability of Positional Encoding in Vision Transformers
 
+[![DOI](https://zenodo.org/badge/1188269244.svg)](https://doi.org/10.5281/zenodo.19154465)
+
 This repository contains the code and experimental data for the paper:
 
 > **Adversarial Vulnerability of Positional Encoding in Vision Transformers: A Targeted Attack Analysis**
