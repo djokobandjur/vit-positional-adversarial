@@ -5,9 +5,7 @@
 This repository contains the code and experimental data for the paper:
 
 > **Adversarial Vulnerability of Positional Encoding in Vision Transformers: A Targeted Attack Analysis**
->
-> Djoko Bandjur, Milos Bandjur, Branimir Jaksic
->
+>>
 > *Submitted to IEEE Transactions on Information Forensics and Security (TIFS), 2026*
 
 ## Key Findings
@@ -57,8 +55,8 @@ This is the **exact inverse** of the random noise robustness hierarchy from [1].
 | | ALiBi | 67.39% | 68.16% | 67.42% | 67.66 ± 0.36% |
 
 Model weights available on Google Drive:
-- [ImageNet-100 models](https://drive.google.com/drive/folders/1gPwVSE0qctWVeaGwCv3eGQdQR4IK6Xds?usp=sharing) (12 models, ~3.3 GB)
-- [CIFAR-100 models](https://drive.google.com/drive/folders/16pEAbdH4aRpw-3s2vm4TbMey1GPQn2FQ?usp=sharing) (12 models, ~3.3 GB)
+- [ImageNet-100 models](https://drive.google.com/drive/folders/1gPwVSE0qctWVeaGwCv3eGQdQR4IK6Xds?usp=sharing) (12 models, ~3.8 GB)
+- [CIFAR-100 models](https://drive.google.com/drive/folders/16pEAbdH4aRpw-3s2vm4TbMey1GPQn2FQ?usp=sharing) (12 models, ~3.8 GB)
 
 ## Architecture
 
@@ -152,18 +150,17 @@ Three attack strategies evaluated at ε ∈ {0.001, 0.005, 0.01, 0.05, 0.1, 0.2,
 
 This paper builds on our information-theoretic analysis of PE strategies:
 
-> [1] Bandjur, D., Bandjur, M., Jaksic, B. (2026). "Information-Theoretic Analysis of Positional Encoding Strategies in Vision Transformers." [DOI: 10.5281/zenodo.19063156](https://doi.org/10.5281/zenodo.19063156)
+> [1] Anonymous. (2026). "Information-Theoretic Analysis of Positional Encoding Strategies in Vision Transformers." [DOI: 10.5281/zenodo.19063156](https://doi.org/10.5281/zenodo.19063156)
 
 ## Citation
 
 ```bibtex
-@article{bandjur2026adversarial,
-  title={Adversarial Vulnerability of Positional Encoding in Vision 
-         Transformers: A Targeted Attack Analysis},
-  author={Bandjur, Djoko and Bandjur, Milos and Jaksic, Branimir},
-  journal={Submitted to IEEE Transactions on Information Forensics 
-           and Security},
-  year={2026}
+@article{anon2026positional,
+  author  = {Anonymous},
+  title   = {Information-Theoretic Analysis of Positional Encoding Strategies in Vision Transformers: A Comparative Study of Four Approaches},
+  journal = {Under Review},
+  year    = {2026},
+  note    = {Details omitted for double-blind review}
 }
 ```
 
