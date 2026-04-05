@@ -1,6 +1,5 @@
 # Adversarial Vulnerability of Positional Encoding in Vision Transformers
 
-[![DOI](https://zenodo.org/badge/1188269244.svg)](https://doi.org/10.5281/zenodo.19154465)
 
 This repository contains the code and experimental data for the paper:
 
@@ -10,12 +9,15 @@ This repository contains the code and experimental data for the paper:
 
 ## Key Findings
 
+## Key Findings
+
 - **Robustness Inversion**: Learned PE (most robust to random noise [1]) is catastrophically vulnerable to adversarial attack — PGD-PE at ε=0.2 reduces accuracy from 79.4% to 2.3%
 - **RoPE Immunity**: RoPE retains 81.4% accuracy even at ε=1.0 (only 3.2pp loss) due to its rotational operation in attention space
 - **Cross-dataset validation**: Identical vulnerability hierarchy confirmed on both ImageNet-100 and CIFAR-100
 - **Novel VTA attack**: Variance-Targeted Attack achieves 3.1×–4.9× gain on ALiBi but 0.05×–0.37× on Learned PE
 - **Resolution effect**: Learned PE is 4× more vulnerable on lower-resolution inputs (64 patches vs 196)
-
+- **Forensic implications**: PE tampering requires modifying <0.2% of model parameters, enabling stealthy supply chain attacks detectable through PE checksumming protocols
+- 
 ## Vulnerability Hierarchy (identical on both datasets)
 
 ```
@@ -30,6 +32,8 @@ This is the **exact inverse** of the random noise robustness hierarchy from [1].
 ├── full_scale_experiment.py          # ViT model definition + PE implementations
 ├── cifar100_experiment.py            # CIFAR-100 training + adversarial attacks
 ├── adversarial_pe_attacks.py         # Adversarial attacks on ImageNet-100 models
+├── imagenet100_classes.txt           # 100 ImageNet class IDs (WordNet synsets)
+├── val_labels.txt                    # Validation set labels
 ├── results/
 │   ├── adversarial_pe_results.json   # ImageNet-100 adversarial attack results
 │   └── {pe_type}_seed{s}/           # Per-model weights + training history
@@ -55,8 +59,8 @@ This is the **exact inverse** of the random noise robustness hierarchy from [1].
 | | ALiBi | 67.39% | 68.16% | 67.42% | 67.66 ± 0.36% |
 
 Model weights available on Google Drive:
-- [ImageNet-100 models](https://drive.google.com/drive/folders/1gPwVSE0qctWVeaGwCv3eGQdQR4IK6Xds?usp=sharing) (12 models, ~3.8 GB)
-- [CIFAR-100 models](https://drive.google.com/drive/folders/16pEAbdH4aRpw-3s2vm4TbMey1GPQn2FQ?usp=sharing) (12 models, ~3.8 GB)
+- [ImageNet-100 models](https://drive.google.com/drive/folders/1WRhjaR3WZHIi2fTi9xcrIBJkBXZddMM9?usp=sharing) (12 models, ~3.8 GB)
+- [CIFAR-100 models](https://drive.google.com/drive/folders/1HBiOjNfuRsh2H0ZGRP4rIdBeydedCBJL?usp=sharing) (12 models, ~3.8 GB)
 
 ## Architecture
 
@@ -150,7 +154,7 @@ Three attack strategies evaluated at ε ∈ {0.001, 0.005, 0.01, 0.05, 0.1, 0.2,
 
 This paper builds on our information-theoretic analysis of PE strategies:
 
-> [1] Anonymous. (2026). "Information-Theoretic Analysis of Positional Encoding Strategies in Vision Transformers." [DOI: 10.5281/zenodo.19063156](https://doi.org/10.5281/zenodo.19063156)
+> [1] Anonymous. (2026). "Information-Theoretic Analysis of Positional Encoding Strategies in Vision Transformers." [DOI: omitted for review]()
 
 ## Citation
 
