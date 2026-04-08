@@ -37,7 +37,7 @@ This is the **exact inverse** of the random noise robustness hierarchy from [1].
 ⚠️ **IMPORTANT:** The folder structure must be identical to the diagram below. All script paths are hardcoded.
 **From GitHub:** Download the repository and copy the following files into the root folder **`/pe_experiment/`**.
 
-*   **Python scripts: `full_scale_experiment.py`, `cifar100_experiment.py` and `adversarial_pe_attacks.py`** 
+*   **Python scripts: `full_scale_experiment.py`, `cifar100_experiment.py`, `adversarial_pe_attacks.py` and `generate_figures.py`** 
 *   **The Colab notebooks: `ImageNet100_START.ipynb` and `CIFAR100_START.ipynb`**
 
 ## 📥 Dataset Acquisition
@@ -106,6 +106,17 @@ The weights and training logs for all 24 models trained from scratch are availab
 > * **Skip** the time-consuming training phase.
 > * **Proceed** directly to the **adversarial attack analysis** and evaluation.
 
+## 📊 Figure Generation
+
+To generate all 17 figures used in the paper, follow these steps:
+
+1. **Mount Google Drive:** Ensure your Google Drive is mounted within the Colab environment so the script can access the dataset results (json files).
+2. **Setup Script:** Copy the **`generate_figures.py`** script to the local Colab storage directory (`/content/`).
+3. **Execution:** Run the script using the following command:
+
+```markdown
+```text
+!python /content/generate_figures.py
 
 ### ✅ Verification
     Once the execution is complete, you can validate your findings by comparing the generated outputs.
