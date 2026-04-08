@@ -58,10 +58,10 @@ This is the **exact inverse** of the random noise robustness hierarchy from [1].
 ### 🖼️ ImageNet-100
     Due to licensing restrictions and large file sizes, ImageNet requires a manual setup process:
 
-        1. **Folder Structure:** Create a folder named `imagenet` within the `/pe_experiment/` directory.
-        2. **Registration:** Visit [image-net.org](https://image-net.org) and register using an **academic email address**. 
-        3. **Download:** Once your account is approved, use the unique download link provided in your email to acquire  `ILSVRC2012_img_train.tar` and `ILSVRC2012_img_val.tar` archives.
-        4. **Placement:** Place the downloaded archives directly inside the `/imagenet/` folder.
+  1. **Folder Structure:** Create a folder named `imagenet` within the `/pe_experiment/` directory.
+  2. **Registration:** Visit [image-net.org](https://image-net.org) and register using an **academic email address**. 
+  3. **Download:** Once your account is approved, use the unique download link provided in your email to acquire  `ILSVRC2012_img_train.tar` and `ILSVRC2012_img_val.tar` archives.
+  4. **Placement:** Place the downloaded archives directly inside the `/imagenet/` folder.
 
 > [!IMPORTANT]
 > **Do NOT extract the archives.** The `ImageNet100_START.ipynb` notebook handles the `.tar` files automatically. It performs on-the-fly filtering to select exactly **100 classes** based on the WordNet synsets defined in the `imagenet100_synsets.txt` file provided in this repository.
@@ -71,9 +71,9 @@ This is the **exact inverse** of the random noise robustness hierarchy from [1].
 ### 🍱 CIFAR-100
     Unlike ImageNet, the CIFAR-100 setup is fully automated:
 
-    * **Automatic Download:** The `cifar100_experiment.py` script utilizes `torchvision.datasets` to programmatically fetch the data.
-    * **Data Storage:** The dataset will be downloaded and prepared within the directory specified by the `DATA_DIR` variable in the script.
-    * **Plug-and-Play:** No manual download or prior intervention is required. The script automatically handles the data integrity check, augmentation, and normalization upon execution.
+  1. **Automatic Download:** The `cifar100_experiment.py` script utilizes `torchvision.datasets` to programmatically fetch the data.
+  2. **Data Storage:** The dataset will be downloaded and prepared within the directory specified by the `DATA_DIR` variable in the script.
+  3. **Plug-and-Play:** No manual download or prior intervention is required. The script automatically handles the data integrity check, augmentation, and normalization upon execution.
 
 
 ## 📊 Model Results (7.6 GB Total)
@@ -90,9 +90,9 @@ The weights and training logs for all 24 models trained from scratch are availab
 ### 🛠️ Access & Setup Instructions
     Since the **directories** are shared with **Viewer** access, follow these steps to integrate the trained models:
 
-    1. **Copy the Folders:** Open the links, **Select all folders**, right-click, and choose **"Make a copy"**.
-    2. **Locate Copies:** The copies will appear in your Google Drive storage (typically within the main My Drive section).
-    3. **Organize Subdirectories:** Move these copied **directories** into their respective project paths:
+  1. **Copy the Folders:** Open the links, **Select all folders**, right-click, and choose **"Make a copy"**.
+  2. **Locate Copies:** The copies will appear in your Google Drive storage (typically within the main My Drive section).
+  3. **Organize Subdirectories:** Move these copied **directories** into their respective project paths:
     * ImageNet results $\rightarrow$ `/results/`
     * CIFAR-100 results $\rightarrow$ `/results_cifar100/`
 
@@ -133,7 +133,6 @@ The weights and training logs for all 24 models trained from scratch are availab
 ---
 
 ### ✅ Verification
-
     Once the execution is complete, you can validate your findings by comparing the generated outputs.
 
 
