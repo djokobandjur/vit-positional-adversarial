@@ -9,7 +9,6 @@ This repository contains the code and experimental data for the paper:
 >>
 > *Submitted to IEEE Transactions on Information Forensics and Security (TIFS), 2026*
 
-
 ## Key Findings
 
 - **Robustness Inversion**: Learned PE (most robust to random noise [1]) is catastrophically vulnerable to adversarial attack — PGD-PE at ε=0.2 reduces accuracy from 79.4% to 2.3%
@@ -19,37 +18,27 @@ This repository contains the code and experimental data for the paper:
 - **Resolution effect**: Learned PE is 4× more vulnerable on lower-resolution inputs (64 patches vs 196)
 - **Forensic implications**: PE tampering requires modifying <0.2% of model parameters, enabling stealthy supply chain attacks detectable through PE checksumming protocols
 
-<br>
-  
+ 
 ## Vulnerability Hierarchy (identical on both datasets)
-
 ```
 Most vulnerable ← Learned ≫ Sinusoidal ≫ ALiBi ≫ RoPE → Most robust
 ```
-
 This is the **exact inverse** of the random noise robustness hierarchy from [1].
 
-<br>
 
 ### In order to reproduce results undertake the following steps:
-
-<br>
 
 ### **Step 1 --- Google Drive Preparation**
 *   Create a folder named `pe_experiment` in your root Google Drive directory.
 *   **Final Path on Drive:** `/My Drive/pe_experiment/`
 *   **Note:** In Colab, the full path will be: `/content/drive/MyDrive/pe_experiment/`
 
-<br> 
-
 ### **Step 2 --- Data Setup & Structure**
 ⚠️ **IMPORTANT:** The folder structure must be identical to the diagram below. All script paths are hardcoded.
 **From GitHub:** Download the repository and copy the following files into the root folder `/pe_experiment/`:
-<br>    
 
 *   **Python scripts: `full_scale_experiment.py`, `cifar100_experiment.py` and `adversarial_pe_attacks.py`** 
 *   **The Colab notebooks: `ImageNet100_START.ipynb` and `CIFAR100_START.ipynb`**
-<br>
 
 ## 📥 Dataset Acquisition
 This project utilizes two primary datasets, each requiring a different preparation approach.
@@ -72,8 +61,6 @@ This project utilizes two primary datasets, each requiring a different preparati
   2. **Data Storage:** The dataset will be downloaded and prepared within the directory specified by the `DATA_DIR` variable in the script.
   3. **Plug-and-Play:** No manual download or prior intervention is required. The script automatically handles the data integrity check, augmentation, and normalization upon execution.
 
-<br>
-
 ## 📊 Model Results (7.6 GB Total)
 
 The weights and training logs for all 24 models trained from scratch are available at the links below:
@@ -81,12 +68,9 @@ The weights and training logs for all 24 models trained from scratch are availab
 * **[ImageNet Trained Models](https://drive.google.com/drive/folders/1WRhjaR3WZHIi2fTi9xcrIBJkBXZddMM9?usp=sharing)**
 * **[CIFAR-100 Trained Models](https://drive.google.com/drive/folders/1HBiOjNfuRsh2H0ZGRP4rIdBeydedCBJL?usp=sharing)**
 
-<br>
 
 ### 🛠️ Access & Setup Instructions
   Because these folders are shared with **Viewer** access, follow these steps to integrate them into your environment:
-
-<br>
 
 ### 🛠️ Access & Setup Instructions
   Since the **directories** are shared with **Viewer** access, follow these steps to integrate the trained models:
@@ -100,19 +84,13 @@ The weights and training logs for all 24 models trained from scratch are availab
 > [!IMPORTANT]
 > **Rename Directories:** Each individual model subdirectory must contain both `best_model.pth` and `training_history.json`.
 
-<br>
-
 ### 🚀 Runtime Configuration
-
   To execute the experiments, navigate to **Runtime > Change runtime type** and select a high-performance **GPU (H100 or A100)**.
 
 > [!NOTE]
 > A **Colab Pro+** profile is required to ensure the virtual machine is provisioned with sufficient **local SSD storage** to handle the ImageNet-100 datasets.
 
-<br>
-
 ### 🚀 Notebook Execution & Setup
-<br>
 
 1. **Open the Notebook:** Locate and open the `ImageNet100_START.ipynb` (or `CIFAR100_START.ipynb`) directly in **Google Colab**.
 2. **Verify GPU (Cell 1):** Execute the first cell to confirm the runtime is configured with a high-performance **GPU (H100 or A100)**.
@@ -120,7 +98,7 @@ The weights and training logs for all 24 models trained from scratch are availab
 4. **Sequential Execution (From Cell 3 Onwards):** Run all remaining cells **one by one** in the provided order.
    * This ensures that the environment is properly initialized (script copying) and that the specific experiment workflow for each dataset proceeds correctly.
    * **Note:** Ensure each cell finishes completely before starting the next one to maintain the correct data flow and variable states.
-<br>
+
 > [!TIP]
 > **CIFAR-100 Training Bypass:**
 > For the `CIFAR100_START.ipynb` notebook, the script features an **automatic detection logic**. If you have correctly placed the downloaded weights and logs into the `/results_cifar100/` subdirectories, the script will:
@@ -129,13 +107,9 @@ The weights and training logs for all 24 models trained from scratch are availab
 > * **Proceed** directly to the **adversarial attack analysis** and evaluation.
 
 
-<br>
-
 ### ✅ Verification
     Once the execution is complete, you can validate your findings by comparing the generated outputs.
 
-
-<br>
 
 ## Repository Structure
 ```
