@@ -30,12 +30,12 @@ This is the **exact inverse** of the random noise robustness hierarchy from [1].
 
 ### **Step 1 --- Google Drive Preparation**
 *   Create a folder named `pe_experiment` in your root Google Drive directory.
-*   **Final Path on Drive:** `/My Drive/pe_experiment/`
-*   **Note:** In Colab, the full path will be: `/content/drive/MyDrive/pe_experiment/`
+*   **Final Path on Drive:** **`/My Drive/pe_experiment/`**
+*   **Note:** In Colab, the full path will be: **`/content/drive/MyDrive/pe_experiment/`**
 
 ### **Step 2 --- Data Setup & Structure**
 ⚠️ **IMPORTANT:** The folder structure must be identical to the diagram below. All script paths are hardcoded.
-**From GitHub:** Download the repository and copy the following files into the root folder `/pe_experiment/`:
+**From GitHub:** Download the repository and copy the following files into the root folder **`/pe_experiment/`**.
 
 *   **Python scripts: `full_scale_experiment.py`, `cifar100_experiment.py` and `adversarial_pe_attacks.py`** 
 *   **The Colab notebooks: `ImageNet100_START.ipynb` and `CIFAR100_START.ipynb`**
@@ -46,19 +46,19 @@ This project utilizes two primary datasets, each requiring a different preparati
 ### 🖼️ ImageNet-100
     Due to licensing restrictions and large file sizes, ImageNet requires a manual setup process:
 
-  1. **Folder Structure:** Create a folder named `imagenet` within the `/pe_experiment/` directory.
+  1. **Folder Structure:** Create a folder named `imagenet` within the **`/pe_experiment/`** directory.
   2. **Registration:** Visit [image-net.org](https://image-net.org) and register using an **academic email address**. 
-  3. **Download:** Once your account is approved, use the unique download link provided in your email to acquire  `ILSVRC2012_img_train.tar` and `ILSVRC2012_img_val.tar` archives.
-  4. **Placement:** Place the downloaded archives directly inside the `/imagenet/` folder.
+  3. **Download:** Once your account is approved, use the unique download link provided in your email to acquire  **`ILSVRC2012_img_train.tar`** and **`ILSVRC2012_img_val.tar`** archives.
+  4. **Placement:** Place the downloaded archives directly inside the **`/imagenet/`** folder.
 
 > [!IMPORTANT]
-> **Do NOT extract the archives.** The `ImageNet100_START.ipynb` notebook handles the `.tar` files automatically. It performs on-the-fly filtering to select exactly **100 classes** based on the WordNet synsets defined in the `imagenet100_synsets.txt` file provided in this repository.
+> **Do NOT extract the archives.** The **`ImageNet100_START.ipynb`** notebook handles the `.tar` files automatically. It performs on-the-fly filtering to select exactly **100 classes** based on the WordNet synsets defined in the **`imagenet100_synsets.txt`** file provided in this repository.
 
 ### 🍱 CIFAR-100
     Unlike ImageNet, the CIFAR-100 setup is fully automated:
 
-  1. **Automatic Download:** The `cifar100_experiment.py` script utilizes `torchvision.datasets` to programmatically fetch the data.
-  2. **Data Storage:** The dataset will be downloaded and prepared within the directory specified by the `DATA_DIR` variable in the script.
+  1. **Automatic Download:** The **`cifar100_experiment.py`** script utilizes **`torchvision.datasets`** to programmatically fetch the data.
+  2. **Data Storage:** The dataset will be downloaded and prepared within the directory specified by the **`DATA_DIR`** variable in the script.
   3. **Plug-and-Play:** No manual download or prior intervention is required. The script automatically handles the data integrity check, augmentation, and normalization upon execution.
 
 ## 📊 Model Results (7.6 GB Total)
@@ -101,7 +101,7 @@ The weights and training logs for all 24 models trained from scratch are availab
 
 > [!TIP]
 > **CIFAR-100 Training Bypass:**
-> For the `CIFAR100_START.ipynb` notebook, the script features an **automatic detection logic**. If you have correctly placed the downloaded weights and logs into the `/results_cifar100/` subdirectories, the script will:
+> For the **`CIFAR100_START.ipynb`** notebook, the script features an **automatic detection logic**. If you have correctly placed the downloaded weights and logs into the **`/results_cifar100/`** subdirectories, the script will:
 > * **Verify** the integrity of existing models.
 > * **Skip** the time-consuming training phase.
 > * **Proceed** directly to the **adversarial attack analysis** and evaluation.
@@ -136,7 +136,7 @@ The weights and training logs for all 24 models trained from scratch are availab
 │   ├── adversarial_pe_results_cifar100.json    # CIFAR-100 adversarial attack results 
 │   └── {pe_type}_seed{s}/                      # Per-model weights + training history
 │       └── best_model.pth
-│        └── training history.json
+│       └── training history.json
 │                                
 └── README.md
 ```
