@@ -30,33 +30,36 @@ Most vulnerable ← Learned ≫ Sinusoidal ≫ ALiBi ≫ RoPE → Most robust
 
 This is the **exact inverse** of the random noise robustness hierarchy from [1].
 
-
+<br>
+<br>
 
 ### In order to reproduce results undertake the following steps:
+<br>
+<br>
 
 ### **Step 1 --- Google Drive Preparation**
 *   Create a folder named `pe_experiment` in your root Google Drive directory.
 *   **Final Path on Drive:** `/My Drive/pe_experiment/`
 *   **Note:** In Colab, the full path will be: `/content/drive/MyDrive/pe_experiment/`
-
----
+<br>
+<br> 
 
 ### **Step 2 --- Data Setup & Structure**
-
 ⚠️ **IMPORTANT:** The folder structure must be identical to the diagram below. All script paths are hardcoded.
-
 **From GitHub:** Download the repository and copy the following files into the root folder `/pe_experiment/`:
-    
+<br>    
+
 *   **Python scripts: `full_scale_experiment.py`, `cifar100_experiment.py` and `adversarial_pe_attacks.py`** 
 *   **The Colab notebooks: `ImageNet100_START.ipynb` and `CIFAR100_START.ipynb`**
-
+<br>
+<br>
 
 ## 📥 Dataset Acquisition
-
-    This project utilizes two primary datasets, each requiring a different preparation approach.
-
+This project utilizes two primary datasets, each requiring a different preparation approach.
+<br>
 ### 🖼️ ImageNet-100
     Due to licensing restrictions and large file sizes, ImageNet requires a manual setup process:
+<br>
 
   1. **Folder Structure:** Create a folder named `imagenet` within the `/pe_experiment/` directory.
   2. **Registration:** Visit [image-net.org](https://image-net.org) and register using an **academic email address**. 
@@ -65,8 +68,8 @@ This is the **exact inverse** of the random noise robustness hierarchy from [1].
 
 > [!IMPORTANT]
 > **Do NOT extract the archives.** The `ImageNet100_START.ipynb` notebook handles the `.tar` files automatically. It performs on-the-fly filtering to select exactly **100 classes** based on the WordNet synsets defined in the `imagenet100_synsets.txt` file provided in this repository.
-
----
+<br>
+<br>
 
 ### 🍱 CIFAR-100
     Unlike ImageNet, the CIFAR-100 setup is fully automated:
@@ -74,7 +77,8 @@ This is the **exact inverse** of the random noise robustness hierarchy from [1].
   1. **Automatic Download:** The `cifar100_experiment.py` script utilizes `torchvision.datasets` to programmatically fetch the data.
   2. **Data Storage:** The dataset will be downloaded and prepared within the directory specified by the `DATA_DIR` variable in the script.
   3. **Plug-and-Play:** No manual download or prior intervention is required. The script automatically handles the data integrity check, augmentation, and normalization upon execution.
-
+<br>
+<br>
 
 ## 📊 Model Results (7.6 GB Total)
 
@@ -82,13 +86,16 @@ The weights and training logs for all 24 models trained from scratch are availab
 
 * **[ImageNet Trained Models](https://drive.google.com/drive/folders/1WRhjaR3WZHIi2fTi9xcrIBJkBXZddMM9?usp=sharing)**
 * **[CIFAR-100 Trained Models](https://drive.google.com/drive/folders/1HBiOjNfuRsh2H0ZGRP4rIdBeydedCBJL?usp=sharing)**
-
-
-### 🛠️ Access & Setup Instructions
-    Because these folders are shared with **Viewer** access, follow these steps to integrate them into your environment:
+<br>
+<br>
 
 ### 🛠️ Access & Setup Instructions
-    Since the **directories** are shared with **Viewer** access, follow these steps to integrate the trained models:
+  Because these folders are shared with **Viewer** access, follow these steps to integrate them into your environment:
+<br>
+<br>
+
+### 🛠️ Access & Setup Instructions
+  Since the **directories** are shared with **Viewer** access, follow these steps to integrate the trained models:
 
   1. **Copy the Folders:** Open the links, **Select all folders**, right-click, and choose **"Make a copy"**.
   2. **Locate Copies:** The copies will appear in your Google Drive storage (typically within the main My Drive section).
@@ -98,20 +105,20 @@ The weights and training logs for all 24 models trained from scratch are availab
 
 > [!IMPORTANT]
 > **Rename Directories:** Each individual model subdirectory must contain both `best_model.pth` and `training_history.json`.
-
-
----
+<br>
+<br>
 
 ### 🚀 Runtime Configuration
 
-    To execute the experiments, navigate to **Runtime > Change runtime type** and select a high-performance **GPU (H100 or A100)**.
+  To execute the experiments, navigate to **Runtime > Change runtime type** and select a high-performance **GPU (H100 or A100)**.
 
-    > [!NOTE]
-    > A **Colab Pro+** profile is required to ensure the virtual machine is provisioned with sufficient **local SSD storage** to handle the ImageNet-100 datasets.
-
-
+> [!NOTE]
+> A **Colab Pro+** profile is required to ensure the virtual machine is provisioned with sufficient **local SSD storage** to handle the ImageNet-100 datasets.
+<br>
+<br>
 
 ### 🚀 Notebook Execution & Setup
+<br>
 
 1. **Open the Notebook:** Locate and open the `ImageNet100_START.ipynb` (or `CIFAR100_START.ipynb`) directly in **Google Colab**.
 2. **Verify GPU (Cell 1):** Execute the first cell to confirm the runtime is configured with a high-performance **GPU (H100 or A100)**.
@@ -119,7 +126,7 @@ The weights and training logs for all 24 models trained from scratch are availab
 4. **Sequential Execution (From Cell 3 Onwards):** Run all remaining cells **one by one** in the provided order.
    * This ensures that the environment is properly initialized (script copying) and that the specific experiment workflow for each dataset proceeds correctly.
    * **Note:** Ensure each cell finishes completely before starting the next one to maintain the correct data flow and variable states.
-
+<br>
 > [!TIP]
 > **CIFAR-100 Training Bypass:**
 > For the `CIFAR100_START.ipynb` notebook, the script features an **automatic detection logic**. If you have correctly placed the downloaded weights and logs into the `/results_cifar100/` subdirectories, the script will:
@@ -127,16 +134,16 @@ The weights and training logs for all 24 models trained from scratch are availab
 > * **Skip** the time-consuming training phase.
 > * **Proceed** directly to the **adversarial attack analysis** and evaluation.
 
-
-
-
----
+<br>
+<br>
 
 ### ✅ Verification
     Once the execution is complete, you can validate your findings by comparing the generated outputs.
 
-
-
+<br>
+<br>
+<br>
+<br>
 
 ## Repository Structure
 ```
