@@ -19,8 +19,7 @@ This repository contains the code and experimental data for the paper:
 - **Resolution effect**: Learned PE is 4× more vulnerable on lower-resolution inputs (64 patches vs 196)
 - **Forensic implications**: PE tampering requires modifying <0.2% of model parameters, enabling stealthy supply chain attacks detectable through PE checksumming protocols
 
-
-
+<br>
   
 ## Vulnerability Hierarchy (identical on both datasets)
 
@@ -31,17 +30,16 @@ Most vulnerable ← Learned ≫ Sinusoidal ≫ ALiBi ≫ RoPE → Most robust
 This is the **exact inverse** of the random noise robustness hierarchy from [1].
 
 <br>
-<br>
 
 ### In order to reproduce results undertake the following steps:
-<br>
+
 <br>
 
 ### **Step 1 --- Google Drive Preparation**
 *   Create a folder named `pe_experiment` in your root Google Drive directory.
 *   **Final Path on Drive:** `/My Drive/pe_experiment/`
 *   **Note:** In Colab, the full path will be: `/content/drive/MyDrive/pe_experiment/`
-<br>
+
 <br> 
 
 ### **Step 2 --- Data Setup & Structure**
@@ -52,14 +50,12 @@ This is the **exact inverse** of the random noise robustness hierarchy from [1].
 *   **Python scripts: `full_scale_experiment.py`, `cifar100_experiment.py` and `adversarial_pe_attacks.py`** 
 *   **The Colab notebooks: `ImageNet100_START.ipynb` and `CIFAR100_START.ipynb`**
 <br>
-<br>
 
 ## 📥 Dataset Acquisition
 This project utilizes two primary datasets, each requiring a different preparation approach.
-<br>
+
 ### 🖼️ ImageNet-100
     Due to licensing restrictions and large file sizes, ImageNet requires a manual setup process:
-<br>
 
   1. **Folder Structure:** Create a folder named `imagenet` within the `/pe_experiment/` directory.
   2. **Registration:** Visit [image-net.org](https://image-net.org) and register using an **academic email address**. 
@@ -68,8 +64,6 @@ This project utilizes two primary datasets, each requiring a different preparati
 
 > [!IMPORTANT]
 > **Do NOT extract the archives.** The `ImageNet100_START.ipynb` notebook handles the `.tar` files automatically. It performs on-the-fly filtering to select exactly **100 classes** based on the WordNet synsets defined in the `imagenet100_synsets.txt` file provided in this repository.
-<br>
-<br>
 
 ### 🍱 CIFAR-100
     Unlike ImageNet, the CIFAR-100 setup is fully automated:
@@ -77,7 +71,7 @@ This project utilizes two primary datasets, each requiring a different preparati
   1. **Automatic Download:** The `cifar100_experiment.py` script utilizes `torchvision.datasets` to programmatically fetch the data.
   2. **Data Storage:** The dataset will be downloaded and prepared within the directory specified by the `DATA_DIR` variable in the script.
   3. **Plug-and-Play:** No manual download or prior intervention is required. The script automatically handles the data integrity check, augmentation, and normalization upon execution.
-<br>
+
 <br>
 
 ## 📊 Model Results (7.6 GB Total)
@@ -86,12 +80,12 @@ The weights and training logs for all 24 models trained from scratch are availab
 
 * **[ImageNet Trained Models](https://drive.google.com/drive/folders/1WRhjaR3WZHIi2fTi9xcrIBJkBXZddMM9?usp=sharing)**
 * **[CIFAR-100 Trained Models](https://drive.google.com/drive/folders/1HBiOjNfuRsh2H0ZGRP4rIdBeydedCBJL?usp=sharing)**
-<br>
+
 <br>
 
 ### 🛠️ Access & Setup Instructions
   Because these folders are shared with **Viewer** access, follow these steps to integrate them into your environment:
-<br>
+
 <br>
 
 ### 🛠️ Access & Setup Instructions
@@ -105,7 +99,7 @@ The weights and training logs for all 24 models trained from scratch are availab
 
 > [!IMPORTANT]
 > **Rename Directories:** Each individual model subdirectory must contain both `best_model.pth` and `training_history.json`.
-<br>
+
 <br>
 
 ### 🚀 Runtime Configuration
@@ -114,7 +108,7 @@ The weights and training logs for all 24 models trained from scratch are availab
 
 > [!NOTE]
 > A **Colab Pro+** profile is required to ensure the virtual machine is provisioned with sufficient **local SSD storage** to handle the ImageNet-100 datasets.
-<br>
+
 <br>
 
 ### 🚀 Notebook Execution & Setup
@@ -134,15 +128,13 @@ The weights and training logs for all 24 models trained from scratch are availab
 > * **Skip** the time-consuming training phase.
 > * **Proceed** directly to the **adversarial attack analysis** and evaluation.
 
-<br>
+
 <br>
 
 ### ✅ Verification
     Once the execution is complete, you can validate your findings by comparing the generated outputs.
 
-<br>
-<br>
-<br>
+
 <br>
 
 ## Repository Structure
@@ -163,14 +155,14 @@ The weights and training logs for all 24 models trained from scratch are availab
 ├── results/                                    # ImageNet100 results
 │   ├── adversarial_pe_results.json             # ImageNet-100 adversarial attack results
 │   └── {pe_type}_seed{s}/                      # Per-model weights + training history
-        └── best_model.pth
-        └── training history.json  
+│        └── best_model.pth
+│        └── training history.json  
 │                                                  
 ├── results_cifar100/                           # CIFAR100 results
 │   ├── adversarial_pe_results_cifar100.json    # CIFAR-100 adversarial attack results 
 │   └── {pe_type}_seed{s}/                      # Per-model weights + training history
-        └── best_model.pth
-        └── training history.json
+│       └── best_model.pth
+│        └── training history.json
 │                                
 └── README.md
 ```
