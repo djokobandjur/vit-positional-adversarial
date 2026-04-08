@@ -117,6 +117,7 @@ To generate all 17 figures used in the paper, follow these steps:
 ```markdown
 ```text
 !python /content/generate_figures.py
+```
 
 ### ✅ Verification
     Once the execution is complete, you can validate your findings by comparing the generated outputs.
