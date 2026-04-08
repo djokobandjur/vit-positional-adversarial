@@ -12,7 +12,7 @@ This repository contains the code and experimental data for the paper:
 
 ## Key Findings
 
-- Robustness Inversion: Learned PE (most robust to random noise [1]) is catastrophically vulnerable to adversarial attack — PGD-PE at ε=0.2 reduces accuracy from 79.4% to 2.3%
+- **Robustness Inversion**: Learned PE (most robust to random noise [1]) is catastrophically vulnerable to adversarial attack — PGD-PE at ε=0.2 reduces accuracy from 79.4% to 2.3%
 - **RoPE Immunity**: RoPE retains 81.4% accuracy even at ε=1.0 (only 3.2pp loss) due to its rotational operation in attention space
 - **Cross-dataset validation**: Identical vulnerability hierarchy confirmed on both ImageNet-100 and CIFAR-100
 - **Novel VTA attack**: Variance-Targeted Attack achieves 3.1×–4.9× gain on ALiBi but 0.05×–0.37× on Learned PE
@@ -134,10 +134,7 @@ The weights and training logs for all 24 models trained from scratch are availab
 
 ### ✅ Verification
 
-    Once the execution is complete, you can validate your findings by comparing the generated outputs:
-
-    * **Consistency Check:** Compare the figures in `/results/figures/` and the data in `/results/table1/` with the reference results provided in the `original_paper_results/` directory.
-    * **Target:** Your local outputs should align with the original study results to ensure the environment is correctly configured and the methodology is reproducible.
+    Once the execution is complete, you can validate your findings by comparing the generated outputs.
 
 
 
