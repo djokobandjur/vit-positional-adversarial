@@ -17,7 +17,7 @@ This repository contains the code and experimental data for the paper:
 - **Novel VTA attack**: Variance-Targeted Attack achieves 3.1×–4.9× gain on ALiBi but 0.05×–0.37× on Learned PE
 - **Resolution effect**: Learned PE is 4× more vulnerable on lower-resolution inputs (64 patches vs 196)
 - **Forensic implications**: PE tampering requires modifying <0.2% of model parameters, enabling stealthy supply chain attacks detectable through PE checksumming protocols
-
+<br>
  
 ## Vulnerability Hierarchy (identical on both datasets)
 <br>
