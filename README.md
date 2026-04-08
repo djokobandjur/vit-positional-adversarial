@@ -20,7 +20,7 @@ This repository contains the code and experimental data for the paper:
 
  
 ## Vulnerability Hierarchy (identical on both datasets)
-
+<br>
 ```
 Most vulnerable ← Learned ≫ Sinusoidal ≫ ALiBi ≫ RoPE → Most robust
 ```
