@@ -9,7 +9,6 @@ This repository contains the code and experimental data for the paper:
 >>
 > *Submitted to IEEE Transactions on Information Forensics and Security (TIFS), 2026*
 
-## Key Findings
 
 ## Key Findings
 
