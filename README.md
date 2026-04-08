@@ -1,3 +1,5 @@
+
+
 # Adversarial Vulnerability of Positional Encoding in Vision Transformers
 
 
@@ -26,149 +28,143 @@ Most vulnerable ← Learned ≫ Sinusoidal ≫ ALiBi ≫ RoPE → Most robust
 
 This is the **exact inverse** of the random noise robustness hierarchy from [1].
 
-## Repository Structure
 
+### In order to reproduce results undertake the following steps:
+
+### **Step 1 --- Google Drive Preparation**
+*   Create a folder named `pe_experiment` in your root Google Drive directory.
+*   **Final Path on Drive:** `/My Drive/pe_experiment/`
+*   **Note:** In Colab, the full path will be: `/content/drive/MyDrive/pe_experiment/`
+
+---
+
+### **Step 2 --- Data Setup & Structure**
+
+⚠️ **IMPORTANT:** The folder structure must be identical to the diagram below. All script paths are hardcoded.
+
+**From GitHub:** Download the repository and copy the following files into the root folder `/pe_experiment/`:
+    
+*   **Python scripts: `full_scale_experiment.py`, `cifar100_experiment.py` and `adversarial_pe_attacks.py`** 
+*   **The Colab notebooks: `ImageNet100_START.ipynb` and `CIFAR100_START.ipynb`**
+
+
+## 📥 Dataset Acquisition
+
+    This project utilizes two primary datasets, each requiring a different preparation approach.
+
+### 🖼️ ImageNet-100
+    Due to licensing restrictions and large file sizes, ImageNet requires a manual setup process:
+
+        1. **Folder Structure:** Create a folder named `imagenet` within the `/pe_experiment/` directory.
+        2. **Registration:** Visit [image-net.org](https://image-net.org) and register using an **academic email address**. 
+        3. **Download:** Once your account is approved, use the unique download link provided in your email to acquire  `ILSVRC2012_img_train.tar` and `ILSVRC2012_img_val.tar` archives.
+        4. **Placement:** Place the downloaded archives directly inside the `/imagenet/` folder.
+
+> [!IMPORTANT]
+> **Do NOT extract the archives.** The `ImageNet100_START.ipynb` notebook handles the `.tar` files automatically. It performs on-the-fly filtering to select exactly **100 classes** based on the WordNet synsets defined in the `imagenet100_synsets.txt` file provided in this repository.
+
+---
+
+### 🍱 CIFAR-100
+    Unlike ImageNet, the CIFAR-100 setup is fully automated:
+
+    * **Automatic Download:** The `cifar100_experiment.py` script utilizes `torchvision.datasets` to programmatically fetch the data.
+    * **Data Storage:** The dataset will be downloaded and prepared within the directory specified by the `DATA_DIR` variable in the script.
+    * **Plug-and-Play:** No manual download or prior intervention is required. The script automatically handles the data integrity check, augmentation, and normalization upon execution.
+
+
+## 📊 Model Results (7.6 GB Total)
+
+The weights and training logs for all 24 models trained from scratch are available at the links below:
+
+* **[ImageNet Trained Models](https://drive.google.com/drive/folders/1WRhjaR3WZHIi2fTi9xcrIBJkBXZddMM9?usp=sharing)**
+* **[CIFAR-100 Trained Models](https://drive.google.com/drive/folders/1HBiOjNfuRsh2H0ZGRP4rIdBeydedCBJL?usp=sharing)**
+
+
+### 🛠️ Access & Setup Instructions
+    Because these folders are shared with **Viewer** access, follow these steps to integrate them into your environment:
+
+### 🛠️ Access & Setup Instructions
+    Since the **directories** are shared with **Viewer** access, follow these steps to integrate the trained models:
+
+    1. **Copy the Folders:** Open the links, **Select all folders**, right-click, and choose **"Make a copy"**.
+    2. **Locate Copies:** The copies will appear in your Google Drive storage (typically within the main My Drive section).
+    3. **Organize Subdirectories:** Move these copied **directories** into their respective project paths:
+    * ImageNet results $\rightarrow$ `/results/`
+    * CIFAR-100 results $\rightarrow$ `/results_cifar100/`
+
+> [!IMPORTANT]
+> **Rename Directories:** Each individual model subdirectory must contain both `best_model.pth` and `training_history.json`.
+
+
+---
+
+### 🚀 Runtime Configuration
+
+    To execute the experiments, navigate to **Runtime > Change runtime type** and select a high-performance **GPU (H100 or A100)**.
+
+    > [!NOTE]
+    > A **Colab Pro+** profile is required to ensure the virtual machine is provisioned with sufficient **local SSD storage** to handle the ImageNet-100 datasets.
+
+
+
+### 🚀 Notebook Execution & Setup
+
+1. **Open the Notebook:** Locate and open the `ImageNet100_START.ipynb` (or `CIFAR100_START.ipynb`) directly in **Google Colab**.
+2. **Verify GPU (Cell 1):** Execute the first cell to confirm the runtime is configured with a high-performance **GPU (H100 or A100)**.
+3. **Mount Google Drive (Cell 2):** Run the second cell and follow the authorization prompt to **"Connect to Google Drive"**.
+4. **Sequential Execution (From Cell 3 Onwards):** Run all remaining cells **one by one** in the provided order.
+   * This ensures that the environment is properly initialized (script copying) and that the specific experiment workflow for each dataset proceeds correctly.
+   * **Note:** Ensure each cell finishes completely before starting the next one to maintain the correct data flow and variable states.
+
+> [!TIP]
+> **CIFAR-100 Training Bypass:**
+> For the `CIFAR100_START.ipynb` notebook, the script features an **automatic detection logic**. If you have correctly placed the downloaded weights and logs into the `/results_cifar100/` subdirectories, the script will:
+> * **Verify** the integrity of existing models.
+> * **Skip** the time-consuming training phase.
+> * **Proceed** directly to the **adversarial attack analysis** and evaluation.
+
+
+
+
+---
+
+### ✅ Verification
+
+    Once the execution is complete, you can validate your findings by comparing the generated outputs:
+
+    * **Consistency Check:** Compare the figures in `/results/figures/` and the data in `/results/table1/` with the reference results provided in the `original_paper_results/` directory.
+    * **Target:** Your local outputs should align with the original study results to ensure the environment is correctly configured and the methodology is reproducible.
+
+
+
+
+## Repository Structure
 ```
-├── full_scale_experiment.py          # ViT model definition + PE implementations
-├── cifar100_experiment.py            # CIFAR-100 training + adversarial attacks
-├── adversarial_pe_attacks.py         # Adversarial attacks on ImageNet-100 models
-├── imagenet100_classes.txt           # 100 ImageNet class IDs (WordNet synsets)
-├── val_labels.txt                    # Validation set labels
-├── results/
-│   ├── adversarial_pe_results.json   # ImageNet-100 adversarial attack results
-│   └── {pe_type}_seed{s}/           # Per-model weights + training history
-├── results_cifar100/
-│   ├── adversarial_pe_results_cifar100.json  # CIFAR-100 adversarial results
-│   └── {pe_type}_seed{s}/           # Per-model weights + training history
+├── full_scale_experiment.py                    # ViT model definition + PE implementations
+├── cifar100_experiment.py                      # CIFAR-100 models training + adversarial attacks
+├── adversarial_pe_attacks.py                   # Adversarial attacks on ImageNet-100 models
+├── ImageNet100_START.ipynb                     # Colab script for reproducing ImageNet-100 results (outcome: adversarial_pe_results.json)
+├── CIFAR100_START.ipynb                        # Colab script for reproducing CIFAR-100 results (outcome: adversarial_pe_results_cifar100.json)
+├── imagenet100_classes.txt                     # 100 ImageNet class IDs (WordNet synsets)
+├── val_labels.txt                              # Validation set labels
+│      
+│                                                                                   
+├── imagenet/                                   # Keep archived! 
+│   └── ILSVRC2012_img_val.tar                                                     
+│   └── ILSVRC2012_img_val.tar
+│ 
+├── results/                                    # ImageNet100 results
+│   ├── adversarial_pe_results.json             # ImageNet-100 adversarial attack results
+│   └── {pe_type}_seed{s}/                      # Per-model weights + training history
+        └── best_model.pth
+        └── training history.json  
+│                                                  
+├── results_cifar100/                           # CIFAR100 results
+│   ├── adversarial_pe_results_cifar100.json    # CIFAR-100 adversarial attack results 
+│   └── {pe_type}_seed{s}/                      # Per-model weights + training history
+        └── best_model.pth
+        └── training history.json
+│                                
 └── README.md
 ```
-
-## Trained Models
-
-24 ViT-Base models (4 PE types × 3 seeds × 2 datasets):
-
-| Dataset | PE Type | Seed 42 | Seed 123 | Seed 456 | Mean ± Std |
-|---------|---------|---------|----------|----------|------------|
-| **ImageNet-100** | Learned | 79.68% | 79.90% | 78.74% | 79.44 ± 0.49% |
-| | Sinusoidal | 81.84% | 81.30% | 81.24% | 81.46 ± 0.26% |
-| | RoPE | 84.96% | 84.18% | 84.38% | 84.51 ± 0.32% |
-| | ALiBi | 81.16% | 81.34% | 80.66% | 81.05 ± 0.28% |
-| **CIFAR-100** | Learned | 68.72% | 68.07% | 68.04% | 68.28 ± 0.31% |
-| | Sinusoidal | 67.40% | 66.41% | 66.95% | 66.92 ± 0.40% |
-| | RoPE | 73.10% | 73.35% | 73.45% | 73.30 ± 0.15% |
-| | ALiBi | 67.39% | 68.16% | 67.42% | 67.66 ± 0.36% |
-
-Model weights available on Google Drive:
-- [ImageNet-100 models](https://drive.google.com/drive/folders/1WRhjaR3WZHIi2fTi9xcrIBJkBXZddMM9?usp=sharing) (12 models, ~3.8 GB)
-- [CIFAR-100 models](https://drive.google.com/drive/folders/1HBiOjNfuRsh2H0ZGRP4rIdBeydedCBJL?usp=sharing) (12 models, ~3.8 GB)
-
-## Architecture
-
-All models use identical ViT-Base architecture:
-
-| Config | ImageNet-100 | CIFAR-100 |
-|--------|-------------|-----------|
-| Image size | 224×224 | 32×32 |
-| Patch size | 16×16 | 4×4 |
-| Num patches | 196 | 64 |
-| Layers | 12 | 12 |
-| Attention heads | 12 | 12 |
-| Embedding dim | 768 | 768 |
-| Parameters | 85.9M | 85.9M |
-
-Training: AdamW (lr=3×10⁻⁴, weight decay 0.1), cosine annealing, 20 warmup epochs, 300 total epochs, batch size 128, Mixup (α=0.8), label smoothing 0.1.
-
-## Quick Start
-
-### Requirements
-
-```bash
-pip install torch torchvision numpy matplotlib scikit-learn scipy
-```
-
-### Train CIFAR-100 Models + Run Adversarial Attacks
-
-```bash
-# Single script: trains 12 models then runs all 3 attacks automatically
-python cifar100_experiment.py
-```
-
-### Run Adversarial Attacks on ImageNet-100 Models
-
-```bash
-python adversarial_pe_attacks.py
-```
-
-### Loading Pre-trained Models
-
-```python
-from full_scale_experiment import VisionTransformer
-
-model = VisionTransformer(
-    img_size=224, patch_size=16, num_classes=100, embed_dim=768,
-    depth=12, num_heads=12, mlp_ratio=4.0, dropout=0.1, pe_type='rope'
-)
-state = torch.load('best_model.pth', map_location='cpu')
-model.load_state_dict({k.replace('_orig_mod.', ''): v for k, v in state.items()})
-model.eval()
-```
-
-## Attack Methods
-
-Three attack strategies evaluated at ε ∈ {0.001, 0.005, 0.01, 0.05, 0.1, 0.2, 0.5, 1.0}:
-
-| Attack | Description | Reference |
-|--------|-------------|-----------|
-| **FGSM-PE** | Single-step gradient attack on PE parameters | Goodfellow et al., 2015 |
-| **PGD-PE** | Multi-step (T=20) projected gradient descent on PE | Madry et al., 2018 |
-| **VTA** | Variance-Targeted Attack (ours) — allocates perturbation budget proportionally to per-dimension PE variance | This work |
-
-## Adversarial Attack Results
-
-### PGD-PE — ImageNet-100
-
-| ε | Learned | Sinusoidal | RoPE | ALiBi |
-|---|---------|------------|------|-------|
-| 0 (clean) | 79.4 | 81.5 | 84.5 | 81.1 |
-| 0.1 | 67.8 | 77.2 | 84.1 | 78.3 |
-| 0.2 | **2.3** | 56.2 | **83.9** | 69.3 |
-| 0.5 | 1.3 | 1.2 | 83.2 | 65.2 |
-| 1.0 | 1.0 | 1.0 | **81.4** | 28.9 |
-
-### PGD-PE — CIFAR-100
-
-| ε | Learned | Sinusoidal | RoPE | ALiBi |
-|---|---------|------------|------|-------|
-| 0 (clean) | 68.3 | 66.9 | 73.3 | 67.7 |
-| 0.1 | 1.4 | 43.1 | 73.0 | 65.3 |
-| 0.2 | **1.0** | 4.3 | **72.6** | 50.6 |
-| 0.5 | 1.0 | 1.0 | 71.7 | 35.0 |
-| 1.0 | 1.0 | 1.0 | **70.3** | 23.0 |
-
-## Dataset
-
-- **ImageNet-100**: [100-class subset](https://github.com/HobbitLong/CMC/blob/master/imagenet100.txt) from ILSVRC-2012 (Tian et al., ECCV 2020). Requires ILSVRC-2012 access.
-- **CIFAR-100**: Downloaded automatically via `torchvision.datasets.CIFAR100`.
-
-## Related Work
-
-This paper builds on our information-theoretic analysis of PE strategies:
-
-> [1] Anonymous. (2026). "Information-Theoretic Analysis of Positional Encoding Strategies in Vision Transformers." [DOI: omitted for review]()
-
-## Citation
-
-```bibtex
-@article{anon2026positional,
-  author  = {Anonymous},
-  title   = {Information-Theoretic Analysis of Positional Encoding Strategies in Vision Transformers: A Comparative Study of Four Approaches},
-  journal = {Under Review},
-  year    = {2026},
-  note    = {Details omitted for double-blind review}
-}
-```
-
-## License
-
-This code is released for academic and research purposes only.
-If you use this code in your research, please cite our paper.
