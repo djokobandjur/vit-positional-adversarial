@@ -17,7 +17,7 @@ This repository contains the code and experimental data for the paper:
 
 ### Vulnerability Hierarchy (Identical on both datasets)
 `Most vulnerable ← Learned ≫ Sinusoidal ≫ ALiBi ≫ RoPE → Most robust`
-*This is the **exact inverse** of the random noise robustness hierarchy.*
+*This is the **exact inverse** of the random noise robustness hierarchy [1].*
 
 ---
 
