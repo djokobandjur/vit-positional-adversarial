@@ -16,9 +16,8 @@ PE types:   Sinusoidal, Learned, RoPE, ALiBi
 Requirements:
     pip install torch torchvision timm matplotlib numpy scipy scikit-learn tqdm
 
-Hardware:   1x H100/A100 GPU (~2-3h per run)
-            Total: 12 runs × ~3h = ~36 GPU-hours
-
+Hardware:   1x H100/A100 GPU 
+           
 Usage:
     python full_scale_experiment.py --data_dir /path/to/imagenet100 --output_dir ./results
 
