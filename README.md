@@ -31,7 +31,7 @@ To reproduce the results presented in the paper, we recommend using **Google Col
 - **From GitHub:** Download the repository and copy its entire content into the **`pe_experiment`** directory.
 
 ### **Step 2 --- Data Setup & Structure**
-⚠️ **IMPORTANT:** The folder structure **must** be identical to the diagram below, as all script paths are hardcoded.
+⚠️ **IMPORTANT:** The **`pe_experiment`** directory structure **must** be identical to the diagram below, as all script paths are hardcoded.
 
 ```text
 
@@ -50,13 +50,13 @@ To reproduce the results presented in the paper, we recommend using **Google Col
 │   └── ILSVRC2012_img_val.tar
 │ 
 ├── results/                                    # ImageNet100 results
-│   ├── adversarial_pe_results.json             # ImageNet-100 adversarial attack results
+│   ├── adversarial_pe_results.json             <-- Generated automatically after execution
 │   └── {pe_type}_seed{s}/                      # Per-model weights + training history
 │        └── best_model.pth
 │        └── training history.json  
 │                                                  
 ├── results_cifar100/                           # CIFAR100 results
-│   ├── adversarial_pe_results_cifar100.json    # CIFAR-100 adversarial attack results 
+│   ├── adversarial_pe_results_cifar100.json    <-- Generated automatically after execution
 │   └── {pe_type}_seed{s}/                      # Per-model weights + training history
 │       └── best_model.pth
 │       └── training history.json
