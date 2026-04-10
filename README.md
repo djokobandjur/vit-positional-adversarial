@@ -84,6 +84,24 @@ The weights and training logs for all 24 models trained from scratch are availab
 * **[CIFAR-100 Trained Models](https://drive.google.com/drive/folders/1HBiOjNfuRsh2H0ZGRP4rIdBeydedCBJL?usp=sharing)**
 
 
+### Architecture
+
+All models use identical ViT-Base architecture:
+
+
+| Config | ImageNet-100 | CIFAR-100 |
+| :--- | :---: | :---: |
+| **Image size** | 224×224 | 32×32 |
+| **Patch size** | 16×16 | 4×4 |
+| **Num patches** | 196 | 64 |
+| **Layers** | 12 | 12 |
+| **Attention heads** | 12 | 12 |
+| **Embedding dim** | 768 | 768 |
+| **Parameters** | 85.9M | 85.9M |
+
+
+Training: AdamW (lr=3×10⁻⁴, weight decay 0.1), cosine annealing, 20 warmup epochs, 300 total epochs, batch size 128, Mixup (α=0.8), label smoothing 0.1.
+
 
 ### 🛠️ Access & Setup Instructions
   Since the **directories** are shared with **Viewer** access, follow these steps to integrate the trained models:
@@ -127,10 +145,72 @@ To generate all 17 figures used in the paper, follow these steps:
 2. **Setup Script:** Copy the **`generate_figures.py`** script to the local Colab storage directory (`/content/`).
 3. **Execution:** Run the script using the following command:
 
-```markdown
-```text
-!python /content/generate_figures.py
+
+## Requirements
+If running locally, install the dependencies:
+```bash
+pip install torch torchvision numpy matplotlib scikit-learn scipy
 ```
+
+### Train CIFAR-100 Models + Run Adversarial Attacks
+# Single script: trains 12 models then runs all 3 attacks automatically
+python cifar100_experiment.py
+
+### Run Adversarial Attacks on ImageNet-100 Models
+python adversarial_pe_attacks.py
+
+### Loading Pre-trained Models
+from full_scale_experiment import VisionTransformer
+
+model = VisionTransformer(
+    img_size=224, patch_size=16, num_classes=100, embed_dim=768,
+    depth=12, num_heads=12, mlp_ratio=4.0, dropout=0.1, pe_type='rope'
+)
+state = torch.load('best_model.pth', map_location='cpu')
+model.load_state_dict({k.replace('_orig_mod.', ''): v for k, v in state.items()})
+model.eval()
+
+
+### Attack Methods
+Three attack strategies evaluated at ε ∈ {0.001, 0.005, 0.01, 0.05, 0.1, 0.2, 0.5, 1.0}:
+
+| Attack | Description | Reference |
+| :--- | :--- | :--- |
+| **FGSM-PE** | Single-step gradient attack on PE parameters | Goodfellow et al., 2015 |
+| **PGD-PE** | Multi-step (T=20) projected gradient descent on PE | Madry et al., 2018 |
+| **VTA** | Variance-Targeted Attack (ours) — allocates perturbation budget proportionally to per-dimension PE variance | This work |
+
+
+### Adversarial Attack Results
+
+### PGD-PE — ImageNet-100
+
+| ε | Learned | Sinusoidal | RoPE | ALiBi |
+| :--- | :---: | :---: | :---: | :---: |
+| **0 (clean)** | 79.4% | 81.5% | 84.5% | 81.1% |
+| **0.1** | 67.8% | 77.2% | 84.1% | 78.3% |
+| **0.2** | 2.3% | 56.2% | 83.9% | 69.3% |
+| **0.5** | 1.3% | 1.2% | 83.2% | 65.2% |
+| **1.0** | 1.0% | 1.0% | 81.4% | 28.9% |
+
+
+### PGD-PE — CIFAR-100
+
+| ε | Learned | Sinusoidal | RoPE | ALiBi |
+| :--- | :---: | :---: | :---: | :---: |
+| **0 (clean)** | 68.3% | 66.9% | 73.3% | 67.7% |
+| **0.1** | 1.4% | 43.1% | 73.0% | 65.3% |
+| **0.2** | 1.0% | 4.3% | 72.6% | 50.6% |
+| **0.5** | 1.0% | 1.0% | 71.7% | 35.0% |
+| **1.0** | 1.0% | 1.0% | 70.3% | 23.0% |
+
+
+### Related Work
+This paper builds on our information-theoretic analysis of PE strategies:
+
+[1] Anonymous. (2026). "Information-Theoretic Analysis of Positional Encoding Strategies in Vision Transformers." DOI: 10.5281/zenodo.19063156
+
+
 
 ### ✅ Verification
     Once the execution is complete, you can validate your findings by comparing the generated outputs.
