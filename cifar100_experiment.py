@@ -11,7 +11,6 @@ Usage in Colab:
   4. Copy this file to /content/
   5. Run: !python /content/cifar100_experiment.py
 
-Total time: ~20-30h on T4/A100 (training ~18-24h + attacks ~5-6h)
 """
 
 import os, sys, json, time, copy, argparse
