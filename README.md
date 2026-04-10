@@ -391,11 +391,20 @@ To generate all 17 figures used in the paper, copy the **`generate_figures.py`**
 ---
 
 ### Architecture Summary
-All models use the ViT-Base backbone:
-- **Parameters**: 85.9M
-- **Embedding Dim**: 768
-- **Layers/Heads**: 12 / 12
-- **Training**: AdamW, Cosine Annealing (300 epochs), Mixup (0.8).
+
+All models use identical ViT-Base architecture:
+
+| Config | ImageNet-100 | CIFAR-100 |
+| :--- | :---: | :---: |
+| **Image size** | 224×224 | 32×32 |
+| **Patch size** | 16×16 | 4×4 |
+| **Num patches** | 196 | 64 |
+| **Layers** | 12 | 12 |
+| **Attention heads** | 12 | 12 |
+| **Embedding dim** | 768 | 768 |
+| **Parameters** | 85.9M | 85.9M |
+
+Training: AdamW (lr=3×10⁻⁴, weight decay 0.1), cosine annealing, 20 warmup epochs, 300 total epochs, batch size 128, Mixup (α=0.8), label smoothing 0.1.
 
 ---
 
@@ -440,13 +449,9 @@ This paper builds on our information-theoretic analysis of PE strategies:
 [1] Anonymous. (2026). "Information-Theoretic Analysis of Positional Encoding Strategies in Vision Transformers." DOI: XXXXXXXXXX)
 
 
-### ✅ Verification
-Once the execution is complete, you can validate your findings by comparing the generated outputs with the results reported in the tables above.
 
 
 
-> [!CAUTION]
-> **Google Colab Pro+ is REQUIRED** (not recommended). Only this subscription level guarantees sufficient local SSD storage to handle the extraction and processing of the ImageNet-100 dataset archives.
 
 
 
