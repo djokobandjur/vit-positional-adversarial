@@ -368,7 +368,8 @@ We provide **24 ViT-Base models** (7.6 GB total) trained from scratch (4 PE type
 ## 🚀 Execution & Configuration
 
 1. **Hardware**: Navigate to **Runtime > Change runtime type** and select **GPU (H100 or A100)**. 
-   * *Note: Colab Pro+ is recommended for ImageNet local SSD storage.*
+   * > [!CAUTION]
+     > **Google Colab Pro+ is REQUIRED** (not recommended). Only this subscription level guarantees sufficient local SSD storage to handle the extraction and   processing of the ImageNet-100 dataset archives.
 2. **Mount Drive**: Execute the setup cells in the `.ipynb` notebooks to authorize Google Drive access.
 3. **Run**: Execute cells sequentially. 
    * **Tip**: For CIFAR-100, the script will automatically detect pre-trained weights and skip the 300-epoch training phase, proceeding directly to attack analysis.
