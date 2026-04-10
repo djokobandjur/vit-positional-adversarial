@@ -184,7 +184,7 @@ state = torch.load('best_model.pth', map_location='cpu')
 model.load_state_dict({k.replace('_orig_mod.', ''): v for k, v in state.items()})
 
 model.eval()
-
+```
 
 
 ### Attack Methods
