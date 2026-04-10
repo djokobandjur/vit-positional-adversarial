@@ -24,6 +24,9 @@ This repository contains the code and experimental data for the paper:
 ## 🛠️ Reproduction Steps (Google Colab)
 
 To reproduce the results presented in the paper, we recommend using **Google Colab**.
+> [!IMPORTANT]
+> **Note on Local Execution**
+> This repository is optimized for Google Colab, and many scripts contain hardcoded absolute paths. To run this project locally, you must perform a global search for these paths and update all directory-related variables to match your local environment.
 
 ### **Step 1 --- Google Drive Preparation**
 - Create a directory named **`pe_experiment`** in your root Google Drive directory (**`/My Drive/pe_experiment/`**).
@@ -184,9 +187,4 @@ Three attack strategies evaluated at $\epsilon \in \{0.001, 0.005, 0.01, 0.05, 0
 ## 📚 Related Work
 This paper builds on our information-theoretic analysis of PE strategies:
 [1] Anonymous. (2026). "Information-Theoretic Analysis of Positional Encoding Strategies in Vision Transformers." DOI: XXXXXXXXXX)
-
----
-
-> [!IMPORTANT]
-> **Note on Local Execution:** This repository uses absolute paths tailored for Google Drive integration. To run locally, you will need to manually update the path variables (e.g., `DATA_DIR`, `RESULTS_DIR`) in the scripts to match your local file system.
 
