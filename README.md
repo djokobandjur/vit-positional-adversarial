@@ -27,7 +27,7 @@ This is the **exact inverse** of the random noise robustness hierarchy from [1].
 
 <br>
 
-### In order to reproduce results undertake the following steps:
+### In order to reproduce results presented in the paper, using Google Colab (recommended) undertake the following steps:
 
 ### **Step 1 --- Google Drive Preparation**
 *   Create a folder named `pe_experiment` in your root Google Drive directory.
@@ -36,7 +36,7 @@ This is the **exact inverse** of the random noise robustness hierarchy from [1].
 
 ### **Step 2 --- Data Setup & Structure**
 ⚠️ **IMPORTANT:** The folder structure must be identical to the diagram below. All script paths are hardcoded.
-**From GitHub:** Download the repository and copy the following files into the root folder **`/pe_experiment/`**.
+**From GitHub:** Download the repository and copy the following files into the root folder **`/pe_experiment/`**:
 
 *   **Python scripts: `full_scale_experiment.py`, `cifar100_experiment.py`, `adversarial_pe_attacks.py` and `generate_figures.py`** 
 *   **The Colab notebooks: `ImageNet100_START.ipynb` and `CIFAR100_START.ipynb`**
@@ -109,8 +109,8 @@ Training: AdamW (lr=3×10⁻⁴, weight decay 0.1), cosine annealing, 20 warmup 
   1. **Copy the Folders:** Open the links, **Select all folders**, right-click, and choose **"Make a copy"**.
   2. **Locate Copies:** The copies will appear in your Google Drive storage (typically within the main My Drive section).
   3. **Organize Subdirectories:** Move these copied **directories** into their respective project paths:
-    * ImageNet results $\rightarrow$ `/results/`
-    * CIFAR-100 results $\rightarrow$ `/results_cifar100/`
+      ImageNet results $\rightarrow$ `/pe_experiment/results/`
+      CIFAR-100 results $\rightarrow$ `/pe_experiment/results_cifar100/`
 
 > [!IMPORTANT]
 > **Rename Directories:** Each individual model subdirectory must contain both `best_model.pth` and `training_history.json`.
@@ -139,11 +139,8 @@ Training: AdamW (lr=3×10⁻⁴, weight decay 0.1), cosine annealing, 20 warmup 
 
 ## 📊 Figure Generation
 
-To generate all 17 figures used in the paper, follow these steps:
+To generate all 17 figures used in the paper, copy the **`generate_figures.py`** script to the local Colab storage directory (`/content/`) and run it.
 
-1. **Mount Google Drive:** Ensure your Google Drive is mounted within the Colab environment so the script can access the dataset results (json files).
-2. **Setup Script:** Copy the **`generate_figures.py`** script to the local Colab storage directory (`/content/`).
-3. **Execution:** Run the script using the following command:
 
 
 ## Requirements
@@ -153,7 +150,7 @@ pip install torch torchvision numpy matplotlib scikit-learn scipy
 ```
 
 ### Train CIFAR-100 Models + Run Adversarial Attacks
-# Single script: trains 12 models then runs all 3 attacks automatically
+Single script: trains 12 models then runs all 3 attacks automatically
 python cifar100_experiment.py
 
 ### Run Adversarial Attacks on ImageNet-100 Models
