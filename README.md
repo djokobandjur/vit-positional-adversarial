@@ -27,7 +27,7 @@ This is the **exact inverse** of the random noise robustness hierarchy from [1].
 
 <br>
 
-### In order to reproduce results presented in the paper, using Google Colab (recommended) undertake the following steps:
+### To reproduce the results presented in the paper, follow these steps using Google Colab (recommended)::
 
 ### **Step 1 --- Google Drive Preparation**
 *   Create a folder named `pe_experiment` in your root Google Drive directory.
@@ -244,7 +244,7 @@ This paper builds on our information-theoretic analysis of PE strategies:
 │      
 │                                                                                   
 ├── imagenet/                                   # Keep archived! 
-│   └── ILSVRC2012_img_val.tar                                                     
+│   └── ILSVRC2012_img_train.tar                                                     
 │   └── ILSVRC2012_img_val.tar
 │ 
 ├── results/                                    # ImageNet100 results
@@ -261,3 +261,235 @@ This paper builds on our information-theoretic analysis of PE strategies:
 │                                
 └── README.md
 ```
+
+
+
+
+
+
+
+# Adversarial Vulnerability of Positional Encoding in Vision Transformers
+
+This repository contains the code and experimental data for the paper:
+
+> **Adversarial Vulnerability of Positional Encoding in Vision Transformers: A Targeted Attack Analysis**
+> 
+> *Submitted to IEEE Transactions on Information Forensics and Security (TIFS), 2026*
+
+## 🚀 Key Findings
+
+- **Robustness Inversion**: Learned PE (most robust to random noise) is catastrophically vulnerable to adversarial attacks — PGD-PE at $\epsilon=0.2$ reduces accuracy from **79.4% to 2.3%**.
+- **RoPE Immunity**: RoPE retains **81.4%** accuracy even at $\epsilon=1.0$ (only 3.2pp loss) due to its rotational operation.
+- **Novel VTA Attack**: Variance-Targeted Attack achieves up to **4.9× gain** in attack efficiency on specific PE types.
+- **Forensic Implications**: PE tampering requires modifying **<0.2%** of model parameters, enabling stealthy supply chain attacks.
+
+### Vulnerability Hierarchy (Identical on both datasets)
+`Most vulnerable ← Learned ≫ Sinusoidal ≫ ALiBi ≫ RoPE → Most robust`
+*This is the **exact inverse** of the random noise robustness hierarchy.*
+
+---
+
+## 🛠️ Reproduction Steps (Google Colab)
+
+To reproduce the results presented in the paper, we recommend using **Google Colab**.
+
+### Step 1: Google Drive Preparation
+Create a folder named `pe_experiment` in your root Drive directory. The structure **must** be identical to the diagram below as paths are hardcoded:
+
+```text
+## Repository Structure
+```
+├── full_scale_experiment.py                    # ViT model definition + PE implementations
+├── cifar100_experiment.py                      # CIFAR-100 models training + adversarial attacks
+├── adversarial_pe_attacks.py                   # Adversarial attacks on ImageNet-100 models
+├── ImageNet100_START.ipynb                     # Colab script for reproducing ImageNet-100 results (outcome: adversarial_pe_results.json)
+├── CIFAR100_START.ipynb                        # Colab script for reproducing CIFAR-100 results (outcome: adversarial_pe_results_cifar100.json)
+├── imagenet100_classes.txt                     # 100 ImageNet class IDs (WordNet synsets)
+├── val_labels.txt                              # Validation set labels
+│      
+│                                                                                   
+├── imagenet/                                   # Keep archived! 
+│   └── ILSVRC2012_img_train.tar                                                     
+│   └── ILSVRC2012_img_val.tar
+│ 
+├── results/                                    # ImageNet100 results
+│   ├── adversarial_pe_results.json             # ImageNet-100 adversarial attack results
+│   └── {pe_type}_seed{s}/                      # Per-model weights + training history
+│        └── best_model.pth
+│        └── training history.json  
+│                                                  
+├── results_cifar100/                           # CIFAR100 results
+│   ├── adversarial_pe_results_cifar100.json    # CIFAR-100 adversarial attack results 
+│   └── {pe_type}_seed{s}/                      # Per-model weights + training history
+│       └── best_model.pth
+│       └── training history.json
+│                                
+└── README.md
+
+
+### Step 2: Dataset Acquisition
+
+
+| Dataset | Preparation Process |
+| :--- | :--- |
+| **ImageNet-100** | Register at [image-net.org](https://image-net.org). Download `ILSVRC2012_img_train.tar` and `ILSVRC2012_img_val.tar` and place them in `/pe_experiment/imagenet/`. **Do not extract.** |
+| **CIFAR-100** | **Fully Automated.** The script uses `torchvision.datasets` to fetch and prepare data automatically upon execution. |
+
+> [!IMPORTANT]
+> The `ImageNet100_START.ipynb` notebook filters exactly 100 classes on-the-fly using the `imagenet100_synsets.txt` file.
+
+---
+
+## 📊 Model Results & Weights
+
+We provide **24 ViT-Base models** (7.6 GB total) trained from scratch (4 PE types × 3 seeds × 2 datasets).
+
+
+| Dataset | PE Type | Seed 42 | Seed 123 | Seed 456 | Mean ± Std |
+| :--- | :--- | :---: | :---: | :---: | :---: |
+| **ImageNet-100** | Learned | 79.68% | 79.90% | 78.74% | 79.44 ± 0.49% |
+| | Sinusoidal | 81.84% | 81.30% | 81.24% | 81.46 ± 0.26% |
+| | **RoPE** | **84.96%** | **84.18%** | **84.38%** | **84.51 ± 0.32%** |
+| | ALiBi | 81.16% | 81.34% | 80.66% | 81.05 ± 0.28% |
+| **CIFAR-100** | Learned | 68.72% | 68.07% | 68.04% | 68.28 ± 0.31% |
+| | Sinusoidal | 67.40% | 66.41% | 66.95% | 66.92 ± 0.40% |
+| | **RoPE** | **73.10%** | **73.35%** | **73.45%** | **73.30 ± 0.15%** |
+| | ALiBi | 67.39% | 68.16% | 67.42% | 67.66 ± 0.36% |
+
+### 📥 Download Pre-trained Weights
+1. **[ImageNet Models](https://google.com)**
+2. **[CIFAR-100 Models](https://google.com)**
+
+*Instruction: Select all folders -> "Make a copy" -> Move copies to `/pe_experiment/results/` (or `results_cifar100/`). Each folder must contain `best_model.pth` and `training_history.json`.*
+
+---
+
+## 🚀 Execution & Configuration
+
+1. **Hardware**: Navigate to **Runtime > Change runtime type** and select **GPU (H100 or A100)**. 
+   * *Note: Colab Pro+ is recommended for ImageNet local SSD storage.*
+2. **Mount Drive**: Execute the setup cells in the `.ipynb` notebooks to authorize Google Drive access.
+3. **Run**: Execute cells sequentially. 
+   * **Tip**: For CIFAR-100, the script will automatically detect pre-trained weights and skip the 300-epoch training phase, proceeding directly to attack analysis.
+
+### Architecture Summary
+All models use the ViT-Base backbone:
+- **Parameters**: 85.9M
+- **Embedding Dim**: 768
+- **Layers/Heads**: 12 / 12
+- **Training**: AdamW, Cosine Annealing (300 epochs), Mixup (0.8).
+
+### Local Installation (Optional)
+If running locally, install the following dependencies:
+```bash
+pip install torch torchvision numpy matplotlib scikit-learn scipy
+
+---
+
+## 📊 Figure Generation
+
+To generate all 17 figures from the paper, run the following command:
+
+```bash
+python generate_figures.py
+
+
+
+## 💻 Local Execution
+
+If running locally, install the dependencies:
+
+```bash
+pip install torch torchvision numpy matplotlib scikit-learn scipy
+
+
+### Train CIFAR-100 Models + Run Adversarial Attacks
+This single script trains 12 models (4 PE types × 3 seeds) and then runs all 3 attacks automatically:
+
+```bash
+python cifar100_experiment.py
+
+### Run Adversarial Attacks on ImageNet-100 Models
+
+To evaluate pre-trained ImageNet-100 models under adversarial perturbations, run:
+
+```bash
+python adversarial_pe_attacks.py
+
+### 🧠 Loading Pre-trained Models
+
+To load a trained model with a specific Positional Encoding (e.g., **RoPE**) for custom analysis:
+
+```python
+import torch
+from full_scale_experiment import VisionTransformer
+
+# Initialize model architecture
+model = VisionTransformer(
+    img_size=224, 
+    patch_size=16, 
+    num_classes=100, 
+    embed_dim=768,
+    depth=12, 
+    num_heads=12, 
+    mlp_ratio=4.0, 
+    dropout=0.1, 
+    pe_type='rope' # Options: 'learned', 'sinusoidal', 'rope', 'alibi'
+)
+
+# Load weights and handle potential 'compile' prefix issues
+state = torch.load('best_model.pth', map_location='cpu')
+model.load_state_dict({k.replace('_orig_mod.', ''): v for k, v in state.items()})
+
+model.eval()
+
+## 🛡️ Attack Methods & Robustness Analysis
+
+Three attack strategies evaluated at $\epsilon \in \{0.001, 0.005, 0.01, 0.05, 0.1, 0.2, 0.5, 1.0\}$:
+
+
+| Attack | Description | Reference |
+| :--- | :--- | :--- |
+| **FGSM-PE** | Single-step gradient attack on PE parameters | Goodfellow et al., 2015 |
+| **PGD-PE** | Multi-step (T=20) projected gradient descent on PE | Madry et al., 2018 |
+| **VTA** | **Variance-Targeted Attack (ours)** — allocates perturbation budget proportionally to per-dimension PE variance | This work |
+
+### 📊 Adversarial Attack Results (PGD-PE)
+
+#### ImageNet-100 Accuracy (%)
+
+| ε | Learned | Sinusoidal | RoPE | ALiBi |
+| :--- | :---: | :---: | :---: | :---: |
+| **0 (clean)** | 79.4% | 81.5% | **84.5%** | 81.1% |
+| **0.1** | 67.8% | 77.2% | **84.1%** | 78.3% |
+| **0.2** | 2.3% | 56.2% | **83.9%** | 69.3% |
+| **0.5** | 1.3% | 1.2% | **83.2%** | 65.2% |
+| **1.0** | 1.0% | 1.0% | **81.4%** | 28.9% |
+
+#### CIFAR-100 Accuracy (%)
+
+| ε | Learned | Sinusoidal | RoPE | ALiBi |
+| :--- | :---: | :---: | :---: | :---: |
+| **0 (clean)** | 68.3% | 66.9% | **73.3%** | 67.7% |
+| **0.1** | 1.4% | 43.1% | **73.0%** | 65.3% |
+| **0.2** | 1.0% | 4.3% | **72.6%** | 50.6% |
+| **0.5** | 1.0% | 1.0% | **71.7%** | 35.0% |
+| **1.0** | 1.0% | 1.0% | **70.3%** | 23.0% |
+
+---
+
+## 📚 Related Work
+This paper builds on our information-theoretic analysis of PE strategies:
+
+[1] Anonymous. (2026). "Information-Theoretic Analysis of Positional Encoding Strategies in Vision Transformers." DOI: [10.5281/zenodo.19063156](https://doi.org)
+
+### ✅ Verification
+Once the execution is complete, you can validate your findings by comparing the generated outputs with the results reported in the tables above.
+
+
+
+
+
+
+
+
