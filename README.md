@@ -61,7 +61,7 @@ This project utilizes two primary datasets, each requiring a different preparati
   1. **Automatic Download:** The **`cifar100_experiment.py`** script utilizes **`torchvision.datasets`** to programmatically fetch the data.
   2. **Data Storage:** The dataset will be downloaded and prepared within the directory specified by the **`DATA_DIR`** variable in the script.
   3. **Plug-and-Play:** No manual download or prior intervention is required. The script automatically handles the data integrity check, augmentation, and normalization upon execution.
-
+<br>
 ## 📊 Model Results (7.6 GB Total)
 
 24 ViT-Base models (4 PE types × 3 seeds × 2 datasets):
@@ -109,7 +109,7 @@ Training: AdamW (lr=3×10⁻⁴, weight decay 0.1), cosine annealing, 20 warmup 
   1. **Copy the Folders:** Open the links, **Select all folders**, right-click, and choose **"Make a copy"**.
   2. **Locate Copies:** The copies will appear in your Google Drive storage (typically within the main My Drive section).
   3. **Organize Subdirectories:** Move these copied **directories** into their respective project paths:
-      ImageNet results $\rightarrow$ `/pe_experiment/results/`
+      ImageNet results $\rightarrow$ `/pe_experiment/results/`  \
       CIFAR-100 results $\rightarrow$ `/pe_experiment/results_cifar100/`
 
 > [!IMPORTANT]
