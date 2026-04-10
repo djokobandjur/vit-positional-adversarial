@@ -82,8 +82,8 @@ To reproduce the results presented in the paper, we recommend using **Google Col
 ---
 
 ### 📥 Download Pre-trained Weights
-1. **[ImageNet Models](https://google.com)**
-2. **[CIFAR-100 Models](https://google.com)**
+1. **[ImageNet Models]([https://google.com](https://drive.google.com/drive/folders/1WRhjaR3WZHIi2fTi9xcrIBJkBXZddMM9?usp=sharing))**
+2. **[CIFAR-100 Models]([https://google.com](https://drive.google.com/drive/folders/1HBiOjNfuRsh2H0ZGRP4rIdBeydedCBJL?usp=sharing))**
 
 > [!IMPORTANT]
 > **Instruction:** Select all -> **"Make a copy"** -> Move copies to `/pe_experiment/results/` (or `results_cifar100/`). Ensure that each model's individual **subdirectory** is preserved and contains both `best_model.pth` and `training_history.json`.
