@@ -145,8 +145,8 @@ To generate all 17 figures used in the paper, copy the **`generate_figures.py`**
 
 
 
-## Requirements
-If running locally, install the dependencies:
+## If running locally, install the dependencies:
+
 ```bash
 pip install torch torchvision numpy matplotlib scikit-learn scipy
 ```
@@ -159,15 +159,32 @@ python cifar100_experiment.py
 python adversarial_pe_attacks.py
 
 ### Loading Pre-trained Models
+
+To load a trained model with a specific Positional Encoding (e.g., **RoPE**), use the following snippet:
+
+```python
+import torch
 from full_scale_experiment import VisionTransformer
 
+# Initialize model architecture
 model = VisionTransformer(
-    img_size=224, patch_size=16, num_classes=100, embed_dim=768,
-    depth=12, num_heads=12, mlp_ratio=4.0, dropout=0.1, pe_type='rope'
+    img_size=224, 
+    patch_size=16, 
+    num_classes=100, 
+    embed_dim=768,
+    depth=12, 
+    num_heads=12, 
+    mlp_ratio=4.0, 
+    dropout=0.1, 
+    pe_type='rope' # Options: 'learned', 'sinusoidal', 'rope', 'alibi'
 )
+
+# Load weights and handle potential 'compile' prefix issues
 state = torch.load('best_model.pth', map_location='cpu')
 model.load_state_dict({k.replace('_orig_mod.', ''): v for k, v in state.items()})
+
 model.eval()
+
 
 
 ### Attack Methods
