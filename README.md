@@ -50,15 +50,15 @@ To reproduce the results presented in the paper, we recommend using **Google Col
 │   ├── ILSVRC2012_img_train.tar                                                     
 │   └── ILSVRC2012_img_val.tar
 │ 
-├──📁 results/                                 # ImageNet100 results
+├──📁 results/                                  # ImageNet100 results
 │   ├── adversarial_pe_results.json             <-- Generated automatically after execution
-│   └──📁{pe_type}_seed{s}/                      # Per-model weights + training history
+│   └──📁{pe_type}_seed{s}/                     # Per-model weights + training history
 │        └── best_model.pth
 │        └── training history.json  
 │                                                  
 ├──📁 results_cifar100/                         # CIFAR100 results
 │   ├── adversarial_pe_results_cifar100.json    <-- Generated automatically after execution
-│   └──📁{pe_type}_seed{s}/                      # Per-model weights + training history
+│   └──📁{pe_type}_seed{s}/                     # Per-model weights + training history
 │       └── best_model.pth
 │       └── training history.json
 │                                
