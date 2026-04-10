@@ -42,7 +42,7 @@ To reproduce the results presented in the paper, we recommend using **Google Col
 ├── full_scale_experiment.py                    # ViT model definition + PE implementations
 ├── cifar100_experiment.py                      # CIFAR-100 models training + adversarial attacks
 ├── adversarial_pe_attacks.py                   # Adversarial attacks on ImageNet-100 models
-├── generate_figures.py                         # Generates all figures at the end
+├── generate_figures.py                         # Generates all figures
 ├── ImageNet100_START.ipynb                     # Colab script for reproducing ImageNet-100 results (outcome: adversarial_pe_results.json)
 ├── CIFAR100_START.ipynb                        # Colab script for reproducing CIFAR-100 results (outcome: adversarial_pe_results_cifar100.json)
 ├── imagenet100_classes.txt                     # 100 ImageNet class IDs (WordNet synsets)
