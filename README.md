@@ -359,7 +359,9 @@ We provide **24 ViT-Base models** (7.6 GB total) trained from scratch (4 PE type
 1. **[ImageNet Models](https://google.com)**
 2. **[CIFAR-100 Models](https://google.com)**
 
-*Instruction: Select all folders -> "Make a copy" -> Move copies to `/pe_experiment/results/` (or `results_cifar100/`). Each folder must contain `best_model.pth` and `training_history.json`.*
+> [!IMPORTANT]
+> **Instruction:** Select all -> **"Make a copy"** -> Move copies to `/pe_experiment/results/` (or `results_cifar100/`). Ensure that each model's individual **subdirectory** is preserved and contains both `best_model.pth` and `training_history.json`.
+`.*
 
 ---
 
@@ -391,7 +393,7 @@ To generate all 17 figures from the paper, run the following command:
 
 ```bash
 python generate_figures.py
-
+```
 
 
 ## 💻 Local Execution
@@ -400,21 +402,21 @@ If running locally, install the dependencies:
 
 ```bash
 pip install torch torchvision numpy matplotlib scikit-learn scipy
-
+```
 
 ### Train CIFAR-100 Models + Run Adversarial Attacks
 This single script trains 12 models (4 PE types × 3 seeds) and then runs all 3 attacks automatically:
 
 ```bash
 python cifar100_experiment.py
-
+```
 ### Run Adversarial Attacks on ImageNet-100 Models
 
 To evaluate pre-trained ImageNet-100 models under adversarial perturbations, run:
 
 ```bash
 python adversarial_pe_attacks.py
-
+```
 ### 🧠 Loading Pre-trained Models
 
 To load a trained model with a specific Positional Encoding (e.g., **RoPE**) for custom analysis:
@@ -441,7 +443,7 @@ state = torch.load('best_model.pth', map_location='cpu')
 model.load_state_dict({k.replace('_orig_mod.', ''): v for k, v in state.items()})
 
 model.eval()
-
+```
 ## 🛡️ Attack Methods & Robustness Analysis
 
 Three attack strategies evaluated at $\epsilon \in \{0.001, 0.005, 0.01, 0.05, 0.1, 0.2, 0.5, 1.0\}$:
