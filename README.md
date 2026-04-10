@@ -297,8 +297,7 @@ To reproduce the results presented in the paper, we recommend using **Google Col
 Create a folder named `pe_experiment` in your root Drive directory. The structure **must** be identical to the diagram below as paths are hardcoded:
 
 ```text
-## Repository Structure
-```
+
 ├── full_scale_experiment.py                    # ViT model definition + PE implementations
 ├── cifar100_experiment.py                      # CIFAR-100 models training + adversarial attacks
 ├── adversarial_pe_attacks.py                   # Adversarial attacks on ImageNet-100 models
@@ -325,7 +324,7 @@ Create a folder named `pe_experiment` in your root Drive directory. The structur
 │       └── training history.json
 │                                
 └── README.md
-
+```
 
 ### Step 2: Dataset Acquisition
 
