@@ -26,7 +26,7 @@ This repository contains the code and experimental data for the paper:
 To reproduce the results presented in the paper, we recommend using **Google Colab**.
 > [!IMPORTANT]
 > **Note on Local Execution**
-> This repository is optimized for Google Colab, and many scripts contain hardcoded absolute paths. To run this project locally, you must perform a global search for these paths and update all directory-related variables to match your local environment.
+> This repository is optimized for Google Colab. The scripts contain hardcoded absolute paths. To run this project locally, you must perform a search for these paths and update all directory-related variables to match your local environment.
 
 ### **Step 1 --- Google Drive Preparation**
 - Create a directory named **`pe_experiment`** in your root Google Drive directory (**`/My Drive/pe_experiment/`**).
