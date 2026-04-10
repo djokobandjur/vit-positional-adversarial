@@ -26,10 +26,10 @@ This repository contains the code and experimental data for the paper:
 To reproduce the results presented in the paper, we recommend using **Google Colab**.
 
 ### Step 1: Google Drive Preparation
-- Create a folder named `pe_experiment` in your root Google Drive directory (**`/My Drive/pe_experiment/`**). The structure **must** be identical to the diagram below as paths are hardcoded:
+- Create a folder named **`pe_experiment`** in your root Google Drive directory (**`/My Drive/pe_experiment/`**). The structure **must** be identical to the diagram below as paths are hardcoded:
    **Note:** In Colab, the full path will be: **`/content/drive/MyDrive/pe_experiment/`**
 - **From GitHub:** Download the repository and copy the following files into the root folder **`/pe_experiment/`**:
-- Copy the following files to **`/content/`**
+- Copy the following files from **`/pe_experiment/`** to **`/content/`**:
    * **Python scripts: `full_scale_experiment.py`, `cifar100_experiment.py`, `adversarial_pe_attacks.py` and `generate_figures.py`** 
    * **The Colab notebooks: `ImageNet100_START.ipynb` and `CIFAR100_START.ipynb`**
 
