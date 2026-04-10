@@ -35,7 +35,7 @@ To reproduce the results presented in the paper, we recommend using **Google Col
 
 ```text
 
-pe_experiment/
+📁 pe_experiment/
 ├── full_scale_experiment.py                    # ViT model definition + PE implementations
 ├── cifar100_experiment.py                      # CIFAR-100 models training + adversarial attacks
 ├── adversarial_pe_attacks.py                   # Adversarial attacks on ImageNet-100 models
@@ -46,17 +46,17 @@ pe_experiment/
 ├── val_labels.txt                              # Validation set labels
 │      
 │                                                                                   
-├── imagenet/                                   # Keep archived! 
+├──📁 imagenet/                                 # Keep archived! 
 │   ├── ILSVRC2012_img_train.tar                                                     
 │   └── ILSVRC2012_img_val.tar
 │ 
-├── results/                                    # ImageNet100 results
+├──📁 results/                                 # ImageNet100 results
 │   ├── adversarial_pe_results.json             <-- Generated automatically after execution
 │   └── {pe_type}_seed{s}/                      # Per-model weights + training history
 │        └── best_model.pth
 │        └── training history.json  
 │                                                  
-├── results_cifar100/                           # CIFAR100 results
+├──📁 results_cifar100/                         # CIFAR100 results
 │   ├── adversarial_pe_results_cifar100.json    <-- Generated automatically after execution
 │   └── {pe_type}_seed{s}/                      # Per-model weights + training history
 │       └── best_model.pth
@@ -65,7 +65,7 @@ pe_experiment/
 └── README.md
 ```
 
-### Step 3: Dataset Acquisition
+### 🗂️ Step 3: Dataset Acquisition
 
 
 | Dataset | Preparation Process |
@@ -112,7 +112,7 @@ To generate all 17 figures used in the paper, copy the **`generate_figures.py`**
 
 ---
 
-### Architecture Summary
+## 📦 Architecture Summary
 
 All models use identical ViT-Base architecture:
 
