@@ -367,12 +367,28 @@ We provide **24 ViT-Base models** (7.6 GB total) trained from scratch (4 PE type
 
 ## 🚀 Execution & Configuration
 
-1. **Hardware**: Navigate to **Runtime > Change runtime type** and select **GPU (H100 or A100)**. 
-   * > [!CAUTION]
-     > **Google Colab Pro+ is REQUIRED** (not recommended). Only this subscription level guarantees sufficient local SSD storage to handle the extraction and   processing of the ImageNet-100 dataset archives.
-2. **Mount Drive**: Execute the setup cells in the `.ipynb` notebooks to authorize Google Drive access.
-3. **Run**: Execute cells sequentially. 
-   * **Tip**: For CIFAR-100, the script will automatically detect pre-trained weights and skip the 300-epoch training phase, proceeding directly to attack analysis.
+1. **Open the Notebook:** Locate and open the `ImageNet100_START.ipynb` (or `CIFAR100_START.ipynb`) directly in **Google Colab**.
+   > [!CAUTION]
+   > **Google Colab Pro+ is REQUIRED**. Only this subscription level guarantees sufficient Colab SSD storage to handle the extraction and processing of the ImageNet-100 dataset archives.
+2. **Hardware**: Navigate to **Runtime > Change runtime type** and select **GPU (H100 or A100)**. 
+3. **Verify GPU (Cell 1):** Execute the first cell to confirm the runtime is configured with a selected high-performance **GPU (H100 or A100)**.
+4. **Mount Google Drive (Cell 2):** Run the second cell and follow the authorization prompt to **"Connect to Google Drive"**.
+5. **Sequential Execution (From Cell 3 Onwards):** Run all remaining cells **one by one** in the provided order.
+   * This ensures that the environment is properly initialized (script copying) and that the specific experiment workflow for each dataset proceeds correctly.
+   * **Note:** Ensure each cell finishes completely before starting the next one to maintain the correct data flow and variable states.
+
+> [!TIP]
+> **CIFAR-100 Training Bypass:**
+> For the **`CIFAR100_START.ipynb`** notebook, the script features an **automatic detection logic**. If you have correctly placed the downloaded weights and logs into the **`/results_cifar100/`** subdirectories, the script will:
+> * **Verify** the integrity of existing models.
+> * **Skip** the time-consuming training phase.
+> * **Proceed** directly to the **adversarial attack analysis** and evaluation.
+
+## 📊 Figure Generation
+
+To generate all 17 figures used in the paper, copy the **`generate_figures.py`** script to the local Colab storage directory (`/content/`) and run it.
+
+---
 
 ### Architecture Summary
 All models use the ViT-Base backbone:
@@ -381,70 +397,8 @@ All models use the ViT-Base backbone:
 - **Layers/Heads**: 12 / 12
 - **Training**: AdamW, Cosine Annealing (300 epochs), Mixup (0.8).
 
-### Local Installation (Optional)
-If running locally, install the following dependencies:
-```bash
-pip install torch torchvision numpy matplotlib scikit-learn scipy
-
 ---
 
-## 📊 Figure Generation
-
-To generate all 17 figures from the paper, run the following command:
-
-```bash
-python generate_figures.py
-```
-
-
-## 💻 Local Execution
-
-If running locally, install the dependencies:
-
-```bash
-pip install torch torchvision numpy matplotlib scikit-learn scipy
-```
-
-### Train CIFAR-100 Models + Run Adversarial Attacks
-This single script trains 12 models (4 PE types × 3 seeds) and then runs all 3 attacks automatically:
-
-```bash
-python cifar100_experiment.py
-```
-### Run Adversarial Attacks on ImageNet-100 Models
-
-To evaluate pre-trained ImageNet-100 models under adversarial perturbations, run:
-
-```bash
-python adversarial_pe_attacks.py
-```
-### 🧠 Loading Pre-trained Models
-
-To load a trained model with a specific Positional Encoding (e.g., **RoPE**) for custom analysis:
-
-```python
-import torch
-from full_scale_experiment import VisionTransformer
-
-# Initialize model architecture
-model = VisionTransformer(
-    img_size=224, 
-    patch_size=16, 
-    num_classes=100, 
-    embed_dim=768,
-    depth=12, 
-    num_heads=12, 
-    mlp_ratio=4.0, 
-    dropout=0.1, 
-    pe_type='rope' # Options: 'learned', 'sinusoidal', 'rope', 'alibi'
-)
-
-# Load weights and handle potential 'compile' prefix issues
-state = torch.load('best_model.pth', map_location='cpu')
-model.load_state_dict({k.replace('_orig_mod.', ''): v for k, v in state.items()})
-
-model.eval()
-```
 ## 🛡️ Attack Methods & Robustness Analysis
 
 Three attack strategies evaluated at $\epsilon \in \{0.001, 0.005, 0.01, 0.05, 0.1, 0.2, 0.5, 1.0\}$:
@@ -483,13 +437,16 @@ Three attack strategies evaluated at $\epsilon \in \{0.001, 0.005, 0.01, 0.05, 0
 ## 📚 Related Work
 This paper builds on our information-theoretic analysis of PE strategies:
 
-[1] Anonymous. (2026). "Information-Theoretic Analysis of Positional Encoding Strategies in Vision Transformers." DOI: [10.5281/zenodo.19063156](https://doi.org)
+[1] Anonymous. (2026). "Information-Theoretic Analysis of Positional Encoding Strategies in Vision Transformers." DOI: XXXXXXXXXX)
+
 
 ### ✅ Verification
 Once the execution is complete, you can validate your findings by comparing the generated outputs with the results reported in the tables above.
 
 
 
+> [!CAUTION]
+> **Google Colab Pro+ is REQUIRED** (not recommended). Only this subscription level guarantees sufficient local SSD storage to handle the extraction and processing of the ImageNet-100 dataset archives.
 
 
 
