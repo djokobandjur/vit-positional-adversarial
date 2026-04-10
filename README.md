@@ -78,22 +78,6 @@ pe_experiment/
 
 ---
 
-## 📊 Model Results & Weights
-
-We provide **24 ViT-Base models** (7.6 GB total) trained from scratch (4 PE types × 3 seeds × 2 datasets).
-
-
-| Dataset | PE Type | Seed 42 | Seed 123 | Seed 456 | Mean ± Std |
-| :--- | :--- | :---: | :---: | :---: | :---: |
-| **ImageNet-100** | Learned | 79.68% | 79.90% | 78.74% | 79.44 ± 0.49% |
-| | Sinusoidal | 81.84% | 81.30% | 81.24% | 81.46 ± 0.26% |
-| | **RoPE** | **84.96%** | **84.18%** | **84.38%** | **84.51 ± 0.32%** |
-| | ALiBi | 81.16% | 81.34% | 80.66% | 81.05 ± 0.28% |
-| **CIFAR-100** | Learned | 68.72% | 68.07% | 68.04% | 68.28 ± 0.31% |
-| | Sinusoidal | 67.40% | 66.41% | 66.95% | 66.92 ± 0.40% |
-| | **RoPE** | **73.10%** | **73.35%** | **73.45%** | **73.30 ± 0.15%** |
-| | ALiBi | 67.39% | 68.16% | 67.42% | 67.66 ± 0.36% |
-
 ### 📥 Download Pre-trained Weights
 1. **[ImageNet Models](https://google.com)**
 2. **[CIFAR-100 Models](https://google.com)**
@@ -122,7 +106,7 @@ We provide **24 ViT-Base models** (7.6 GB total) trained from scratch (4 PE type
 > * **Skip** the time-consuming training phase.
 > * **Proceed** directly to the **adversarial attack analysis** and evaluation.
 
-## 📊 Figure Generation
+## 📊 Step 5: Figure Generation
 
 To generate all 17 figures used in the paper, copy the **`generate_figures.py`** script to the local Colab storage directory (`/content/`) and run it.
 
@@ -146,10 +130,26 @@ Training: AdamW (lr=3×10⁻⁴, weight decay 0.1), cosine annealing, 20 warmup 
 
 ---
 
+## 📊 Model Results & Weights
+
+We provide **24 ViT-Base models** (7.6 GB total) trained from scratch (4 PE types × 3 seeds × 2 datasets).
+
+| Dataset | PE Type | Seed 42 | Seed 123 | Seed 456 | Mean ± Std |
+| :--- | :--- | :---: | :---: | :---: | :---: |
+| **ImageNet-100** | Learned | 79.68% | 79.90% | 78.74% | 79.44 ± 0.49% |
+| | Sinusoidal | 81.84% | 81.30% | 81.24% | 81.46 ± 0.26% |
+| | **RoPE** | **84.96%** | **84.18%** | **84.38%** | **84.51 ± 0.32%** |
+| | ALiBi | 81.16% | 81.34% | 80.66% | 81.05 ± 0.28% |
+| **CIFAR-100** | Learned | 68.72% | 68.07% | 68.04% | 68.28 ± 0.31% |
+| | Sinusoidal | 67.40% | 66.41% | 66.95% | 66.92 ± 0.40% |
+| | **RoPE** | **73.10%** | **73.35%** | **73.45%** | **73.30 ± 0.15%** |
+| | ALiBi | 67.39% | 68.16% | 67.42% | 67.66 ± 0.36% |
+
+---
+
 ## 🛡️ Attack Methods & Robustness Analysis
 
 Three attack strategies evaluated at $\epsilon \in \{0.001, 0.005, 0.01, 0.05, 0.1, 0.2, 0.5, 1.0\}$:
-
 
 | Attack | Description | Reference |
 | :--- | :--- | :--- |
