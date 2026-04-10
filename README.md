@@ -35,6 +35,7 @@ To reproduce the results presented in the paper, we recommend using **Google Col
 
 ```text
 
+pe_experiment/
 ├── full_scale_experiment.py                    # ViT model definition + PE implementations
 ├── cifar100_experiment.py                      # CIFAR-100 models training + adversarial attacks
 ├── adversarial_pe_attacks.py                   # Adversarial attacks on ImageNet-100 models
@@ -46,7 +47,7 @@ To reproduce the results presented in the paper, we recommend using **Google Col
 │      
 │                                                                                   
 ├── imagenet/                                   # Keep archived! 
-│   └── ILSVRC2012_img_train.tar                                                     
+│   ├── ILSVRC2012_img_train.tar                                                     
 │   └── ILSVRC2012_img_val.tar
 │ 
 ├── results/                                    # ImageNet100 results
