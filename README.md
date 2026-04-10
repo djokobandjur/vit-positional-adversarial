@@ -183,5 +183,10 @@ Three attack strategies evaluated at $\epsilon \in \{0.001, 0.005, 0.01, 0.05, 0
 
 ## 📚 Related Work
 This paper builds on our information-theoretic analysis of PE strategies:
-
 [1] Anonymous. (2026). "Information-Theoretic Analysis of Positional Encoding Strategies in Vision Transformers." DOI: XXXXXXXXXX)
+
+---
+
+> [!IMPORTANT]
+> **Note on Local Execution:** This repository uses absolute paths tailored for Google Drive integration. To run locally, you will need to manually update the path variables (e.g., `DATA_DIR`, `RESULTS_DIR`) in the scripts to match your local file system.
+
