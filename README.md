@@ -70,8 +70,6 @@ The weights and training logs for all 24 models trained from scratch are availab
 * **[CIFAR-100 Trained Models](https://drive.google.com/drive/folders/1HBiOjNfuRsh2H0ZGRP4rIdBeydedCBJL?usp=sharing)**
 
 
-### 🛠️ Access & Setup Instructions
-  Because these folders are shared with **Viewer** access, follow these steps to integrate them into your environment:
 
 ### 🛠️ Access & Setup Instructions
   Since the **directories** are shared with **Viewer** access, follow these steps to integrate the trained models:
