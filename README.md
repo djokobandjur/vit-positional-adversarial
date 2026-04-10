@@ -25,19 +25,20 @@ This repository contains the code and experimental data for the paper:
 
 To reproduce the results presented in the paper, we recommend using **Google Colab**.
 
-### Step 1: Google Drive Preparation
-- Create a folder named **`pe_experiment`** in your root Google Drive directory (**`/My Drive/pe_experiment/`**). The structure **must** be identical to the diagram below as paths are hardcoded:
-   **Note:** In Colab, the full path will be: **`/content/drive/MyDrive/pe_experiment/`**
-- **From GitHub:** Download the repository and copy the following files into the root folder **`/pe_experiment/`**:
-- Copy the following files from **`/pe_experiment/`** to **`/content/`**:
-   * **Python scripts: `full_scale_experiment.py`, `cifar100_experiment.py`, `adversarial_pe_attacks.py` and `generate_figures.py`** 
-   * **The Colab notebooks: `ImageNet100_START.ipynb` and `CIFAR100_START.ipynb`**
+### **Step 1 --- Google Drive Preparation**
+- Create a directory named **`pe_experiment`** in your root Google Drive directory (**`/My Drive/pe_experiment/`**).
+   * **Note:** In Colab, the full path will be: **`/content/drive/MyDrive/pe_experiment/`**.
+- **From GitHub:** Download the repository and copy its entire content into the **`pe_experiment`** directory.
+
+### **Step 2 --- Data Setup & Structure**
+⚠️ **IMPORTANT:** The folder structure **must** be identical to the diagram below, as all script paths are hardcoded.
 
 ```text
 
 ├── full_scale_experiment.py                    # ViT model definition + PE implementations
 ├── cifar100_experiment.py                      # CIFAR-100 models training + adversarial attacks
 ├── adversarial_pe_attacks.py                   # Adversarial attacks on ImageNet-100 models
+├── generate_figures.py                         # Generates all figures at the end
 ├── ImageNet100_START.ipynb                     # Colab script for reproducing ImageNet-100 results (outcome: adversarial_pe_results.json)
 ├── CIFAR100_START.ipynb                        # Colab script for reproducing CIFAR-100 results (outcome: adversarial_pe_results_cifar100.json)
 ├── imagenet100_classes.txt                     # 100 ImageNet class IDs (WordNet synsets)
@@ -63,7 +64,7 @@ To reproduce the results presented in the paper, we recommend using **Google Col
 └── README.md
 ```
 
-### Step 2: Dataset Acquisition
+### Step 3: Dataset Acquisition
 
 
 | Dataset | Preparation Process |
@@ -101,7 +102,7 @@ We provide **24 ViT-Base models** (7.6 GB total) trained from scratch (4 PE type
 
 ---
 
-## 🚀 Execution & Configuration
+## 🚀 Step 4: Execution & Configuration
 
 1. **Open the Notebook:** Locate and open the `ImageNet100_START.ipynb` (or `CIFAR100_START.ipynb`) directly in **Google Colab**.
    > [!CAUTION]
