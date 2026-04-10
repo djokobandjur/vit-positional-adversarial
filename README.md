@@ -66,15 +66,17 @@ This project utilizes two primary datasets, each requiring a different preparati
 
 24 ViT-Base models (4 PE types × 3 seeds × 2 datasets):
 
-Dataset	PE Type	Seed 42	Seed 123	Seed 456	Mean ± Std
-ImageNet-100	Learned	79.68%	79.90%	78.74%	79.44 ± 0.49%
-Sinusoidal	81.84%	81.30%	81.24%	81.46 ± 0.26%
-RoPE	84.96%	84.18%	84.38%	84.51 ± 0.32%
-ALiBi	81.16%	81.34%	80.66%	81.05 ± 0.28%
-CIFAR-100	Learned	68.72%	68.07%	68.04%	68.28 ± 0.31%
-Sinusoidal	67.40%	66.41%	66.95%	66.92 ± 0.40%
-RoPE	73.10%	73.35%	73.45%	73.30 ± 0.15%
-ALiBi	67.39%	68.16%	67.42%	67.66 ± 0.36%
+| Dataset | PE Type | Seed 42 | Seed 123 | Seed 456 | Mean ± Std |
+| :--- | :--- | :---: | :---: | :---: | :---: |
+| **ImageNet-100** | Learned | 79.68% | 79.90% | 78.74% | 79.44 ± 0.49% |
+| | Sinusoidal | 81.84% | 81.30% | 81.24% | 81.46 ± 0.26% |
+| | RoPE | 84.96% | 84.18% | 84.38% | 84.51 ± 0.32% |
+| | ALiBi | 81.16% | 81.34% | 80.66% | 81.05 ± 0.28% |
+| **CIFAR-100** | Learned | 68.72% | 68.07% | 68.04% | 68.28 ± 0.31% |
+| | Sinusoidal | 67.40% | 66.41% | 66.95% | 66.92 ± 0.40% |
+| | RoPE | 73.10% | 73.35% | 73.45% | 73.30 ± 0.15% |
+| | ALiBi | 67.39% | 68.16% | 67.42% | 67.66 ± 0.36% |
+
 
 The weights and training logs for all 24 models trained from scratch are available at the links below:
 
