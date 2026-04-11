@@ -17,7 +17,7 @@ This repository contains the code and experimental data for the paper:
 
 ### Vulnerability Hierarchy (Identical on both datasets)
 `Most vulnerable ← Learned ≫ Sinusoidal ≫ ALiBi ≫ RoPE → Most robust`
-*This is the **exact inverse** of the random noise robustness hierarchy [1].*
+*This is the **exact inverse** of the random noise robustness hierarchy.*
 
 ---
 
@@ -183,8 +183,3 @@ Three attack strategies evaluated at $\epsilon \in \{0.001, 0.005, 0.01, 0.05, 0
 | **1.0** | 1.0% | 1.0% | **70.3%** | 23.0% |
 
 ---
-
-## 📚 Related Work
-This paper builds on our information-theoretic analysis of PE strategies:
-[1] Anonymous. (2026). "Information-Theoretic Analysis of Positional Encoding Strategies in Vision Transformers." DOI: XXXXXXXXXX)
-
