@@ -47,8 +47,9 @@ To reproduce the results presented in the paper, we recommend using **Google Col
 ├── CIFAR100_START.ipynb                        # Colab script for reproducing CIFAR-100 results (outcome: adversarial_pe_results_cifar100.json)
 ├── imagenet100_classes.txt                     # 100 ImageNet class IDs (WordNet synsets)
 ├── val_labels.txt                              # Validation set labels
-│      
-│                                                                                   
+├── analysis_data.json                          # Noise ablation related data
+│
+│                                                                                  
 ├──📁 imagenet/                                 # Keep archived! 
 │   ├── ILSVRC2012_img_train.tar                                                     
 │   └── ILSVRC2012_img_val.tar
@@ -112,6 +113,8 @@ To reproduce the results presented in the paper, we recommend using **Google Col
 ## 📊 Step 5: Figure Generation
 
 To generate all 17 figures used in the paper, copy the **`generate_figures.py`** script to the local Colab storage directory (`/content/`) and run it.
+> [!IMPORTANT]
+> Make sure the `analysis_data.json` file is also copied to the local Colab storage directory (`/content/`) before running the  **`generate_figures.py`** script.
 
 ---
 
