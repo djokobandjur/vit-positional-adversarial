@@ -47,7 +47,7 @@ To reproduce the results presented in the paper, we recommend using **Google Col
 ├── CIFAR100_START.ipynb                        # Colab script for reproducing CIFAR-100 results (outcome: adversarial_pe_results_cifar100.json)
 ├── imagenet100_classes.txt                     # 100 ImageNet class IDs (WordNet synsets)
 ├── val_labels.txt                              # Validation set labels
-├── analysis_data.json                          # Noise ablation related data
+├── analysis_data.json                          # Noise ablation study data
 │
 │                                                                                  
 ├──📁 imagenet/                                 # Keep archived! 
