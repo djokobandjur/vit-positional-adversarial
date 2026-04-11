@@ -1,8 +1,9 @@
 """
 Generate All 17 Figures for TIFS Paper
 ======================================
-Reproduces all figures from adversarial_pe_results.json (ImageNet-100)
-and adversarial_pe_results_cifar100.json (CIFAR-100).
+Reproduces all figures from adversarial_pe_results.json (ImageNet-100),
+adversarial_pe_results_cifar100.json (CIFAR-100), and
+analysis_data.json (noise ablation data).
 
 Usage:
     python generate_figures.py
@@ -10,6 +11,7 @@ Usage:
 Requires: matplotlib, numpy, json
 Outputs:  fig1_fgsm_pe.png through fig17_attack_heatmap.png
 """
+
 import os
 import json
 import numpy as np
@@ -25,16 +27,16 @@ matplotlib.rcParams['axes.titlesize'] = 15
 imagenet_path = '/content/drive/MyDrive/pe_experiment/results/adversarial_pe_results.json'
 cifar100_path = '/content/drive/MyDrive/pe_experiment/results_cifar100/adversarial_pe_results_cifar100.json'
 
-    
 OUTPUT_DIR = '/content/drive/MyDrive/pe_experiment/adversarial_figures'
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+
 
 # ============================================================
 # LOAD DATA
 # ============================================================
-with open(imagenet_path) as f:
+with open('adversarial_pe_results.json') as f:
     imagenet = json.load(f)
-with open(cifar100_path) as f:
+with open('adversarial_pe_results_cifar100.json') as f:
     cifar = json.load(f)
 
 PE_TYPES = ['learned', 'sinusoidal', 'rope', 'alibi']
@@ -125,15 +127,16 @@ print("✓ Fig 3 saved")
 # ============================================================
 # FIG 4: Robustness Inversion (Random Noise vs Adversarial)
 # ============================================================
-# Random noise data from the paper (approximate from Figure 4 left panel)
+# Random noise data from analysis_data.json
+# Load actual noise ablation data
+with open('analysis_data.json') as f:
+    analysis = json.load(f)
+
 noise_levels = [0, 0.1, 0.2, 0.5, 1.0, 2.0, 3.0, 5.0]
-# These values are from the paper text and figure descriptions
-noise_data = {
-    'learned':     [79.4, 79.0, 78.5, 77.5, 75.5, 77.0, 75.0, 51.9],
-    'sinusoidal':  [81.5, 81.0, 80.0, 49.5, 7.0,  2.5,  2.0,  1.5],
-    'rope':        [84.5, 84.0, 79.0, 32.5, 4.0,  2.0,  1.5,  1.0],
-    'alibi':       [81.1, 77.5, 62.5, 32.5, 14.5, 5.5,  4.0,  2.5],
-}
+noise_data = {}
+for pe in PE_TYPES:
+    noise_data[pe] = [np.mean([analysis[pe][s]['noise_ablation']['accuracies'][i] for s in SEEDS]) 
+                      for i in range(len(noise_levels))]
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 5.5))
 
@@ -157,7 +160,7 @@ ax2.set_title('PGD Adversarial Attack on PE')
 ax2.legend(fontsize=11)
 ax2.grid(True, alpha=0.3)
 
-fig.suptitle('The Robustness Inversion: Random Noise vs. Adversarial Attack', fontsize=15, fontweight='bold')
+fig.suptitle('The Robustness Inversion: Random Noise vs. Adversarial Attack', fontsize=15, fontweight='normal')
 plt.tight_layout()
 plt.savefig(os.path.join(OUTPUT_DIR,'fig4_robustness_inversion.png'), dpi=300, bbox_inches='tight')
 plt.close()
@@ -541,9 +544,9 @@ print("✓ Fig 16 saved")
 # ============================================================
 # FIG 17: Attack Heatmap
 # ============================================================
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 4.5))
 
-#cmap = LinearSegmentedColormap.from_list('custom', ['#8B0000', '#CD5C5C', '#F0E68C', '#90EE90', '#228B22'])
+cmap = LinearSegmentedColormap.from_list('custom', ['#8B0000', '#CD5C5C', '#F0E68C', '#90EE90', '#228B22'])
 
 for ds_name, data, ax in [('ImageNet-100', imagenet, ax1), ('CIFAR-100', cifar, ax2)]:
     matrix = []
@@ -557,7 +560,7 @@ for ds_name, data, ax in [('ImageNet-100', imagenet, ax1), ('CIFAR-100', cifar, 
         matrix.append(row)
 
     matrix = np.array(matrix)
-    im = ax.imshow(matrix, cmap='RdYlGn', aspect='auto', vmin=0, vmax=100)
+    im = ax.imshow(matrix, cmap=cmap, aspect='auto', vmin=0, vmax=100)
 
     for i in range(4):
         for j in range(8):
