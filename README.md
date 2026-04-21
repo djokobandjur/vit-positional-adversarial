@@ -186,3 +186,5 @@ Three attack strategies evaluated at $\epsilon \in \{0.001, 0.005, 0.01, 0.05, 0
 | **1.0** | 1.0% | 1.0% | **70.3%** | 23.0% |
 
 ---
+> [!IMPORTANT]
+Results are reported as an average of multiple runs; minor numerical variations may occur due to hardware non-determinism during reproduction.
