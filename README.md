@@ -82,7 +82,7 @@ To reproduce the results presented in the paper, we recommend using **Google Col
 
 ---
 
-### 📥 Download Pre-trained Weights
+### 📥 Download Trained Weights
 1. **[ImageNet-100 Models](https://drive.google.com/drive/folders/1WRhjaR3WZHIi2fTi9xcrIBJkBXZddMM9?usp=sharing)**
 2. **[CIFAR-100 Models](https://drive.google.com/drive/folders/1HBiOjNfuRsh2H0ZGRP4rIdBeydedCBJL?usp=sharing)**
 
