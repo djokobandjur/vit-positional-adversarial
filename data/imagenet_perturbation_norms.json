@@ -1,0 +1,3288 @@
+{
+  "metadata": {
+    "experiment": "Experiment 3 v4: Perturbation norm logging (||delta_final||_inf, ||delta_final||_2, saturation ratio) under PGD-PE attack. Drop-in companion to v3.",
+    "timestamp": "2026-05-09T21:36:20.084510",
+    "dataset": "imagenet",
+    "device": "cuda",
+    "n_val_images": 5000,
+    "batch_size": 128,
+    "grid_size": 14,
+    "config": {
+      "pe_types": [
+        "learned",
+        "sinusoidal",
+        "rope",
+        "alibi"
+      ],
+      "seeds": [
+        42,
+        123,
+        456
+      ],
+      "attack": "pgd_pe",
+      "epsilons_per_pe": {
+        "learned": [
+          0,
+          0.05,
+          0.1,
+          0.11,
+          0.12,
+          0.13,
+          0.14,
+          0.15,
+          0.2
+        ],
+        "sinusoidal": [
+          0,
+          0.05,
+          0.1,
+          0.13,
+          0.15,
+          0.17,
+          0.2
+        ],
+        "rope": [
+          0,
+          0.15,
+          0.2,
+          0.25,
+          0.3,
+          0.35,
+          0.4,
+          0.45,
+          0.5
+        ],
+        "alibi": [
+          0,
+          0.01,
+          0.02,
+          0.03,
+          0.04,
+          0.05,
+          0.06,
+          0.07,
+          0.08
+        ]
+      },
+      "pgd_steps": 20,
+      "pgd_alpha_ratio": 0.1,
+      "n_grad_batches": 20,
+      "attack_pattern": "shared_delta_all_12_blocks",
+      "validation_set": "full",
+      "ceiling_tolerance": 0.99
+    },
+    "metrics_explained": {
+      "delta_inf_max": "max over buffer keys of ||delta||_inf",
+      "delta_inf_mean": "mean over buffer keys of ||delta||_inf",
+      "delta_l2_mean": "mean over buffer keys of ||delta||_2 (Frobenius)",
+      "delta_inf_to_eps": "delta_inf_max / epsilon; 1.0 = budget fully saturated",
+      "fraction_at_ceiling": "fraction of perturbation entries within CEILING_TOLERANCE * epsilon of the L_inf ball boundary; high values indicate PGD pushed against the budget"
+    },
+    "purpose": "Test whether PGD-PE on smaller grids (CIFAR 8x8) more easily saturates the epsilon budget than on larger grids (ImageNet 14x14), which would explain the dataset-dependent post-collapse behavior of learned PE."
+  },
+  "results": {
+    "learned": {
+      "42": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_ImageNet100/learned_seed42/best_model.pth",
+        "attacks": {
+          "0": {
+            "epsilon": 0.0,
+            "elapsed_sec": 0.37389230728149414,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.0,
+                "delta_l2": 0.0,
+                "delta_inf_to_eps": 0.0,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.0,
+            "delta_inf_mean": 0.0,
+            "delta_l2_mean": 0.0,
+            "delta_inf_to_eps": 0.0,
+            "fraction_at_ceiling_max": 0.0,
+            "fraction_at_ceiling_mean": 0.0
+          },
+          "0.05": {
+            "epsilon": 0.05,
+            "elapsed_sec": 127.73720145225525,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.05000000074505806,
+                "delta_l2": 17.447307586669922,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.7173818349838257
+              }
+            },
+            "delta_inf_max": 0.05000000074505806,
+            "delta_inf_mean": 0.05000000074505806,
+            "delta_l2_mean": 17.447307586669922,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.7173818349838257,
+            "fraction_at_ceiling_mean": 0.7173818349838257
+          },
+          "0.1": {
+            "epsilon": 0.1,
+            "elapsed_sec": 126.95521926879883,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.10000000149011612,
+                "delta_l2": 31.825057983398438,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.5092137455940247
+              }
+            },
+            "delta_inf_max": 0.10000000149011612,
+            "delta_inf_mean": 0.10000000149011612,
+            "delta_l2_mean": 31.825057983398438,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.5092137455940247,
+            "fraction_at_ceiling_mean": 0.5092137455940247
+          },
+          "0.11": {
+            "epsilon": 0.11,
+            "elapsed_sec": 127.00837326049805,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.10999999940395355,
+                "delta_l2": 34.0426025390625,
+                "delta_inf_to_eps": 0.9999999945813959,
+                "fraction_at_ceiling": 0.46338963508605957
+              }
+            },
+            "delta_inf_max": 0.10999999940395355,
+            "delta_inf_mean": 0.10999999940395355,
+            "delta_l2_mean": 34.0426025390625,
+            "delta_inf_to_eps": 0.9999999945813959,
+            "fraction_at_ceiling_max": 0.46338963508605957,
+            "fraction_at_ceiling_mean": 0.46338963508605957
+          },
+          "0.12": {
+            "epsilon": 0.12,
+            "elapsed_sec": 126.99683809280396,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.11999999731779099,
+                "delta_l2": 36.61991882324219,
+                "delta_inf_to_eps": 0.9999999776482582,
+                "fraction_at_ceiling": 0.4479166567325592
+              }
+            },
+            "delta_inf_max": 0.11999999731779099,
+            "delta_inf_mean": 0.11999999731779099,
+            "delta_l2_mean": 36.61991882324219,
+            "delta_inf_to_eps": 0.9999999776482582,
+            "fraction_at_ceiling_max": 0.4479166567325592,
+            "fraction_at_ceiling_mean": 0.4479166567325592
+          },
+          "0.13": {
+            "epsilon": 0.13,
+            "elapsed_sec": 127.06393694877625,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.12999999523162842,
+                "delta_l2": 39.45746994018555,
+                "delta_inf_to_eps": 0.9999999633202186,
+                "fraction_at_ceiling": 0.44212669134140015
+              }
+            },
+            "delta_inf_max": 0.12999999523162842,
+            "delta_inf_mean": 0.12999999523162842,
+            "delta_l2_mean": 39.45746994018555,
+            "delta_inf_to_eps": 0.9999999633202186,
+            "fraction_at_ceiling_max": 0.44212669134140015,
+            "fraction_at_ceiling_mean": 0.44212669134140015
+          },
+          "0.14": {
+            "epsilon": 0.14,
+            "elapsed_sec": 127.06518316268921,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.14000000059604645,
+                "delta_l2": 42.280582427978516,
+                "delta_inf_to_eps": 1.0000000042574746,
+                "fraction_at_ceiling": 0.42599934339523315
+              }
+            },
+            "delta_inf_max": 0.14000000059604645,
+            "delta_inf_mean": 0.14000000059604645,
+            "delta_l2_mean": 42.280582427978516,
+            "delta_inf_to_eps": 1.0000000042574746,
+            "fraction_at_ceiling_max": 0.42599934339523315,
+            "fraction_at_ceiling_mean": 0.42599934339523315
+          },
+          "0.15": {
+            "epsilon": 0.15,
+            "elapsed_sec": 127.03426384925842,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.15000000596046448,
+                "delta_l2": 44.790706634521484,
+                "delta_inf_to_eps": 1.00000003973643,
+                "fraction_at_ceiling": 0.40841132402420044
+              }
+            },
+            "delta_inf_max": 0.15000000596046448,
+            "delta_inf_mean": 0.15000000596046448,
+            "delta_l2_mean": 44.790706634521484,
+            "delta_inf_to_eps": 1.00000003973643,
+            "fraction_at_ceiling_max": 0.40841132402420044,
+            "fraction_at_ceiling_mean": 0.40841132402420044
+          },
+          "0.2": {
+            "epsilon": 0.2,
+            "elapsed_sec": 127.03292894363403,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.20000000298023224,
+                "delta_l2": 58.760746002197266,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.33472132682800293
+              }
+            },
+            "delta_inf_max": 0.20000000298023224,
+            "delta_inf_mean": 0.20000000298023224,
+            "delta_l2_mean": 58.760746002197266,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.33472132682800293,
+            "fraction_at_ceiling_mean": 0.33472132682800293
+          }
+        }
+      },
+      "123": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_ImageNet100/learned_seed123/best_model.pth",
+        "attacks": {
+          "0": {
+            "epsilon": 0.0,
+            "elapsed_sec": 0.0005793571472167969,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.0,
+                "delta_l2": 0.0,
+                "delta_inf_to_eps": 0.0,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.0,
+            "delta_inf_mean": 0.0,
+            "delta_l2_mean": 0.0,
+            "delta_inf_to_eps": 0.0,
+            "fraction_at_ceiling_max": 0.0,
+            "fraction_at_ceiling_mean": 0.0
+          },
+          "0.05": {
+            "epsilon": 0.05,
+            "elapsed_sec": 127.13917803764343,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.05000000074505806,
+                "delta_l2": 17.569360733032227,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.7368337512016296
+              }
+            },
+            "delta_inf_max": 0.05000000074505806,
+            "delta_inf_mean": 0.05000000074505806,
+            "delta_l2_mean": 17.569360733032227,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.7368337512016296,
+            "fraction_at_ceiling_mean": 0.7368337512016296
+          },
+          "0.1": {
+            "epsilon": 0.1,
+            "elapsed_sec": 127.19583559036255,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.10000000149011612,
+                "delta_l2": 31.285247802734375,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.4775274991989136
+              }
+            },
+            "delta_inf_max": 0.10000000149011612,
+            "delta_inf_mean": 0.10000000149011612,
+            "delta_l2_mean": 31.285247802734375,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.4775274991989136,
+            "fraction_at_ceiling_mean": 0.4775274991989136
+          },
+          "0.11": {
+            "epsilon": 0.11,
+            "elapsed_sec": 127.17875361442566,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.10999999940395355,
+                "delta_l2": 33.50066375732422,
+                "delta_inf_to_eps": 0.9999999945813959,
+                "fraction_at_ceiling": 0.45046794414520264
+              }
+            },
+            "delta_inf_max": 0.10999999940395355,
+            "delta_inf_mean": 0.10999999940395355,
+            "delta_l2_mean": 33.50066375732422,
+            "delta_inf_to_eps": 0.9999999945813959,
+            "fraction_at_ceiling_max": 0.45046794414520264,
+            "fraction_at_ceiling_mean": 0.45046794414520264
+          },
+          "0.12": {
+            "epsilon": 0.12,
+            "elapsed_sec": 127.18813252449036,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.11999999731779099,
+                "delta_l2": 36.61700439453125,
+                "delta_inf_to_eps": 0.9999999776482582,
+                "fraction_at_ceiling": 0.45927849411964417
+              }
+            },
+            "delta_inf_max": 0.11999999731779099,
+            "delta_inf_mean": 0.11999999731779099,
+            "delta_l2_mean": 36.61700439453125,
+            "delta_inf_to_eps": 0.9999999776482582,
+            "fraction_at_ceiling_max": 0.45927849411964417,
+            "fraction_at_ceiling_mean": 0.45927849411964417
+          },
+          "0.13": {
+            "epsilon": 0.13,
+            "elapsed_sec": 127.22671175003052,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.12999999523162842,
+                "delta_l2": 40.012813568115234,
+                "delta_inf_to_eps": 0.9999999633202186,
+                "fraction_at_ceiling": 0.4687764346599579
+              }
+            },
+            "delta_inf_max": 0.12999999523162842,
+            "delta_inf_mean": 0.12999999523162842,
+            "delta_l2_mean": 40.012813568115234,
+            "delta_inf_to_eps": 0.9999999633202186,
+            "fraction_at_ceiling_max": 0.4687764346599579,
+            "fraction_at_ceiling_mean": 0.4687764346599579
+          },
+          "0.14": {
+            "epsilon": 0.14,
+            "elapsed_sec": 127.19112300872803,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.14000000059604645,
+                "delta_l2": 43.35234069824219,
+                "delta_inf_to_eps": 1.0000000042574746,
+                "fraction_at_ceiling": 0.471096396446228
+              }
+            },
+            "delta_inf_max": 0.14000000059604645,
+            "delta_inf_mean": 0.14000000059604645,
+            "delta_l2_mean": 43.35234069824219,
+            "delta_inf_to_eps": 1.0000000042574746,
+            "fraction_at_ceiling_max": 0.471096396446228,
+            "fraction_at_ceiling_mean": 0.471096396446228
+          },
+          "0.15": {
+            "epsilon": 0.15,
+            "elapsed_sec": 127.27972054481506,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.15000000596046448,
+                "delta_l2": 46.310569763183594,
+                "delta_inf_to_eps": 1.00000003973643,
+                "fraction_at_ceiling": 0.4584456980228424
+              }
+            },
+            "delta_inf_max": 0.15000000596046448,
+            "delta_inf_mean": 0.15000000596046448,
+            "delta_l2_mean": 46.310569763183594,
+            "delta_inf_to_eps": 1.00000003973643,
+            "fraction_at_ceiling_max": 0.4584456980228424,
+            "fraction_at_ceiling_mean": 0.4584456980228424
+          },
+          "0.2": {
+            "epsilon": 0.2,
+            "elapsed_sec": 127.25972652435303,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.20000000298023224,
+                "delta_l2": 59.958309173583984,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.3951723575592041
+              }
+            },
+            "delta_inf_max": 0.20000000298023224,
+            "delta_inf_mean": 0.20000000298023224,
+            "delta_l2_mean": 59.958309173583984,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.3951723575592041,
+            "fraction_at_ceiling_mean": 0.3951723575592041
+          }
+        }
+      },
+      "456": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_ImageNet100/learned_seed456/best_model.pth",
+        "attacks": {
+          "0": {
+            "epsilon": 0.0,
+            "elapsed_sec": 0.0005724430084228516,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.0,
+                "delta_l2": 0.0,
+                "delta_inf_to_eps": 0.0,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.0,
+            "delta_inf_mean": 0.0,
+            "delta_l2_mean": 0.0,
+            "delta_inf_to_eps": 0.0,
+            "fraction_at_ceiling_max": 0.0,
+            "fraction_at_ceiling_mean": 0.0
+          },
+          "0.05": {
+            "epsilon": 0.05,
+            "elapsed_sec": 127.20568752288818,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.05000000074505806,
+                "delta_l2": 17.563762664794922,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.7368139028549194
+              }
+            },
+            "delta_inf_max": 0.05000000074505806,
+            "delta_inf_mean": 0.05000000074505806,
+            "delta_l2_mean": 17.563762664794922,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.7368139028549194,
+            "fraction_at_ceiling_mean": 0.7368139028549194
+          },
+          "0.1": {
+            "epsilon": 0.1,
+            "elapsed_sec": 127.22600388526917,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.10000000149011612,
+                "delta_l2": 31.106454849243164,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.45699819922447205
+              }
+            },
+            "delta_inf_max": 0.10000000149011612,
+            "delta_inf_mean": 0.10000000149011612,
+            "delta_l2_mean": 31.106454849243164,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.45699819922447205,
+            "fraction_at_ceiling_mean": 0.45699819922447205
+          },
+          "0.11": {
+            "epsilon": 0.11,
+            "elapsed_sec": 127.19102048873901,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.10999999940395355,
+                "delta_l2": 33.51722717285156,
+                "delta_inf_to_eps": 0.9999999945813959,
+                "fraction_at_ceiling": 0.44685250520706177
+              }
+            },
+            "delta_inf_max": 0.10999999940395355,
+            "delta_inf_mean": 0.10999999940395355,
+            "delta_l2_mean": 33.51722717285156,
+            "delta_inf_to_eps": 0.9999999945813959,
+            "fraction_at_ceiling_max": 0.44685250520706177,
+            "fraction_at_ceiling_mean": 0.44685250520706177
+          },
+          "0.12": {
+            "epsilon": 0.12,
+            "elapsed_sec": 127.22282099723816,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.11999999731779099,
+                "delta_l2": 36.36330032348633,
+                "delta_inf_to_eps": 0.9999999776482582,
+                "fraction_at_ceiling": 0.43787673115730286
+              }
+            },
+            "delta_inf_max": 0.11999999731779099,
+            "delta_inf_mean": 0.11999999731779099,
+            "delta_l2_mean": 36.36330032348633,
+            "delta_inf_to_eps": 0.9999999776482582,
+            "fraction_at_ceiling_max": 0.43787673115730286,
+            "fraction_at_ceiling_mean": 0.43787673115730286
+          },
+          "0.13": {
+            "epsilon": 0.13,
+            "elapsed_sec": 127.22275137901306,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.12999999523162842,
+                "delta_l2": 39.17646026611328,
+                "delta_inf_to_eps": 0.9999999633202186,
+                "fraction_at_ceiling": 0.4227408468723297
+              }
+            },
+            "delta_inf_max": 0.12999999523162842,
+            "delta_inf_mean": 0.12999999523162842,
+            "delta_l2_mean": 39.17646026611328,
+            "delta_inf_to_eps": 0.9999999633202186,
+            "fraction_at_ceiling_max": 0.4227408468723297,
+            "fraction_at_ceiling_mean": 0.4227408468723297
+          },
+          "0.14": {
+            "epsilon": 0.14,
+            "elapsed_sec": 127.23462247848511,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.14000000059604645,
+                "delta_l2": 41.83066940307617,
+                "delta_inf_to_eps": 1.0000000042574746,
+                "fraction_at_ceiling": 0.40621694922447205
+              }
+            },
+            "delta_inf_max": 0.14000000059604645,
+            "delta_inf_mean": 0.14000000059604645,
+            "delta_l2_mean": 41.83066940307617,
+            "delta_inf_to_eps": 1.0000000042574746,
+            "fraction_at_ceiling_max": 0.40621694922447205,
+            "fraction_at_ceiling_mean": 0.40621694922447205
+          },
+          "0.15": {
+            "epsilon": 0.15,
+            "elapsed_sec": 127.26871013641357,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.15000000596046448,
+                "delta_l2": 44.80553436279297,
+                "delta_inf_to_eps": 1.00000003973643,
+                "fraction_at_ceiling": 0.41379812359809875
+              }
+            },
+            "delta_inf_max": 0.15000000596046448,
+            "delta_inf_mean": 0.15000000596046448,
+            "delta_l2_mean": 44.80553436279297,
+            "delta_inf_to_eps": 1.00000003973643,
+            "fraction_at_ceiling_max": 0.41379812359809875,
+            "fraction_at_ceiling_mean": 0.41379812359809875
+          },
+          "0.2": {
+            "epsilon": 0.2,
+            "elapsed_sec": 127.2728123664856,
+            "norms_per_buffer": {
+              "pos_embed": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.20000000298023224,
+                "delta_l2": 60.6566162109375,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.4285241961479187
+              }
+            },
+            "delta_inf_max": 0.20000000298023224,
+            "delta_inf_mean": 0.20000000298023224,
+            "delta_l2_mean": 60.6566162109375,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.4285241961479187,
+            "fraction_at_ceiling_mean": 0.4285241961479187
+          }
+        }
+      }
+    },
+    "sinusoidal": {
+      "42": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_ImageNet100/sinusoidal_seed42/best_model.pth",
+        "attacks": {
+          "0": {
+            "epsilon": 0.0,
+            "elapsed_sec": 0.0005671977996826172,
+            "norms_per_buffer": {
+              "pe": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.0,
+                "delta_l2": 0.0,
+                "delta_inf_to_eps": 0.0,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.0,
+            "delta_inf_mean": 0.0,
+            "delta_l2_mean": 0.0,
+            "delta_inf_to_eps": 0.0,
+            "fraction_at_ceiling_max": 0.0,
+            "fraction_at_ceiling_mean": 0.0
+          },
+          "0.05": {
+            "epsilon": 0.05,
+            "elapsed_sec": 127.10983514785767,
+            "norms_per_buffer": {
+              "pe": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.05000000074505806,
+                "delta_l2": 17.911468505859375,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.7849513292312622
+              }
+            },
+            "delta_inf_max": 0.05000000074505806,
+            "delta_inf_mean": 0.05000000074505806,
+            "delta_l2_mean": 17.911468505859375,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.7849513292312622,
+            "fraction_at_ceiling_mean": 0.7849513292312622
+          },
+          "0.1": {
+            "epsilon": 0.1,
+            "elapsed_sec": 127.12378406524658,
+            "norms_per_buffer": {
+              "pe": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.10000000149011612,
+                "delta_l2": 33.04271697998047,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.5887200832366943
+              }
+            },
+            "delta_inf_max": 0.10000000149011612,
+            "delta_inf_mean": 0.10000000149011612,
+            "delta_l2_mean": 33.04271697998047,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.5887200832366943,
+            "fraction_at_ceiling_mean": 0.5887200832366943
+          },
+          "0.13": {
+            "epsilon": 0.13,
+            "elapsed_sec": 127.17177438735962,
+            "norms_per_buffer": {
+              "pe": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.12999999523162842,
+                "delta_l2": 41.35432434082031,
+                "delta_inf_to_eps": 0.9999999633202186,
+                "fraction_at_ceiling": 0.5304898619651794
+              }
+            },
+            "delta_inf_max": 0.12999999523162842,
+            "delta_inf_mean": 0.12999999523162842,
+            "delta_l2_mean": 41.35432434082031,
+            "delta_inf_to_eps": 0.9999999633202186,
+            "fraction_at_ceiling_max": 0.5304898619651794,
+            "fraction_at_ceiling_mean": 0.5304898619651794
+          },
+          "0.15": {
+            "epsilon": 0.15,
+            "elapsed_sec": 127.1755256652832,
+            "norms_per_buffer": {
+              "pe": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.15000000596046448,
+                "delta_l2": 47.489585876464844,
+                "delta_inf_to_eps": 1.00000003973643,
+                "fraction_at_ceiling": 0.5198683142662048
+              }
+            },
+            "delta_inf_max": 0.15000000596046448,
+            "delta_inf_mean": 0.15000000596046448,
+            "delta_l2_mean": 47.489585876464844,
+            "delta_inf_to_eps": 1.00000003973643,
+            "fraction_at_ceiling_max": 0.5198683142662048,
+            "fraction_at_ceiling_mean": 0.5198683142662048
+          },
+          "0.17": {
+            "epsilon": 0.17,
+            "elapsed_sec": 127.1683259010315,
+            "norms_per_buffer": {
+              "pe": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.17000000178813934,
+                "delta_l2": 53.04083251953125,
+                "delta_inf_to_eps": 1.0000000105184665,
+                "fraction_at_ceiling": 0.4896758496761322
+              }
+            },
+            "delta_inf_max": 0.17000000178813934,
+            "delta_inf_mean": 0.17000000178813934,
+            "delta_l2_mean": 53.04083251953125,
+            "delta_inf_to_eps": 1.0000000105184665,
+            "fraction_at_ceiling_max": 0.4896758496761322,
+            "fraction_at_ceiling_mean": 0.4896758496761322
+          },
+          "0.2": {
+            "epsilon": 0.2,
+            "elapsed_sec": 127.22300314903259,
+            "norms_per_buffer": {
+              "pe": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.20000000298023224,
+                "delta_l2": 62.58081817626953,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.5010707378387451
+              }
+            },
+            "delta_inf_max": 0.20000000298023224,
+            "delta_inf_mean": 0.20000000298023224,
+            "delta_l2_mean": 62.58081817626953,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.5010707378387451,
+            "fraction_at_ceiling_mean": 0.5010707378387451
+          }
+        }
+      },
+      "123": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_ImageNet100/sinusoidal_seed123/best_model.pth",
+        "attacks": {
+          "0": {
+            "epsilon": 0.0,
+            "elapsed_sec": 0.0005311965942382812,
+            "norms_per_buffer": {
+              "pe": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.0,
+                "delta_l2": 0.0,
+                "delta_inf_to_eps": 0.0,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.0,
+            "delta_inf_mean": 0.0,
+            "delta_l2_mean": 0.0,
+            "delta_inf_to_eps": 0.0,
+            "fraction_at_ceiling_max": 0.0,
+            "fraction_at_ceiling_mean": 0.0
+          },
+          "0.05": {
+            "epsilon": 0.05,
+            "elapsed_sec": 127.1703712940216,
+            "norms_per_buffer": {
+              "pe": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.05000000074505806,
+                "delta_l2": 18.00632667541504,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.7963528037071228
+              }
+            },
+            "delta_inf_max": 0.05000000074505806,
+            "delta_inf_mean": 0.05000000074505806,
+            "delta_l2_mean": 18.00632667541504,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.7963528037071228,
+            "fraction_at_ceiling_mean": 0.7963528037071228
+          },
+          "0.1": {
+            "epsilon": 0.1,
+            "elapsed_sec": 127.60045456886292,
+            "norms_per_buffer": {
+              "pe": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.10000000149011612,
+                "delta_l2": 33.70333480834961,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.6351853013038635
+              }
+            },
+            "delta_inf_max": 0.10000000149011612,
+            "delta_inf_mean": 0.10000000149011612,
+            "delta_l2_mean": 33.70333480834961,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.6351853013038635,
+            "fraction_at_ceiling_mean": 0.6351853013038635
+          },
+          "0.13": {
+            "epsilon": 0.13,
+            "elapsed_sec": 127.22204375267029,
+            "norms_per_buffer": {
+              "pe": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.12999999523162842,
+                "delta_l2": 41.37125778198242,
+                "delta_inf_to_eps": 0.9999999633202186,
+                "fraction_at_ceiling": 0.5105620622634888
+              }
+            },
+            "delta_inf_max": 0.12999999523162842,
+            "delta_inf_mean": 0.12999999523162842,
+            "delta_l2_mean": 41.37125778198242,
+            "delta_inf_to_eps": 0.9999999633202186,
+            "fraction_at_ceiling_max": 0.5105620622634888,
+            "fraction_at_ceiling_mean": 0.5105620622634888
+          },
+          "0.15": {
+            "epsilon": 0.15,
+            "elapsed_sec": 127.18708634376526,
+            "norms_per_buffer": {
+              "pe": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.15000000596046448,
+                "delta_l2": 46.24373245239258,
+                "delta_inf_to_eps": 1.00000003973643,
+                "fraction_at_ceiling": 0.46583518385887146
+              }
+            },
+            "delta_inf_max": 0.15000000596046448,
+            "delta_inf_mean": 0.15000000596046448,
+            "delta_l2_mean": 46.24373245239258,
+            "delta_inf_to_eps": 1.00000003973643,
+            "fraction_at_ceiling_max": 0.46583518385887146,
+            "fraction_at_ceiling_mean": 0.46583518385887146
+          },
+          "0.17": {
+            "epsilon": 0.17,
+            "elapsed_sec": 127.20485615730286,
+            "norms_per_buffer": {
+              "pe": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.17000000178813934,
+                "delta_l2": 51.22470474243164,
+                "delta_inf_to_eps": 1.0000000105184665,
+                "fraction_at_ceiling": 0.4302426874637604
+              }
+            },
+            "delta_inf_max": 0.17000000178813934,
+            "delta_inf_mean": 0.17000000178813934,
+            "delta_l2_mean": 51.22470474243164,
+            "delta_inf_to_eps": 1.0000000105184665,
+            "fraction_at_ceiling_max": 0.4302426874637604,
+            "fraction_at_ceiling_mean": 0.4302426874637604
+          },
+          "0.2": {
+            "epsilon": 0.2,
+            "elapsed_sec": 127.23007369041443,
+            "norms_per_buffer": {
+              "pe": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.20000000298023224,
+                "delta_l2": 59.875526428222656,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.41857022047042847
+              }
+            },
+            "delta_inf_max": 0.20000000298023224,
+            "delta_inf_mean": 0.20000000298023224,
+            "delta_l2_mean": 59.875526428222656,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.41857022047042847,
+            "fraction_at_ceiling_mean": 0.41857022047042847
+          }
+        }
+      },
+      "456": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_ImageNet100/sinusoidal_seed456/best_model.pth",
+        "attacks": {
+          "0": {
+            "epsilon": 0.0,
+            "elapsed_sec": 0.00060272216796875,
+            "norms_per_buffer": {
+              "pe": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.0,
+                "delta_l2": 0.0,
+                "delta_inf_to_eps": 0.0,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.0,
+            "delta_inf_mean": 0.0,
+            "delta_l2_mean": 0.0,
+            "delta_inf_to_eps": 0.0,
+            "fraction_at_ceiling_max": 0.0,
+            "fraction_at_ceiling_mean": 0.0
+          },
+          "0.05": {
+            "epsilon": 0.05,
+            "elapsed_sec": 127.12875938415527,
+            "norms_per_buffer": {
+              "pe": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.05000000074505806,
+                "delta_l2": 17.985828399658203,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.7918054461479187
+              }
+            },
+            "delta_inf_max": 0.05000000074505806,
+            "delta_inf_mean": 0.05000000074505806,
+            "delta_l2_mean": 17.985828399658203,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.7918054461479187,
+            "fraction_at_ceiling_mean": 0.7918054461479187
+          },
+          "0.1": {
+            "epsilon": 0.1,
+            "elapsed_sec": 127.10347700119019,
+            "norms_per_buffer": {
+              "pe": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.10000000149011612,
+                "delta_l2": 32.85786056518555,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.5801012516021729
+              }
+            },
+            "delta_inf_max": 0.10000000149011612,
+            "delta_inf_mean": 0.10000000149011612,
+            "delta_l2_mean": 32.85786056518555,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.5801012516021729,
+            "fraction_at_ceiling_mean": 0.5801012516021729
+          },
+          "0.13": {
+            "epsilon": 0.13,
+            "elapsed_sec": 127.14157629013062,
+            "norms_per_buffer": {
+              "pe": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.12999999523162842,
+                "delta_l2": 41.13125228881836,
+                "delta_inf_to_eps": 0.9999999633202186,
+                "fraction_at_ceiling": 0.5220693349838257
+              }
+            },
+            "delta_inf_max": 0.12999999523162842,
+            "delta_inf_mean": 0.12999999523162842,
+            "delta_l2_mean": 41.13125228881836,
+            "delta_inf_to_eps": 0.9999999633202186,
+            "fraction_at_ceiling_max": 0.5220693349838257,
+            "fraction_at_ceiling_mean": 0.5220693349838257
+          },
+          "0.15": {
+            "epsilon": 0.15,
+            "elapsed_sec": 127.14310836791992,
+            "norms_per_buffer": {
+              "pe": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.15000000596046448,
+                "delta_l2": 47.283103942871094,
+                "delta_inf_to_eps": 1.00000003973643,
+                "fraction_at_ceiling": 0.5145145654678345
+              }
+            },
+            "delta_inf_max": 0.15000000596046448,
+            "delta_inf_mean": 0.15000000596046448,
+            "delta_l2_mean": 47.283103942871094,
+            "delta_inf_to_eps": 1.00000003973643,
+            "fraction_at_ceiling_max": 0.5145145654678345,
+            "fraction_at_ceiling_mean": 0.5145145654678345
+          },
+          "0.17": {
+            "epsilon": 0.17,
+            "elapsed_sec": 127.15139818191528,
+            "norms_per_buffer": {
+              "pe": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.17000000178813934,
+                "delta_l2": 53.816280364990234,
+                "delta_inf_to_eps": 1.0000000105184665,
+                "fraction_at_ceiling": 0.5176541209220886
+              }
+            },
+            "delta_inf_max": 0.17000000178813934,
+            "delta_inf_mean": 0.17000000178813934,
+            "delta_l2_mean": 53.816280364990234,
+            "delta_inf_to_eps": 1.0000000105184665,
+            "fraction_at_ceiling_max": 0.5176541209220886,
+            "fraction_at_ceiling_mean": 0.5176541209220886
+          },
+          "0.2": {
+            "epsilon": 0.2,
+            "elapsed_sec": 127.17491602897644,
+            "norms_per_buffer": {
+              "pe": {
+                "shape": [
+                  1,
+                  197,
+                  768
+                ],
+                "numel": 151296,
+                "delta_inf": 0.20000000298023224,
+                "delta_l2": 63.60657501220703,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.5153209567070007
+              }
+            },
+            "delta_inf_max": 0.20000000298023224,
+            "delta_inf_mean": 0.20000000298023224,
+            "delta_l2_mean": 63.60657501220703,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.5153209567070007,
+            "fraction_at_ceiling_mean": 0.5153209567070007
+          }
+        }
+      }
+    },
+    "rope": {
+      "42": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_ImageNet100/rope_seed42/best_model.pth",
+        "attacks": {
+          "0": {
+            "epsilon": 0.0,
+            "elapsed_sec": 0.0006947517395019531,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.0,
+                "delta_l2": 0.0,
+                "delta_inf_to_eps": 0.0,
+                "fraction_at_ceiling": 0.0
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.0,
+                "delta_l2": 0.0,
+                "delta_inf_to_eps": 0.0,
+                "fraction_at_ceiling": 0.0
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.0,
+                "delta_l2": 0.0,
+                "delta_inf_to_eps": 0.0,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.0,
+            "delta_inf_mean": 0.0,
+            "delta_l2_mean": 0.0,
+            "delta_inf_to_eps": 0.0,
+            "fraction_at_ceiling_max": 0.0,
+            "fraction_at_ceiling_mean": 0.0
+          },
+          "0.15": {
+            "epsilon": 0.15,
+            "elapsed_sec": 145.19943761825562,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.15000000596046448,
+                "delta_l2": 10.929397583007812,
+                "delta_inf_to_eps": 1.00000003973643,
+                "fraction_at_ceiling": 0.776491105556488
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.15000000596046448,
+                "delta_l2": 10.942418098449707,
+                "delta_inf_to_eps": 1.00000003973643,
+                "fraction_at_ceiling": 0.7766497135162354
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.14923590421676636,
+                "delta_l2": 0.47282642126083374,
+                "delta_inf_to_eps": 0.9949060281117758,
+                "fraction_at_ceiling": 0.03125
+              }
+            },
+            "delta_inf_max": 0.15000000596046448,
+            "delta_inf_mean": 0.14974530537923178,
+            "delta_l2_mean": 7.448214034239451,
+            "delta_inf_to_eps": 1.00000003973643,
+            "fraction_at_ceiling_max": 0.7766497135162354,
+            "fraction_at_ceiling_mean": 0.5281302730242411
+          },
+          "0.2": {
+            "epsilon": 0.2,
+            "elapsed_sec": 145.19257020950317,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.20000000298023224,
+                "delta_l2": 14.314347267150879,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.7357233166694641
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.20000000298023224,
+                "delta_l2": 14.233241081237793,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.7204949259757996
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.19898119568824768,
+                "delta_l2": 0.6304352283477783,
+                "delta_inf_to_eps": 0.9949059784412384,
+                "fraction_at_ceiling": 0.03125
+              }
+            },
+            "delta_inf_max": 0.20000000298023224,
+            "delta_inf_mean": 0.1996604005495707,
+            "delta_l2_mean": 9.72600785891215,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.7357233166694641,
+            "fraction_at_ceiling_mean": 0.4958227475484212
+          },
+          "0.25": {
+            "epsilon": 0.25,
+            "elapsed_sec": 145.23488783836365,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.25,
+                "delta_l2": 17.704261779785156,
+                "delta_inf_to_eps": 1.0,
+                "fraction_at_ceiling": 0.7036802172660828
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.25,
+                "delta_l2": 17.745145797729492,
+                "delta_inf_to_eps": 1.0,
+                "fraction_at_ceiling": 0.7041561007499695
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.248726487159729,
+                "delta_l2": 0.7880439758300781,
+                "delta_inf_to_eps": 0.994905948638916,
+                "fraction_at_ceiling": 0.03125
+              }
+            },
+            "delta_inf_max": 0.25,
+            "delta_inf_mean": 0.24957549571990967,
+            "delta_l2_mean": 12.079150517781576,
+            "delta_inf_to_eps": 1.0,
+            "fraction_at_ceiling_max": 0.7041561007499695,
+            "fraction_at_ceiling_mean": 0.4796954393386841
+          },
+          "0.3": {
+            "epsilon": 0.3,
+            "elapsed_sec": 145.19872975349426,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.30000001192092896,
+                "delta_l2": 21.450496673583984,
+                "delta_inf_to_eps": 1.00000003973643,
+                "fraction_at_ceiling": 0.7296954393386841
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.30000001192092896,
+                "delta_l2": 21.546125411987305,
+                "delta_inf_to_eps": 1.00000003973643,
+                "fraction_at_ceiling": 0.7330266237258911
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.2984718084335327,
+                "delta_l2": 0.9456528425216675,
+                "delta_inf_to_eps": 0.9949060281117758,
+                "fraction_at_ceiling": 0.03125
+              }
+            },
+            "delta_inf_max": 0.30000001192092896,
+            "delta_inf_mean": 0.29949061075846356,
+            "delta_l2_mean": 14.647424976030985,
+            "delta_inf_to_eps": 1.00000003973643,
+            "fraction_at_ceiling_max": 0.7330266237258911,
+            "fraction_at_ceiling_mean": 0.4979906876881917
+          },
+          "0.35": {
+            "epsilon": 0.35,
+            "elapsed_sec": 145.22279715538025,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.3499999940395355,
+                "delta_l2": 25.562929153442383,
+                "delta_inf_to_eps": 0.9999999829701015,
+                "fraction_at_ceiling": 0.7701459527015686
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.3499999940395355,
+                "delta_l2": 25.624326705932617,
+                "delta_inf_to_eps": 0.9999999829701015,
+                "fraction_at_ceiling": 0.7761738300323486
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.34821707010269165,
+                "delta_l2": 1.1032615900039673,
+                "delta_inf_to_eps": 0.994905914579119,
+                "fraction_at_ceiling": 0.03125
+              }
+            },
+            "delta_inf_max": 0.3499999940395355,
+            "delta_inf_mean": 0.3494056860605876,
+            "delta_l2_mean": 17.430172483126324,
+            "delta_inf_to_eps": 0.9999999829701015,
+            "fraction_at_ceiling_max": 0.7761738300323486,
+            "fraction_at_ceiling_mean": 0.525856594244639
+          },
+          "0.4": {
+            "epsilon": 0.4,
+            "elapsed_sec": 145.22560000419617,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.4000000059604645,
+                "delta_l2": 29.5137882232666,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.78727787733078
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.4000000059604645,
+                "delta_l2": 29.65130615234375,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.8015545606613159
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.39796239137649536,
+                "delta_l2": 1.2608704566955566,
+                "delta_inf_to_eps": 0.9949059784412384,
+                "fraction_at_ceiling": 0.03125
+              }
+            },
+            "delta_inf_max": 0.4000000059604645,
+            "delta_inf_mean": 0.3993208010991414,
+            "delta_l2_mean": 20.141988277435303,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.8015545606613159,
+            "fraction_at_ceiling_mean": 0.5400274793306986
+          },
+          "0.45": {
+            "epsilon": 0.45,
+            "elapsed_sec": 145.2492880821228,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.44999998807907104,
+                "delta_l2": 32.75883865356445,
+                "delta_inf_to_eps": 0.9999999735090468,
+                "fraction_at_ceiling": 0.7584073543548584
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.44999998807907104,
+                "delta_l2": 33.418155670166016,
+                "delta_inf_to_eps": 0.9999999735090468,
+                "fraction_at_ceiling": 0.8061547875404358
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.4477076530456543,
+                "delta_l2": 1.418479084968567,
+                "delta_inf_to_eps": 0.9949058956570095,
+                "fraction_at_ceiling": 0.03125
+              }
+            },
+            "delta_inf_max": 0.44999998807907104,
+            "delta_inf_mean": 0.44923587640126544,
+            "delta_l2_mean": 22.531824469566345,
+            "delta_inf_to_eps": 0.9999999735090468,
+            "fraction_at_ceiling_max": 0.8061547875404358,
+            "fraction_at_ceiling_mean": 0.5319373806317648
+          },
+          "0.5": {
+            "epsilon": 0.5,
+            "elapsed_sec": 145.27573466300964,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.5,
+                "delta_l2": 35.97956085205078,
+                "delta_inf_to_eps": 1.0,
+                "fraction_at_ceiling": 0.7449238300323486
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.5,
+                "delta_l2": 36.85026931762695,
+                "delta_inf_to_eps": 1.0,
+                "fraction_at_ceiling": 0.7948921322822571
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.497452974319458,
+                "delta_l2": 1.5760879516601562,
+                "delta_inf_to_eps": 0.994905948638916,
+                "fraction_at_ceiling": 0.03125
+              }
+            },
+            "delta_inf_max": 0.5,
+            "delta_inf_mean": 0.49915099143981934,
+            "delta_l2_mean": 24.80197270711263,
+            "delta_inf_to_eps": 1.0,
+            "fraction_at_ceiling_max": 0.7948921322822571,
+            "fraction_at_ceiling_mean": 0.5236886541048685
+          }
+        }
+      },
+      "123": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_ImageNet100/rope_seed123/best_model.pth",
+        "attacks": {
+          "0": {
+            "epsilon": 0.0,
+            "elapsed_sec": 0.0006775856018066406,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.0,
+                "delta_l2": 0.0,
+                "delta_inf_to_eps": 0.0,
+                "fraction_at_ceiling": 0.0
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.0,
+                "delta_l2": 0.0,
+                "delta_inf_to_eps": 0.0,
+                "fraction_at_ceiling": 0.0
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.0,
+                "delta_l2": 0.0,
+                "delta_inf_to_eps": 0.0,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.0,
+            "delta_inf_mean": 0.0,
+            "delta_l2_mean": 0.0,
+            "delta_inf_to_eps": 0.0,
+            "fraction_at_ceiling_max": 0.0,
+            "fraction_at_ceiling_mean": 0.0
+          },
+          "0.15": {
+            "epsilon": 0.15,
+            "elapsed_sec": 145.2321376800537,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.15000000596046448,
+                "delta_l2": 10.922163963317871,
+                "delta_inf_to_eps": 1.00000003973643,
+                "fraction_at_ceiling": 0.7720494866371155
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.15000000596046448,
+                "delta_l2": 10.898871421813965,
+                "delta_inf_to_eps": 1.00000003973643,
+                "fraction_at_ceiling": 0.7699872851371765
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.14772379398345947,
+                "delta_l2": 0.4819699823856354,
+                "delta_inf_to_eps": 0.9848252932230632,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.15000000596046448,
+            "delta_inf_mean": 0.14924126863479614,
+            "delta_l2_mean": 7.434335122505824,
+            "delta_inf_to_eps": 1.00000003973643,
+            "fraction_at_ceiling_max": 0.7720494866371155,
+            "fraction_at_ceiling_mean": 0.5140122572580973
+          },
+          "0.2": {
+            "epsilon": 0.2,
+            "elapsed_sec": 145.285165309906,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.20000000298023224,
+                "delta_l2": 14.240399360656738,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.7185913324356079
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.20000000298023224,
+                "delta_l2": 14.221894264221191,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.7212880849838257
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.1969650536775589,
+                "delta_l2": 0.6426266431808472,
+                "delta_inf_to_eps": 0.9848252683877945,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.20000000298023224,
+            "delta_inf_mean": 0.19898835321267447,
+            "delta_l2_mean": 9.701640089352926,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.7212880849838257,
+            "fraction_at_ceiling_mean": 0.47995980580647785
+          },
+          "0.25": {
+            "epsilon": 0.25,
+            "elapsed_sec": 145.21185088157654,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.25,
+                "delta_l2": 17.666385650634766,
+                "delta_inf_to_eps": 1.0,
+                "fraction_at_ceiling": 0.6951141953468323
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.25,
+                "delta_l2": 17.590120315551758,
+                "delta_inf_to_eps": 1.0,
+                "fraction_at_ceiling": 0.6840101480484009
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.24620631337165833,
+                "delta_l2": 0.8032832741737366,
+                "delta_inf_to_eps": 0.9848252534866333,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.25,
+            "delta_inf_mean": 0.24873543779055277,
+            "delta_l2_mean": 12.019929746786753,
+            "delta_inf_to_eps": 1.0,
+            "fraction_at_ceiling_max": 0.6951141953468323,
+            "fraction_at_ceiling_mean": 0.4597081144650777
+          },
+          "0.3": {
+            "epsilon": 0.3,
+            "elapsed_sec": 145.22769856452942,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.30000001192092896,
+                "delta_l2": 21.039812088012695,
+                "delta_inf_to_eps": 1.00000003973643,
+                "fraction_at_ceiling": 0.6703680157661438
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.30000001192092896,
+                "delta_l2": 20.88322639465332,
+                "delta_inf_to_eps": 1.00000003973643,
+                "fraction_at_ceiling": 0.6613261103630066
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.29544758796691895,
+                "delta_l2": 0.9639399647712708,
+                "delta_inf_to_eps": 0.9848252932230632,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.30000001192092896,
+            "delta_inf_mean": 0.2984825372695923,
+            "delta_l2_mean": 14.295659482479095,
+            "delta_inf_to_eps": 1.00000003973643,
+            "fraction_at_ceiling_max": 0.6703680157661438,
+            "fraction_at_ceiling_mean": 0.4438980420430501
+          },
+          "0.35": {
+            "epsilon": 0.35,
+            "elapsed_sec": 145.28465008735657,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.3499999940395355,
+                "delta_l2": 24.483699798583984,
+                "delta_inf_to_eps": 0.9999999829701015,
+                "fraction_at_ceiling": 0.6738578677177429
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.3499999940395355,
+                "delta_l2": 24.545814514160156,
+                "delta_inf_to_eps": 0.9999999829701015,
+                "fraction_at_ceiling": 0.6786167621612549
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.3446888327598572,
+                "delta_l2": 1.1245965957641602,
+                "delta_inf_to_eps": 0.9848252364567348,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.3499999940395355,
+            "delta_inf_mean": 0.3482296069463094,
+            "delta_l2_mean": 16.718036969502766,
+            "delta_inf_to_eps": 0.9999999829701015,
+            "fraction_at_ceiling_max": 0.6786167621612549,
+            "fraction_at_ceiling_mean": 0.4508248766263326
+          },
+          "0.4": {
+            "epsilon": 0.4,
+            "elapsed_sec": 145.28158617019653,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.4000000059604645,
+                "delta_l2": 28.395923614501953,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.7028870582580566
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.4000000059604645,
+                "delta_l2": 28.67444610595703,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.723508894443512
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.3939301073551178,
+                "delta_l2": 1.2852532863616943,
+                "delta_inf_to_eps": 0.9848252683877945,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.4000000059604645,
+            "delta_inf_mean": 0.39797670642534894,
+            "delta_l2_mean": 19.45187433560689,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.723508894443512,
+            "fraction_at_ceiling_mean": 0.4754653175671895
+          },
+          "0.45": {
+            "epsilon": 0.45,
+            "elapsed_sec": 145.30592823028564,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.44999998807907104,
+                "delta_l2": 32.409297943115234,
+                "delta_inf_to_eps": 0.9999999735090468,
+                "fraction_at_ceiling": 0.7335025072097778
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.44999998807907104,
+                "delta_l2": 32.84089279174805,
+                "delta_inf_to_eps": 0.9999999735090468,
+                "fraction_at_ceiling": 0.7650697827339172
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.44317135214805603,
+                "delta_l2": 1.4459099769592285,
+                "delta_inf_to_eps": 0.9848252269956801,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.44999998807907104,
+            "delta_inf_mean": 0.44772377610206604,
+            "delta_l2_mean": 22.232033570607502,
+            "delta_inf_to_eps": 0.9999999735090468,
+            "fraction_at_ceiling_max": 0.7650697827339172,
+            "fraction_at_ceiling_mean": 0.4995240966478984
+          },
+          "0.5": {
+            "epsilon": 0.5,
+            "elapsed_sec": 145.28832721710205,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.5,
+                "delta_l2": 36.30339431762695,
+                "delta_inf_to_eps": 1.0,
+                "fraction_at_ceiling": 0.7482550740242004
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.5,
+                "delta_l2": 36.6411018371582,
+                "delta_inf_to_eps": 1.0,
+                "fraction_at_ceiling": 0.7749047875404358
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.49241262674331665,
+                "delta_l2": 1.6065665483474731,
+                "delta_inf_to_eps": 0.9848252534866333,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.5,
+            "delta_inf_mean": 0.49747087558110553,
+            "delta_l2_mean": 24.850354234377544,
+            "delta_inf_to_eps": 1.0,
+            "fraction_at_ceiling_max": 0.7749047875404358,
+            "fraction_at_ceiling_mean": 0.5077199538548788
+          }
+        }
+      },
+      "456": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_ImageNet100/rope_seed456/best_model.pth",
+        "attacks": {
+          "0": {
+            "epsilon": 0.0,
+            "elapsed_sec": 0.0006976127624511719,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.0,
+                "delta_l2": 0.0,
+                "delta_inf_to_eps": 0.0,
+                "fraction_at_ceiling": 0.0
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.0,
+                "delta_l2": 0.0,
+                "delta_inf_to_eps": 0.0,
+                "fraction_at_ceiling": 0.0
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.0,
+                "delta_l2": 0.0,
+                "delta_inf_to_eps": 0.0,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.0,
+            "delta_inf_mean": 0.0,
+            "delta_l2_mean": 0.0,
+            "delta_inf_to_eps": 0.0,
+            "fraction_at_ceiling_max": 0.0,
+            "fraction_at_ceiling_mean": 0.0
+          },
+          "0.15": {
+            "epsilon": 0.15,
+            "elapsed_sec": 145.24198818206787,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.15000000596046448,
+                "delta_l2": 10.920198440551758,
+                "delta_inf_to_eps": 1.00000003973643,
+                "fraction_at_ceiling": 0.7734771370887756
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.15000000596046448,
+                "delta_l2": 10.904561996459961,
+                "delta_inf_to_eps": 1.00000003973643,
+                "fraction_at_ceiling": 0.7688769102096558
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.14834529161453247,
+                "delta_l2": 0.5162500143051147,
+                "delta_inf_to_eps": 0.9889686107635498,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.15000000596046448,
+            "delta_inf_mean": 0.14944843451182047,
+            "delta_l2_mean": 7.447003483772278,
+            "delta_inf_to_eps": 1.00000003973643,
+            "fraction_at_ceiling_max": 0.7734771370887756,
+            "fraction_at_ceiling_mean": 0.5141180157661438
+          },
+          "0.2": {
+            "epsilon": 0.2,
+            "elapsed_sec": 145.28113842010498,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.20000000298023224,
+                "delta_l2": 14.180182456970215,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.7100253701210022
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.20000000298023224,
+                "delta_l2": 14.20140552520752,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.7125634551048279
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.19779372215270996,
+                "delta_l2": 0.6883333325386047,
+                "delta_inf_to_eps": 0.9889686107635498,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.20000000298023224,
+            "delta_inf_mean": 0.19926457603772482,
+            "delta_l2_mean": 9.689973771572113,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.7125634551048279,
+            "fraction_at_ceiling_mean": 0.4741962750752767
+          },
+          "0.25": {
+            "epsilon": 0.25,
+            "elapsed_sec": 145.28737926483154,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.25,
+                "delta_l2": 17.513761520385742,
+                "delta_inf_to_eps": 1.0,
+                "fraction_at_ceiling": 0.6759200096130371
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.25,
+                "delta_l2": 17.589431762695312,
+                "delta_inf_to_eps": 1.0,
+                "fraction_at_ceiling": 0.6894035339355469
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.24724215269088745,
+                "delta_l2": 0.8604167103767395,
+                "delta_inf_to_eps": 0.9889686107635498,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.25,
+            "delta_inf_mean": 0.24908071756362915,
+            "delta_l2_mean": 11.987869997819265,
+            "delta_inf_to_eps": 1.0,
+            "fraction_at_ceiling_max": 0.6894035339355469,
+            "fraction_at_ceiling_mean": 0.455107847849528
+          },
+          "0.3": {
+            "epsilon": 0.3,
+            "elapsed_sec": 145.29983472824097,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.30000001192092896,
+                "delta_l2": 20.840593338012695,
+                "delta_inf_to_eps": 1.00000003973643,
+                "fraction_at_ceiling": 0.6676713228225708
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.30000001192092896,
+                "delta_l2": 21.15022087097168,
+                "delta_inf_to_eps": 1.00000003973643,
+                "fraction_at_ceiling": 0.6963832378387451
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.29669058322906494,
+                "delta_l2": 1.0325000286102295,
+                "delta_inf_to_eps": 0.9889686107635498,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.30000001192092896,
+            "delta_inf_mean": 0.29889686902364093,
+            "delta_l2_mean": 14.341104745864868,
+            "delta_inf_to_eps": 1.00000003973643,
+            "fraction_at_ceiling_max": 0.6963832378387451,
+            "fraction_at_ceiling_mean": 0.454684853553772
+          },
+          "0.35": {
+            "epsilon": 0.35,
+            "elapsed_sec": 145.30554509162903,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.3499999940395355,
+                "delta_l2": 24.775850296020508,
+                "delta_inf_to_eps": 0.9999999829701015,
+                "fraction_at_ceiling": 0.7047905921936035
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.3499999940395355,
+                "delta_l2": 25.234025955200195,
+                "delta_inf_to_eps": 0.9999999829701015,
+                "fraction_at_ceiling": 0.7381027936935425
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.34613901376724243,
+                "delta_l2": 1.2045832872390747,
+                "delta_inf_to_eps": 0.9889686107635499,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.3499999940395355,
+            "delta_inf_mean": 0.3487130006154378,
+            "delta_l2_mean": 17.071486512819927,
+            "delta_inf_to_eps": 0.9999999829701015,
+            "fraction_at_ceiling_max": 0.7381027936935425,
+            "fraction_at_ceiling_mean": 0.480964461962382
+          },
+          "0.4": {
+            "epsilon": 0.4,
+            "elapsed_sec": 145.33250641822815,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.4000000059604645,
+                "delta_l2": 29.024381637573242,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.7395304441452026
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.4000000059604645,
+                "delta_l2": 29.37788963317871,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.7771255970001221
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.3955874443054199,
+                "delta_l2": 1.3766666650772095,
+                "delta_inf_to_eps": 0.9889686107635498,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.4000000059604645,
+            "delta_inf_mean": 0.39852915207544964,
+            "delta_l2_mean": 19.926312645276386,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.7771255970001221,
+            "fraction_at_ceiling_mean": 0.5055520137151083
+          },
+          "0.45": {
+            "epsilon": 0.45,
+            "elapsed_sec": 145.3152642250061,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.44999998807907104,
+                "delta_l2": 32.51741027832031,
+                "delta_inf_to_eps": 0.9999999735090468,
+                "fraction_at_ceiling": 0.7347715497016907
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.44999998807907104,
+                "delta_l2": 33.250274658203125,
+                "delta_inf_to_eps": 0.9999999735090468,
+                "fraction_at_ceiling": 0.7877538204193115
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.445035845041275,
+                "delta_l2": 1.5487499237060547,
+                "delta_inf_to_eps": 0.9889685445361667,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.44999998807907104,
+            "delta_inf_mean": 0.44834527373313904,
+            "delta_l2_mean": 22.438811620076496,
+            "delta_inf_to_eps": 0.9999999735090468,
+            "fraction_at_ceiling_max": 0.7877538204193115,
+            "fraction_at_ceiling_mean": 0.5075084567070007
+          },
+          "0.5": {
+            "epsilon": 0.5,
+            "elapsed_sec": 145.30034017562866,
+            "norms_per_buffer": {
+              "cos_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.5,
+                "delta_l2": 35.38662338256836,
+                "delta_inf_to_eps": 1.0,
+                "fraction_at_ceiling": 0.6916243433952332
+              },
+              "sin_cached": {
+                "shape": [
+                  1,
+                  1,
+                  197,
+                  32
+                ],
+                "numel": 6304,
+                "delta_inf": 0.5,
+                "delta_l2": 36.608341217041016,
+                "delta_inf_to_eps": 1.0,
+                "fraction_at_ceiling": 0.7603108882904053
+              },
+              "inv_freq": {
+                "shape": [
+                  32
+                ],
+                "numel": 32,
+                "delta_inf": 0.4944843053817749,
+                "delta_l2": 1.720833420753479,
+                "delta_inf_to_eps": 0.9889686107635498,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.5,
+            "delta_inf_mean": 0.4981614351272583,
+            "delta_l2_mean": 24.571932673454285,
+            "delta_inf_to_eps": 1.0,
+            "fraction_at_ceiling_max": 0.7603108882904053,
+            "fraction_at_ceiling_mean": 0.48397841056187946
+          }
+        }
+      }
+    },
+    "alibi": {
+      "42": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_ImageNet100/alibi_seed42/best_model.pth",
+        "attacks": {
+          "0": {
+            "epsilon": 0.0,
+            "elapsed_sec": 0.0004706382751464844,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.0,
+                "delta_l2": 0.0,
+                "delta_inf_to_eps": 0.0,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.0,
+            "delta_inf_mean": 0.0,
+            "delta_l2_mean": 0.0,
+            "delta_inf_to_eps": 0.0,
+            "fraction_at_ceiling_max": 0.0,
+            "fraction_at_ceiling_mean": 0.0
+          },
+          "0.01": {
+            "epsilon": 0.01,
+            "elapsed_sec": 129.8939208984375,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.009999999776482582,
+                "delta_l2": 0.033383093774318695,
+                "delta_inf_to_eps": 0.9999999776482582,
+                "fraction_at_ceiling": 0.9166666865348816
+              }
+            },
+            "delta_inf_max": 0.009999999776482582,
+            "delta_inf_mean": 0.009999999776482582,
+            "delta_l2_mean": 0.033383093774318695,
+            "delta_inf_to_eps": 0.9999999776482582,
+            "fraction_at_ceiling_max": 0.9166666865348816,
+            "fraction_at_ceiling_mean": 0.9166666865348816
+          },
+          "0.02": {
+            "epsilon": 0.02,
+            "elapsed_sec": 129.9595127105713,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.019999999552965164,
+                "delta_l2": 0.06928203254938126,
+                "delta_inf_to_eps": 0.9999999776482582,
+                "fraction_at_ceiling": 1.0
+              }
+            },
+            "delta_inf_max": 0.019999999552965164,
+            "delta_inf_mean": 0.019999999552965164,
+            "delta_l2_mean": 0.06928203254938126,
+            "delta_inf_to_eps": 0.9999999776482582,
+            "fraction_at_ceiling_max": 1.0,
+            "fraction_at_ceiling_mean": 1.0
+          },
+          "0.03": {
+            "epsilon": 0.03,
+            "elapsed_sec": 129.93504548072815,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.029999999329447746,
+                "delta_l2": 0.09554561227560043,
+                "delta_inf_to_eps": 0.9999999776482582,
+                "fraction_at_ceiling": 0.75
+              }
+            },
+            "delta_inf_max": 0.029999999329447746,
+            "delta_inf_mean": 0.029999999329447746,
+            "delta_l2_mean": 0.09554561227560043,
+            "delta_inf_to_eps": 0.9999999776482582,
+            "fraction_at_ceiling_max": 0.75,
+            "fraction_at_ceiling_mean": 0.75
+          },
+          "0.04": {
+            "epsilon": 0.04,
+            "elapsed_sec": 130.0067298412323,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.03999999910593033,
+                "delta_l2": 0.12297140806913376,
+                "delta_inf_to_eps": 0.9999999776482582,
+                "fraction_at_ceiling": 0.75
+              }
+            },
+            "delta_inf_max": 0.03999999910593033,
+            "delta_inf_mean": 0.03999999910593033,
+            "delta_l2_mean": 0.12297140806913376,
+            "delta_inf_to_eps": 0.9999999776482582,
+            "fraction_at_ceiling_max": 0.75,
+            "fraction_at_ceiling_mean": 0.75
+          },
+          "0.05": {
+            "epsilon": 0.05,
+            "elapsed_sec": 130.01911783218384,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.05000000074505806,
+                "delta_l2": 0.16310448944568634,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.8333333730697632
+              }
+            },
+            "delta_inf_max": 0.05000000074505806,
+            "delta_inf_mean": 0.05000000074505806,
+            "delta_l2_mean": 0.16310448944568634,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.8333333730697632,
+            "fraction_at_ceiling_mean": 0.8333333730697632
+          },
+          "0.06": {
+            "epsilon": 0.06,
+            "elapsed_sec": 129.9770221710205,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.05999999865889549,
+                "delta_l2": 0.1972825974225998,
+                "delta_inf_to_eps": 0.9999999776482582,
+                "fraction_at_ceiling": 0.8333333730697632
+              }
+            },
+            "delta_inf_max": 0.05999999865889549,
+            "delta_inf_mean": 0.05999999865889549,
+            "delta_l2_mean": 0.1972825974225998,
+            "delta_inf_to_eps": 0.9999999776482582,
+            "fraction_at_ceiling_max": 0.8333333730697632,
+            "fraction_at_ceiling_mean": 0.8333333730697632
+          },
+          "0.07": {
+            "epsilon": 0.07,
+            "elapsed_sec": 130.01963829994202,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.07000000029802322,
+                "delta_l2": 0.225870743393898,
+                "delta_inf_to_eps": 1.0000000042574746,
+                "fraction_at_ceiling": 0.8333333730697632
+              }
+            },
+            "delta_inf_max": 0.07000000029802322,
+            "delta_inf_mean": 0.07000000029802322,
+            "delta_l2_mean": 0.225870743393898,
+            "delta_inf_to_eps": 1.0000000042574746,
+            "fraction_at_ceiling_max": 0.8333333730697632,
+            "fraction_at_ceiling_mean": 0.8333333730697632
+          },
+          "0.08": {
+            "epsilon": 0.08,
+            "elapsed_sec": 130.04276871681213,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.07999999821186066,
+                "delta_l2": 0.261684387922287,
+                "delta_inf_to_eps": 0.9999999776482582,
+                "fraction_at_ceiling": 0.8333333730697632
+              }
+            },
+            "delta_inf_max": 0.07999999821186066,
+            "delta_inf_mean": 0.07999999821186066,
+            "delta_l2_mean": 0.261684387922287,
+            "delta_inf_to_eps": 0.9999999776482582,
+            "fraction_at_ceiling_max": 0.8333333730697632,
+            "fraction_at_ceiling_mean": 0.8333333730697632
+          }
+        }
+      },
+      "123": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_ImageNet100/alibi_seed123/best_model.pth",
+        "attacks": {
+          "0": {
+            "epsilon": 0.0,
+            "elapsed_sec": 0.0004773139953613281,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.0,
+                "delta_l2": 0.0,
+                "delta_inf_to_eps": 0.0,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.0,
+            "delta_inf_mean": 0.0,
+            "delta_l2_mean": 0.0,
+            "delta_inf_to_eps": 0.0,
+            "fraction_at_ceiling_max": 0.0,
+            "fraction_at_ceiling_mean": 0.0
+          },
+          "0.01": {
+            "epsilon": 0.01,
+            "elapsed_sec": 129.89403009414673,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.009999999776482582,
+                "delta_l2": 0.03464101627469063,
+                "delta_inf_to_eps": 0.9999999776482582,
+                "fraction_at_ceiling": 1.0
+              }
+            },
+            "delta_inf_max": 0.009999999776482582,
+            "delta_inf_mean": 0.009999999776482582,
+            "delta_l2_mean": 0.03464101627469063,
+            "delta_inf_to_eps": 0.9999999776482582,
+            "fraction_at_ceiling_max": 1.0,
+            "fraction_at_ceiling_mean": 1.0
+          },
+          "0.02": {
+            "epsilon": 0.02,
+            "elapsed_sec": 129.93828320503235,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.019999999552965164,
+                "delta_l2": 0.06928203254938126,
+                "delta_inf_to_eps": 0.9999999776482582,
+                "fraction_at_ceiling": 1.0
+              }
+            },
+            "delta_inf_max": 0.019999999552965164,
+            "delta_inf_mean": 0.019999999552965164,
+            "delta_l2_mean": 0.06928203254938126,
+            "delta_inf_to_eps": 0.9999999776482582,
+            "fraction_at_ceiling_max": 1.0,
+            "fraction_at_ceiling_mean": 1.0
+          },
+          "0.03": {
+            "epsilon": 0.03,
+            "elapsed_sec": 129.97155046463013,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.029999999329447746,
+                "delta_l2": 0.09990496188402176,
+                "delta_inf_to_eps": 0.9999999776482582,
+                "fraction_at_ceiling": 0.9166666865348816
+              }
+            },
+            "delta_inf_max": 0.029999999329447746,
+            "delta_inf_mean": 0.029999999329447746,
+            "delta_l2_mean": 0.09990496188402176,
+            "delta_inf_to_eps": 0.9999999776482582,
+            "fraction_at_ceiling_max": 0.9166666865348816,
+            "fraction_at_ceiling_mean": 0.9166666865348816
+          },
+          "0.04": {
+            "epsilon": 0.04,
+            "elapsed_sec": 129.97709321975708,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.03999999910593033,
+                "delta_l2": 0.1385640650987625,
+                "delta_inf_to_eps": 0.9999999776482582,
+                "fraction_at_ceiling": 1.0
+              }
+            },
+            "delta_inf_max": 0.03999999910593033,
+            "delta_inf_mean": 0.03999999910593033,
+            "delta_l2_mean": 0.1385640650987625,
+            "delta_inf_to_eps": 0.9999999776482582,
+            "fraction_at_ceiling_max": 1.0,
+            "fraction_at_ceiling_mean": 1.0
+          },
+          "0.05": {
+            "epsilon": 0.05,
+            "elapsed_sec": 129.9493432044983,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.05000000074505806,
+                "delta_l2": 0.16804859042167664,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.9166666865348816
+              }
+            },
+            "delta_inf_max": 0.05000000074505806,
+            "delta_inf_mean": 0.05000000074505806,
+            "delta_l2_mean": 0.16804859042167664,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.9166666865348816,
+            "fraction_at_ceiling_mean": 0.9166666865348816
+          },
+          "0.06": {
+            "epsilon": 0.06,
+            "elapsed_sec": 129.97993278503418,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.05999999865889549,
+                "delta_l2": 0.20784610509872437,
+                "delta_inf_to_eps": 0.9999999776482582,
+                "fraction_at_ceiling": 1.0
+              }
+            },
+            "delta_inf_max": 0.05999999865889549,
+            "delta_inf_mean": 0.05999999865889549,
+            "delta_l2_mean": 0.20784610509872437,
+            "delta_inf_to_eps": 0.9999999776482582,
+            "fraction_at_ceiling_max": 1.0,
+            "fraction_at_ceiling_mean": 1.0
+          },
+          "0.07": {
+            "epsilon": 0.07,
+            "elapsed_sec": 129.98883247375488,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.07000000029802322,
+                "delta_l2": 0.2424871176481247,
+                "delta_inf_to_eps": 1.0000000042574746,
+                "fraction_at_ceiling": 1.0
+              }
+            },
+            "delta_inf_max": 0.07000000029802322,
+            "delta_inf_mean": 0.07000000029802322,
+            "delta_l2_mean": 0.2424871176481247,
+            "delta_inf_to_eps": 1.0000000042574746,
+            "fraction_at_ceiling_max": 1.0,
+            "fraction_at_ceiling_mean": 1.0
+          },
+          "0.08": {
+            "epsilon": 0.08,
+            "elapsed_sec": 130.02450513839722,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.07999999821186066,
+                "delta_l2": 0.27402105927467346,
+                "delta_inf_to_eps": 0.9999999776482582,
+                "fraction_at_ceiling": 0.9166666865348816
+              }
+            },
+            "delta_inf_max": 0.07999999821186066,
+            "delta_inf_mean": 0.07999999821186066,
+            "delta_l2_mean": 0.27402105927467346,
+            "delta_inf_to_eps": 0.9999999776482582,
+            "fraction_at_ceiling_max": 0.9166666865348816,
+            "fraction_at_ceiling_mean": 0.9166666865348816
+          }
+        }
+      },
+      "456": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_ImageNet100/alibi_seed456/best_model.pth",
+        "attacks": {
+          "0": {
+            "epsilon": 0.0,
+            "elapsed_sec": 0.000476837158203125,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.0,
+                "delta_l2": 0.0,
+                "delta_inf_to_eps": 0.0,
+                "fraction_at_ceiling": 0.0
+              }
+            },
+            "delta_inf_max": 0.0,
+            "delta_inf_mean": 0.0,
+            "delta_l2_mean": 0.0,
+            "delta_inf_to_eps": 0.0,
+            "fraction_at_ceiling_max": 0.0,
+            "fraction_at_ceiling_mean": 0.0
+          },
+          "0.01": {
+            "epsilon": 0.01,
+            "elapsed_sec": 129.96957993507385,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.009999999776482582,
+                "delta_l2": 0.03174901381134987,
+                "delta_inf_to_eps": 0.9999999776482582,
+                "fraction_at_ceiling": 0.8333333730697632
+              }
+            },
+            "delta_inf_max": 0.009999999776482582,
+            "delta_inf_mean": 0.009999999776482582,
+            "delta_l2_mean": 0.03174901381134987,
+            "delta_inf_to_eps": 0.9999999776482582,
+            "fraction_at_ceiling_max": 0.8333333730697632,
+            "fraction_at_ceiling_mean": 0.8333333730697632
+          },
+          "0.02": {
+            "epsilon": 0.02,
+            "elapsed_sec": 129.96290135383606,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.019999999552965164,
+                "delta_l2": 0.06589695066213608,
+                "delta_inf_to_eps": 0.9999999776482582,
+                "fraction_at_ceiling": 0.8333333730697632
+              }
+            },
+            "delta_inf_max": 0.019999999552965164,
+            "delta_inf_mean": 0.019999999552965164,
+            "delta_l2_mean": 0.06589695066213608,
+            "delta_inf_to_eps": 0.9999999776482582,
+            "fraction_at_ceiling_max": 0.8333333730697632,
+            "fraction_at_ceiling_mean": 0.8333333730697632
+          },
+          "0.03": {
+            "epsilon": 0.03,
+            "elapsed_sec": 129.94573783874512,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.029999999329447746,
+                "delta_l2": 0.09667149186134338,
+                "delta_inf_to_eps": 0.9999999776482582,
+                "fraction_at_ceiling": 0.8333333730697632
+              }
+            },
+            "delta_inf_max": 0.029999999329447746,
+            "delta_inf_mean": 0.029999999329447746,
+            "delta_l2_mean": 0.09667149186134338,
+            "delta_inf_to_eps": 0.9999999776482582,
+            "fraction_at_ceiling_max": 0.8333333730697632,
+            "fraction_at_ceiling_mean": 0.8333333730697632
+          },
+          "0.04": {
+            "epsilon": 0.04,
+            "elapsed_sec": 130.00026774406433,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.03999999910593033,
+                "delta_l2": 0.1334691047668457,
+                "delta_inf_to_eps": 0.9999999776482582,
+                "fraction_at_ceiling": 0.9166666865348816
+              }
+            },
+            "delta_inf_max": 0.03999999910593033,
+            "delta_inf_mean": 0.03999999910593033,
+            "delta_l2_mean": 0.1334691047668457,
+            "delta_inf_to_eps": 0.9999999776482582,
+            "fraction_at_ceiling_max": 0.9166666865348816,
+            "fraction_at_ceiling_mean": 0.9166666865348816
+          },
+          "0.05": {
+            "epsilon": 0.05,
+            "elapsed_sec": 129.9859869480133,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.05000000074505806,
+                "delta_l2": 0.16683639585971832,
+                "delta_inf_to_eps": 1.0000000149011612,
+                "fraction_at_ceiling": 0.9166666865348816
+              }
+            },
+            "delta_inf_max": 0.05000000074505806,
+            "delta_inf_mean": 0.05000000074505806,
+            "delta_l2_mean": 0.16683639585971832,
+            "delta_inf_to_eps": 1.0000000149011612,
+            "fraction_at_ceiling_max": 0.9166666865348816,
+            "fraction_at_ceiling_mean": 0.9166666865348816
+          },
+          "0.06": {
+            "epsilon": 0.06,
+            "elapsed_sec": 129.9718372821808,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.05999999865889549,
+                "delta_l2": 0.20784610509872437,
+                "delta_inf_to_eps": 0.9999999776482582,
+                "fraction_at_ceiling": 1.0
+              }
+            },
+            "delta_inf_max": 0.05999999865889549,
+            "delta_inf_mean": 0.05999999865889549,
+            "delta_l2_mean": 0.20784610509872437,
+            "delta_inf_to_eps": 0.9999999776482582,
+            "fraction_at_ceiling_max": 1.0,
+            "fraction_at_ceiling_mean": 1.0
+          },
+          "0.07": {
+            "epsilon": 0.07,
+            "elapsed_sec": 129.97366786003113,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.07000000029802322,
+                "delta_l2": 0.2424871176481247,
+                "delta_inf_to_eps": 1.0000000042574746,
+                "fraction_at_ceiling": 1.0
+              }
+            },
+            "delta_inf_max": 0.07000000029802322,
+            "delta_inf_mean": 0.07000000029802322,
+            "delta_l2_mean": 0.2424871176481247,
+            "delta_inf_to_eps": 1.0000000042574746,
+            "fraction_at_ceiling_max": 1.0,
+            "fraction_at_ceiling_mean": 1.0
+          },
+          "0.08": {
+            "epsilon": 0.08,
+            "elapsed_sec": 130.01912093162537,
+            "norms_per_buffer": {
+              "slopes": {
+                "shape": [
+                  1,
+                  12,
+                  1,
+                  1
+                ],
+                "numel": 12,
+                "delta_inf": 0.07999999821186066,
+                "delta_l2": 0.277128130197525,
+                "delta_inf_to_eps": 0.9999999776482582,
+                "fraction_at_ceiling": 1.0
+              }
+            },
+            "delta_inf_max": 0.07999999821186066,
+            "delta_inf_mean": 0.07999999821186066,
+            "delta_l2_mean": 0.277128130197525,
+            "delta_inf_to_eps": 0.9999999776482582,
+            "fraction_at_ceiling_max": 1.0,
+            "fraction_at_ceiling_mean": 1.0
+          }
+        }
+      }
+    }
+  }
+}
