@@ -38,7 +38,7 @@ analysis (E3).
 
 ---
 
-## v2.0 — what changed since v1.0
+## What changed in this release
 
 The v1.0 manuscript was withdrawn from IEEE TIFS on May 6, 2026 after we
 identified a **multi-block bug** in the original attack implementation: the
