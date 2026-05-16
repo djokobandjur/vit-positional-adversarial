@@ -1,132 +1,215 @@
+# Adversarial Positional Encoding Attacks on Vision Transformers
 
-# Adversarial Vulnerability of Positional Encoding in Vision Transformers
-
-This repository contains the code and experimental data for the paper:
+This repository contains the code, experimental data, and figures for the paper:
 
 > **Adversarial Vulnerability of Positional Encoding in Vision Transformers: A Targeted Attack Analysis**
-> 
+>
 > *Submitted to IEEE Transactions on Information Forensics and Security (TIFS), 2026*
+
+---
 
 ## 🚀 Key Findings
 
-- **Robustness Inversion**: Learned PE (most robust to random noise) is catastrophically vulnerable to adversarial attacks — PGD-PE at $\epsilon=0.2$ reduces accuracy from **79.4% to 2.3%**.
-- **RoPE Immunity**: RoPE retains **81.4%** accuracy even at $\epsilon=1.0$ (only 3.2pp loss) due to its rotational operation.
-- **Novel VTA Attack**: Variance-Targeted Attack achieves up to **4.9× gain** in attack efficiency on specific PE types.
-- **Resolution effect**: Learned PE is 4× more vulnerable on lower-resolution inputs (64 patches vs 196)
-- **Forensic Implications**: PE tampering requires modifying **<0.2%** of model parameters, enabling stealthy supply chain attacks.
+### Robustness Decoupling
 
-### Vulnerability Hierarchy (Identical on both datasets)
-`Most vulnerable ← Learned ≫ Sinusoidal ≫ ALiBi ≫ RoPE → Most robust`
-*This is the **exact inverse** of the random noise robustness hierarchy.*
+The two PE-robustness regimes are governed by different mechanisms and produce different orderings across the four PE families we test:
 
----
+**Random noise** (independent per-block Gaussian, scaled by per-PE σ<sub>PE</sub>):
 
-## 🛠️ Reproduction Steps (Google Colab)
-
-To reproduce the results presented in the paper, we recommend using **Google Colab**.
-> [!IMPORTANT]
-> **Note on Local Execution**
-> This repository is optimized for Google Colab. The scripts contain hardcoded absolute paths. To run this project locally, you must perform a search for these paths and update all directory-related variables to match your local environment.
-
-### **Step 1 --- Google Drive Preparation**
-- Create a directory named **`pe_experiment`** in your root Google Drive directory (**`/My Drive/pe_experiment/`**).
-   * **Note:** In Colab, the full path will be: **`/content/drive/MyDrive/pe_experiment/`**.
-- **From GitHub:** Download the repository and copy its entire content into the **`pe_experiment`** directory.
-
-### **Step 2 --- Data Setup & Structure**
-⚠️ **IMPORTANT:** The **`pe_experiment`** directory structure **must** be identical to the diagram below, as all script paths are hardcoded.
-
-```text
-
-📁 pe_experiment/
-├── full_scale_experiment.py                    # ViT model definition + PE implementations
-├── cifar100_experiment.py                      # CIFAR-100 models training + adversarial attacks
-├── adversarial_pe_attacks.py                   # Adversarial attacks on ImageNet-100 models
-├── generate_figures.py                         # Generates all figures
-├── ImageNet100_START.ipynb                     # Colab script for reproducing ImageNet-100 results (outcome: adversarial_pe_results.json)
-├── CIFAR100_START.ipynb                        # Colab script for reproducing CIFAR-100 results (outcome: adversarial_pe_results_cifar100.json)
-├── imagenet100_classes.txt                     # 100 ImageNet class IDs (WordNet synsets)
-├── val_labels.txt                              # Validation set labels
-├── analysis_data.json                          # Noise ablation study data
-│
-│                                                                                  
-├──📁 imagenet/                                 # Keep archived! 
-│   ├── ILSVRC2012_img_train.tar                                                     
-│   └── ILSVRC2012_img_val.tar
-│ 
-├──📁 results/                                  # ImageNet100 results
-│   ├── adversarial_pe_results.json             <-- Generated automatically after execution
-│   └──📁{pe_type}_seed{s}/                     # Per-model weights + training history
-│        ├── best_model.pth
-│        └── training history.json  
-│                                                  
-├──📁 results_cifar100/                         # CIFAR100 results
-│   ├── adversarial_pe_results_cifar100.json    <-- Generated automatically after execution
-│   └──📁{pe_type}_seed{s}/                     # Per-model weights + training history
-│       ├── best_model.pth
-│       └── training history.json
-│                                
-└── README.md
+```
+Most robust ← Learned ≫ Sinusoidal > RoPE > ALiBi → Most fragile
+              79.2%      47.7%        33.0%   14.2%   (accuracy at σ=σ_PE)
 ```
 
-### 🗂️ Step 3: Dataset Acquisition
+**Adversarial attack** (PGD-PE shared-delta multi-block):
 
+```
+Most robust ← RoPE ≫ Learned ≈ Sinusoidal ≫ ALiBi → Most fragile
+              ε*=0.32  ε*=0.14    ε*=0.14      ε*=0.07   (inflection thresholds on ImageNet-100)
+```
 
-| Dataset | Preparation Process |
+The orderings are **decoupled, not inverted**: only ALiBi maintains the same rank (bottom) in both regimes. Learned PE is the most noise-robust but among the most adversarially vulnerable. RoPE retains the highest adversarial threshold but is not noise-robust.
+
+### Specific Numerical Findings
+
+- **Learned PE collapse:** PGD-PE at ε=0.2 reduces accuracy from 79.4% to **2.2%** on ImageNet-100.
+- **ALiBi vulnerability:** Most vulnerable PE under both noise (14% at σ=σ_PE) and adversarial (37.4% at PGD ε=0.05).
+- **RoPE bounded-gradient mechanism:** Elevated ε* on both datasets, but not immune — RoPE collapses to 5.9% at ε=1.0 on ImageNet-100.
+- **ALiBi structural ablation:** 12 slope scalars carry essentially all of ALiBi's vulnerability; the N×N relative-distance matrix is structurally near-immune (drop ≤1.3 pp at ε=1.0).
+- **Cross-dataset shifts:** Learned PE is ~5× more vulnerable on CIFAR-100 (ε*=0.02 vs 0.14); RoPE is dataset-invariant.
+- **Forensic implications:** PE buffers constitute <0.2% of model parameters (12 floats for ALiBi); their corruption universally degrades all predictions.
+
+---
+
+## 📁 Repository Structure
+
+```text
+📁 pe_experiment/
+├── README.md                              # This file
+│
+├── 📁 src/
+│   ├── full_scale_experiment.py           # ViT model definition + PE implementations + multi-block attacks
+│   └── generate_figures.py                # Generates all 12 figures (7 main + 5 supplement) from JSON results
+│
+├── 📁 notebooks/
+│   ├── ImageNet100_START.ipynb            # Colab driver: ImageNet-100 training + attacks
+│   └── CIFAR100_START.ipynb               # Colab driver: CIFAR-100 training + attacks
+│
+├── 📁 data/                                # All experimental results in JSON format (ships with repo)
+│   ├── imagenet_results.json              # Main attacks (FGSM, PGD, VTA × 4 PE × 3 seeds × 8 ε)
+│   ├── cifar_results.json
+│   ├── imagenet_alibi_ablation.json       # Experiment 2: ALiBi structural ablation (slopes vs rel_dist)
+│   ├── cifar_alibi_ablation.json
+│   ├── imagenet_spatial_metrics.json      # Experiment 3: attention reorganization (KL, R-mass, MAD)
+│   ├── cifar_spatial_metrics.json
+│   ├── imagenet_perturbation_norms.json   # Experiment 3: saturation profiles (frac@ceil)
+│   ├── cifar_perturbation_norms.json
+│   └── analysis_data.json                 # Noise ablation study (decoupling thesis)
+│
+├── 📁 figures/                             # Pre-generated PDF figures (regenerated by generate_figures.py)
+│   ├── fig1_attack_curves_imagenet.pdf    # Main paper Fig. 1
+│   ├── fig2_robustness_inversion.pdf      # Main paper Fig. 2 (decoupling visualization)
+│   ├── fig3_three_attacks_both_datasets.pdf
+│   ├── fig5_gini_eps_crit.pdf
+│   ├── fig7_cross_dataset.pdf
+│   ├── fig9_concentration_ratio.pdf
+│   ├── fig10_saturation_profiles.pdf
+│   ├── fig4_vta_gain.pdf                  # Supplement Fig. S2
+│   ├── fig6_degradation_rate.pdf          # Supplement Fig. S5
+│   ├── fig8_alibi_ablation_supp.pdf       # Supplement Fig. S1
+│   ├── fig11_mad_vs_acc_drop_supp.pdf     # Supplement Fig. S3
+│   └── fig12_alibi_smalleps_supp.pdf      # Supplement Fig. S4
+│
+├── 📁 metadata/
+│   ├── imagenet100_synsets.txt            # 100 ImageNet class IDs
+│   └── val_labels.txt                     # Validation set labels
+│
+└── 📁 trained_models/                      # NOT in this repo. Download from Google Drive (see below).
+    ├── 📁 ImageNet100/
+    │   └── 📁 {pe_type}_seed{s}/          # 12 directories: 4 PE × 3 seeds
+    │       ├── best_model.pth
+    │       └── training_history.json
+    └── 📁 CIFAR100/
+        └── 📁 {pe_type}_seed{s}/
+            ├── best_model.pth
+            └── training_history.json
+```
+
+---
+
+## 🛠️ Quick Start
+
+### Option A: Just regenerate figures (5 minutes)
+
+```bash
+git clone https://github.com/<your-repo>/pe_experiment.git
+cd pe_experiment
+pip install matplotlib numpy
+
+python src/generate_figures.py \
+    --imagenet data/imagenet_results.json \
+    --cifar data/cifar_results.json \
+    --imagenet-ablation data/imagenet_alibi_ablation.json \
+    --cifar-ablation data/cifar_alibi_ablation.json \
+    --imagenet-spatial data/imagenet_spatial_metrics.json \
+    --cifar-spatial data/cifar_spatial_metrics.json \
+    --imagenet-norms data/imagenet_perturbation_norms.json \
+    --cifar-norms data/cifar_perturbation_norms.json \
+    --outdir figures/ \
+    --format pdf
+```
+
+All 12 figures (7 main + 5 supplement) regenerate from JSON data.
+
+### Option B: Full reproduction from trained models (~hours of GPU)
+
+1. Set up Google Drive directory `pe_experiment/` and copy the repo contents into it.
+2. Download trained model weights from the links below into `trained_models/`.
+3. Open the Colab notebook for the dataset you want and run cells sequentially.
+4. The script will detect existing checkpoints and skip training; it proceeds directly to attack evaluation.
+
+### Option C: Full reproduction from scratch (~50+ hours of GPU)
+
+1. Set up directories as in Option B (without downloading checkpoints).
+2. Download ImageNet-100 raw images (see Dataset Acquisition below).
+3. Open the Colab notebook and run all cells. Training takes ~50 hours on H100/A100 for ImageNet-100.
+
+---
+
+## 📥 Download Trained Weights
+
+We provide **24 ViT-Base models** (~7.6 GB total) trained from scratch: 4 PE families × 3 seeds × 2 datasets.
+
+| Dataset | Download Link |
 | :--- | :--- |
-| **ImageNet-100** | Register at [image-net.org](https://image-net.org). Download `ILSVRC2012_img_train.tar` and `ILSVRC2012_img_val.tar` and place them in `/pe_experiment/imagenet/`. **Do not extract.** |
-| **CIFAR-100** | **Fully Automated.** The script uses `torchvision.datasets` to fetch and prepare data automatically upon execution. |
+| **ImageNet-100 models** | [Google Drive](https://drive.google.com/drive/folders/1WRhjaR3WZHIi2fTi9xcrIBJkBXZddMM9?usp=sharing) |
+| **CIFAR-100 models** | [Google Drive](https://drive.google.com/drive/folders/1HBiOjNfuRsh2H0ZGRP4rIdBeydedCBJL?usp=sharing) |
 
-> [!IMPORTANT]
-> The `ImageNet100_START.ipynb` notebook filters exactly 100 classes on-the-fly using the `imagenet100_synsets.txt` file.
+> **Instruction:** Select all → **"Make a copy"** → move copies to `trained_models/ImageNet100/` (or `trained_models/CIFAR100/`). Ensure that each model's subdirectory is preserved and contains both `best_model.pth` and `training_history.json`.
 
----
+### Clean Accuracy (Mean ± Std over 3 seeds)
 
-### 📥 Download Trained Weights
-1. **[ImageNet-100 Models](https://drive.google.com/drive/folders/1WRhjaR3WZHIi2fTi9xcrIBJkBXZddMM9?usp=sharing)**
-2. **[CIFAR-100 Models](https://drive.google.com/drive/folders/1HBiOjNfuRsh2H0ZGRP4rIdBeydedCBJL?usp=sharing)**
-
-> [!IMPORTANT]
-> **Instruction:** Select all -> **"Make a copy"** -> Move copies to `/pe_experiment/results/` (or `results_cifar100/`). Ensure that each model's individual **subdirectory** is preserved and contains both `best_model.pth` and `training_history.json`.
+| Dataset | Learned | Sinusoidal | RoPE | ALiBi |
+| :--- | :---: | :---: | :---: | :---: |
+| **ImageNet-100** | 79.44 ± 0.62% | 81.46 ± 0.33% | **84.51 ± 0.41%** | 81.05 ± 0.36% |
+| **CIFAR-100** | 68.28 ± 0.38% | 66.92 ± 0.50% | **73.30 ± 0.18%** | 67.66 ± 0.44% |
 
 ---
 
-## 🚀 Step 4: Execution & Configuration
+## 🗂️ Dataset Acquisition
 
-1. **Open the Notebook:** Locate and open the `ImageNet100_START.ipynb` (or `CIFAR100_START.ipynb`) directly in **Google Colab**.
-   > [!CAUTION]
-   > **Google Colab Pro+ is REQUIRED**. Only this subscription level guarantees sufficient Colab SSD storage to handle the extraction and processing of the ImageNet-100 dataset archives.
-2. **Hardware**: Navigate to **Runtime > Change runtime type** and select **GPU (H100 or A100)**. 
-3. **Verify GPU (Cell 1):** Execute the first cell to confirm the runtime is configured with a selected high-performance **GPU (H100 or A100)**.
-4. **Mount Google Drive (Cell 2):** Run the second cell and follow the authorization prompt to **"Connect to Google Drive"**.
-5. **Sequential Execution (From Cell 3 Onwards):** Run all remaining cells **one by one** in the provided order.
-   * This ensures that the environment is properly initialized (script copying) and that the specific experiment workflow for each dataset proceeds correctly.
-   * **Note:** Ensure each cell finishes completely before starting the next one to maintain the correct data flow and variable states.
+| Dataset | Preparation |
+| :--- | :--- |
+| **ImageNet-100** | Register at [image-net.org](https://image-net.org). Download `ILSVRC2012_img_train.tar` and `ILSVRC2012_img_val.tar`. The notebook filters exactly 100 classes on-the-fly using `metadata/imagenet100_synsets.txt`. |
+| **CIFAR-100** | Fully automated via `torchvision.datasets`. No manual download needed. |
 
-> [!TIP]
-> **CIFAR-100 Training Bypass:**
-> For the **`CIFAR100_START.ipynb`** notebook, the script features an **automatic detection logic**. If you have correctly placed the downloaded weights and logs into the **`/results_cifar100/`** subdirectories, the script will:
-> * **Verify** the integrity of existing models.
-> * **Skip** the time-consuming training phase.
-> * **Proceed** directly to the **adversarial attack analysis** and evaluation.
+---
 
-## 📊 Step 5: Figure Generation
+## 🛡️ Attack Methods
 
-To generate all 17 figures used in the paper, copy the **`generate_figures.py`** script to the local Colab storage directory (`/content/`) and run it.
-> [!IMPORTANT]
-> Make sure the `analysis_data.json` file is also copied to the local Colab storage directory (`/content/`) before running the  **`generate_figures.py`** script.
+Three attack strategies were evaluated at ε ∈ {0.001, 0.005, 0.01, 0.05, 0.1, 0.2, 0.5, 1.0}, all using **shared-delta multi-block** perturbation (the attack perturbation tensor is shared across all 12 transformer blocks):
+
+| Attack | Description | Reference |
+| :--- | :--- | :--- |
+| **FGSM-PE** | Single-step gradient attack on PE parameters | Goodfellow et al., 2015 |
+| **PGD-PE** | Multi-step (T=20) projected gradient descent on PE | Madry et al., 2018 |
+| **VTA** | **Variance-Targeted Attack (ours)** — allocates perturbation proportionally to per-dimension PE variance; under multi-block PGD-PE serves as a structural diagnostic rather than a stronger attack | This work |
+
+### Noise Ablation Setup
+
+The decoupling thesis (random-noise robustness vs adversarial robustness) is established via an **independent per-block** noise ablation: Gaussian noise scaled by per-PE σ_PE is drawn independently for each of the 12 transformer blocks. This contrasts with the shared-delta adversarial attack and reflects two different threat models: physical-layer fluctuations (per-block independent) vs. coordinated adversary (cross-block coherent). Both setups are legitimate and produce different orderings — that decoupling is the central finding.
+
+### PGD-PE Accuracy on ImageNet-100 (%)
+
+| ε | Learned | Sinusoidal | RoPE | ALiBi |
+| :--- | :---: | :---: | :---: | :---: |
+| **0 (clean)** | 79.4% | 81.5% | **84.5%** | 81.0% |
+| **0.1** | 64.6% | 75.1% | **82.3%** | 14.7% |
+| **0.2** | 2.2% | 9.6% | **78.1%** | 6.0% |
+| **0.5** | 1.3% | 1.3% | **15.5%** | 3.3% |
+| **1.0** | 1.0% | 1.1% | **5.9%** | 2.8% |
+
+### PGD-PE Accuracy on CIFAR-100 (%)
+
+| ε | Learned | Sinusoidal | RoPE | ALiBi |
+| :--- | :---: | :---: | :---: | :---: |
+| **0 (clean)** | 68.3% | 66.9% | **73.3%** | 67.7% |
+| **0.1** | 1.3% | 35.9% | **70.0%** | 26.6% |
+| **0.2** | 1.1% | 1.4% | **57.7%** | 11.7% |
+| **0.5** | 1.0% | 1.0% | **10.6%** | 3.6% |
+| **1.0** | 1.0% | 1.0% | **2.4%** | 1.9% |
 
 ---
 
 ## 📦 Architecture Summary
 
-All models use identical ViT-Base architecture:
+All 24 models use identical ViT-Base architecture:
 
 | Config | ImageNet-100 | CIFAR-100 |
 | :--- | :---: | :---: |
 | **Image size** | 224×224 | 32×32 |
 | **Patch size** | 16×16 | 4×4 |
-| **Num patches** | 196 | 64 |
+| **Number of patches** | 196 | 64 |
 | **Layers** | 12 | 12 |
 | **Attention heads** | 12 | 12 |
 | **Embedding dim** | 768 | 768 |
@@ -136,55 +219,88 @@ Training: AdamW (lr=3×10⁻⁴, weight decay 0.1), cosine annealing, 20 warmup 
 
 ---
 
-## 📊 Model Results & Weights
+## 🚀 Reproduction in Google Colab
 
-We provide **24 ViT-Base models** (7.6 GB total) trained from scratch (4 PE types × 3 seeds × 2 datasets).
+1. Open `notebooks/ImageNet100_START.ipynb` (or `notebooks/CIFAR100_START.ipynb`) in Google Colab.
+2. **Hardware:** Runtime → Change runtime type → GPU (H100 or A100 recommended).
+3. **Storage:** Google Colab Pro+ is recommended for ImageNet-100 (sufficient SSD for archive extraction).
+4. Run cells sequentially:
+   - **Cell 1:** GPU verification
+   - **Cell 2:** Mount Google Drive
+   - **Cell 3+:** Sequential execution of training/attack evaluation
 
-| Dataset | PE Type | Seed 42 | Seed 123 | Seed 456 | Mean ± Std |
-| :--- | :--- | :---: | :---: | :---: | :---: |
-| **ImageNet-100** | Learned | 79.68% | 79.90% | 78.74% | 79.44 ± 0.62% |
-| | Sinusoidal | 81.84% | 81.30% | 81.24% | 81.46 ± 0.33% |
-| | **RoPE** | **84.96%** | **84.18%** | **84.38%** | **84.51 ± 0.41%** |
-| | ALiBi | 81.16% | 81.34% | 80.66% | 81.05 ± 0.36% |
-| **CIFAR-100** | Learned | 68.72% | 68.07% | 68.04% | 68.28 ± 0.38% |
-| | Sinusoidal | 67.40% | 66.41% | 66.95% | 66.92 ± 0.50% |
-| | **RoPE** | **73.10%** | **73.35%** | **73.45%** | **73.30 ± 0.18%** |
-| | ALiBi | 67.39% | 68.16% | 67.42% | 67.66 ± 0.44% |
+> **CIFAR-100 fast-path:** If you placed downloaded weights in `trained_models/CIFAR100/`, the script auto-detects them, skips training, and proceeds to adversarial evaluation directly.
+
+### Generating Figures Locally (not in Colab)
+
+The figure generator is a self-contained Python script with no GPU requirement:
+
+```bash
+pip install matplotlib numpy
+
+python src/generate_figures.py \
+    --imagenet data/imagenet_results.json \
+    --cifar data/cifar_results.json \
+    --imagenet-ablation data/imagenet_alibi_ablation.json \
+    --cifar-ablation data/cifar_alibi_ablation.json \
+    --imagenet-spatial data/imagenet_spatial_metrics.json \
+    --cifar-spatial data/cifar_spatial_metrics.json \
+    --imagenet-norms data/imagenet_perturbation_norms.json \
+    --cifar-norms data/cifar_perturbation_norms.json \
+    --outdir figures/ \
+    --format pdf
+```
+
+`--format` accepts `pdf`, `png`, or `both`. The script generates 12 figures total (7 used in the main paper, 5 used in the supplement).
 
 ---
 
-## 🛡️ Attack Methods & Robustness Analysis
+## 📊 Figure-to-Section Mapping
 
-Three attack strategies evaluated at $\epsilon \in \{0.001, 0.005, 0.01, 0.05, 0.1, 0.2, 0.5, 1.0\}$:
-
-| Attack | Description | Reference |
+| Generated file | Paper location | Caption summary |
 | :--- | :--- | :--- |
-| **FGSM-PE** | Single-step gradient attack on PE parameters | Goodfellow et al., 2015 |
-| **PGD-PE** | Multi-step (T=20) projected gradient descent on PE | Madry et al., 2018 |
-| **VTA** | **Variance-Targeted Attack (ours)** — allocates perturbation budget proportionally to per-dimension PE variance | This work |
-
-### 📊 Adversarial Attack Results (PGD-PE)
-
-#### ImageNet-100 Accuracy (%)
-
-| ε | Learned | Sinusoidal | RoPE | ALiBi |
-| :--- | :---: | :---: | :---: | :---: |
-| **0 (clean)** | 79.4% | 81.5% | **84.5%** | 81.0% |
-| **0.1** | 67.7% | 77.2% | **84.1%** | 78.3% |
-| **0.2** | 2.3% | 56.2% | **83.9%** | 69.3% |
-| **0.5** | 1.3% | 1.2% | **83.2%** | 65.2% |
-| **1.0** | 1.1% | 1.0% | **81.4%** | 28.9% |
-
-#### CIFAR-100 Accuracy (%)
-
-| ε | Learned | Sinusoidal | RoPE | ALiBi |
-| :--- | :---: | :---: | :---: | :---: |
-| **0 (clean)** | 68.3% | 66.9% | **73.3%** | 67.7% |
-| **0.1** | 1.4% | 43.1% | **73.0%** | 65.3% |
-| **0.2** | 1.0% | 4.3% | **72.6%** | 50.6% |
-| **0.5** | 1.0% | 1.0% | **71.7%** | 35.0% |
-| **1.0** | 1.0% | 1.0% | **70.3%** | 23.0% |
+| `fig1_attack_curves_imagenet.pdf` | Main Fig. 1 | FGSM + PGD curves on ImageNet-100 |
+| `fig2_robustness_inversion.pdf` | Main Fig. 2 | **Decoupling visualization** (noise vs adversarial) |
+| `fig3_three_attacks_both_datasets.pdf` | Main Fig. 3 | 2×4 grid of attack strategies across both datasets |
+| `fig5_gini_eps_crit.pdf` | Main Fig. 4 | Gini coefficient + ε_crit comparison |
+| `fig7_cross_dataset.pdf` | Main Fig. 5 | PGD-PE curves IN vs CF |
+| `fig9_concentration_ratio.pdf` | Main Fig. 6 | Attention concentration at iso-accuracy 40% |
+| `fig10_saturation_profiles.pdf` | Main Fig. 7 | Adversarial saturation (frac@ceil vs ε) |
+| `fig8_alibi_ablation_supp.pdf` | Supplement Fig. S1 | ALiBi structural ablation full ε sweep |
+| `fig4_vta_gain.pdf` | Supplement Fig. S2 | VTA-to-FGSM gain across budgets |
+| `fig11_mad_vs_acc_drop_supp.pdf` | Supplement Fig. S3 | MAD_miss vs accuracy drop |
+| `fig12_alibi_smalleps_supp.pdf` | Supplement Fig. S4 | ALiBi small-ε R-mass bump |
+| `fig6_degradation_rate.pdf` | Supplement Fig. S5 | Degradation rate curves |
 
 ---
-> [!IMPORTANT]
-Results are reported as an average of multiple runs; minor numerical variations may occur due to hardware non-determinism during reproduction.
+
+## 📚 Citation
+
+If you use this code, data, or figures in your research, please cite:
+
+```bibtex
+@article{bandjur2026adversarial,
+  title={Adversarial Vulnerability of Positional Encoding in Vision Transformers: A Targeted Attack Analysis},
+  author={Bandjur, Djoko and Bandjur, Milos},
+  journal={IEEE Transactions on Information Forensics and Security},
+  year={2026},
+  note={Submitted}
+}
+```
+
+---
+
+## 📝 Notes
+
+- Results are reported as mean ± std over 3 independent training seeds (42, 123, 456). Minor numerical variations may occur due to hardware non-determinism during reproduction.
+- All attack experiments use the **corrected multi-block** PGD implementation: perturbations are applied to all 12 transformer blocks via shared-delta gradient aggregation.
+- The noise ablation uses **independent per-block** Gaussian samples — this distinction is critical to the decoupling thesis and is described in the paper's Methods section.
+
+---
+
+## 📧 Contact
+
+Djoko Bandjur and Milos Bandjur
+Department of Electrical and Computer Engineering
+Faculty of Technical Sciences, University of Priština—Kosovska Mitrovica
+Email: {djoko.bandjur, milos.bandjur}@pr.ac.rs
