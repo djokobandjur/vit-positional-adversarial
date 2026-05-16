@@ -1,0 +1,457 @@
+{
+  "metadata": {
+    "experiment": "Experiment 2: ALiBi structural ablation",
+    "timestamp": "2026-05-07T08:36:48.931578",
+    "dataset": "cifar",
+    "device": "cuda",
+    "n_val_images": 10000,
+    "regimes": [
+      "slopes_only",
+      "reldist_only",
+      "both"
+    ],
+    "regime_descriptions": {
+      "slopes_only": "perturb only slopes (12 scalars)",
+      "reldist_only": "perturb only rel_dist matrix (NxN)",
+      "both": "perturb both slopes and rel_dist"
+    },
+    "config": {
+      "seeds": [
+        42,
+        123,
+        456
+      ],
+      "attack": "pgd_pe",
+      "epsilons": [
+        0.001,
+        0.005,
+        0.01,
+        0.05,
+        0.1,
+        0.2,
+        0.5,
+        1.0
+      ],
+      "pgd_steps": 20,
+      "pgd_alpha_ratio": 0.1,
+      "n_grad_batches": 20,
+      "attack_pattern": "shared_delta_all_12_blocks"
+    },
+    "purpose": "Determines whether ALiBi vulnerability is concentrated in slopes (12 scalars) or extends to the rel_dist matrix. Provides mechanistic data for explaining why ALiBi has the lowest attack threshold among all PE types."
+  },
+  "results": {
+    "alibi": {
+      "42": {
+        "clean_acc": 67.39,
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/alibi_seed42/best_model.pth",
+        "status": "ok",
+        "regime_slopes_only": {
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 67.4,
+              "drop_from_clean": -0.010000000000005116,
+              "elapsed_sec": 25.19200348854065
+            },
+            "0.005": {
+              "accuracy": 67.17,
+              "drop_from_clean": 0.21999999999999886,
+              "elapsed_sec": 25.175923109054565
+            },
+            "0.01": {
+              "accuracy": 66.89,
+              "drop_from_clean": 0.5,
+              "elapsed_sec": 25.195377826690674
+            },
+            "0.05": {
+              "accuracy": 55.67,
+              "drop_from_clean": 11.719999999999999,
+              "elapsed_sec": 25.14344811439514
+            },
+            "0.1": {
+              "accuracy": 26.09,
+              "drop_from_clean": 41.3,
+              "elapsed_sec": 25.16421866416931
+            },
+            "0.2": {
+              "accuracy": 8.13,
+              "drop_from_clean": 59.26,
+              "elapsed_sec": 25.137102365493774
+            },
+            "0.5": {
+              "accuracy": 2.81,
+              "drop_from_clean": 64.58,
+              "elapsed_sec": 25.10234761238098
+            },
+            "1.0": {
+              "accuracy": 2.02,
+              "drop_from_clean": 65.37,
+              "elapsed_sec": 25.116629362106323
+            }
+          }
+        },
+        "regime_reldist_only": {
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 67.39,
+              "drop_from_clean": 0.0,
+              "elapsed_sec": 25.102352380752563
+            },
+            "0.005": {
+              "accuracy": 67.38,
+              "drop_from_clean": 0.010000000000005116,
+              "elapsed_sec": 25.088607788085938
+            },
+            "0.01": {
+              "accuracy": 67.38,
+              "drop_from_clean": 0.010000000000005116,
+              "elapsed_sec": 25.14153814315796
+            },
+            "0.05": {
+              "accuracy": 67.32,
+              "drop_from_clean": 0.07000000000000739,
+              "elapsed_sec": 25.090327739715576
+            },
+            "0.1": {
+              "accuracy": 67.2,
+              "drop_from_clean": 0.18999999999999773,
+              "elapsed_sec": 25.104142665863037
+            },
+            "0.2": {
+              "accuracy": 66.93,
+              "drop_from_clean": 0.45999999999999375,
+              "elapsed_sec": 25.082996368408203
+            },
+            "0.5": {
+              "accuracy": 65.64,
+              "drop_from_clean": 1.75,
+              "elapsed_sec": 25.164585828781128
+            },
+            "1.0": {
+              "accuracy": 61.01,
+              "drop_from_clean": 6.380000000000003,
+              "elapsed_sec": 25.126379251480103
+            }
+          }
+        },
+        "regime_both": {
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 67.4,
+              "drop_from_clean": -0.010000000000005116,
+              "elapsed_sec": 25.176539659500122
+            },
+            "0.005": {
+              "accuracy": 67.17,
+              "drop_from_clean": 0.21999999999999886,
+              "elapsed_sec": 25.205471515655518
+            },
+            "0.01": {
+              "accuracy": 66.83,
+              "drop_from_clean": 0.5600000000000023,
+              "elapsed_sec": 25.171846866607666
+            },
+            "0.05": {
+              "accuracy": 55.48,
+              "drop_from_clean": 11.910000000000004,
+              "elapsed_sec": 25.26457166671753
+            },
+            "0.1": {
+              "accuracy": 25.64,
+              "drop_from_clean": 41.75,
+              "elapsed_sec": 25.165391206741333
+            },
+            "0.2": {
+              "accuracy": 7.83,
+              "drop_from_clean": 59.56,
+              "elapsed_sec": 25.215101718902588
+            },
+            "0.5": {
+              "accuracy": 2.6,
+              "drop_from_clean": 64.79,
+              "elapsed_sec": 25.162592887878418
+            },
+            "1.0": {
+              "accuracy": 2.16,
+              "drop_from_clean": 65.23,
+              "elapsed_sec": 25.130375862121582
+            }
+          }
+        }
+      },
+      "123": {
+        "clean_acc": 68.16,
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/alibi_seed123/best_model.pth",
+        "status": "ok",
+        "regime_slopes_only": {
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 68.16,
+              "drop_from_clean": 0.0,
+              "elapsed_sec": 25.363041877746582
+            },
+            "0.005": {
+              "accuracy": 67.95,
+              "drop_from_clean": 0.20999999999999375,
+              "elapsed_sec": 25.31804895401001
+            },
+            "0.01": {
+              "accuracy": 67.55,
+              "drop_from_clean": 0.6099999999999994,
+              "elapsed_sec": 25.279451847076416
+            },
+            "0.05": {
+              "accuracy": 52.78,
+              "drop_from_clean": 15.379999999999995,
+              "elapsed_sec": 25.33617639541626
+            },
+            "0.1": {
+              "accuracy": 27.51,
+              "drop_from_clean": 40.64999999999999,
+              "elapsed_sec": 25.32957363128662
+            },
+            "0.2": {
+              "accuracy": 15.06,
+              "drop_from_clean": 53.099999999999994,
+              "elapsed_sec": 25.32288360595703
+            },
+            "0.5": {
+              "accuracy": 3.32,
+              "drop_from_clean": 64.84,
+              "elapsed_sec": 25.288933753967285
+            },
+            "1.0": {
+              "accuracy": 1.73,
+              "drop_from_clean": 66.42999999999999,
+              "elapsed_sec": 25.307419538497925
+            }
+          }
+        },
+        "regime_reldist_only": {
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 68.15,
+              "drop_from_clean": 0.009999999999990905,
+              "elapsed_sec": 25.242304801940918
+            },
+            "0.005": {
+              "accuracy": 68.16,
+              "drop_from_clean": 0.0,
+              "elapsed_sec": 25.223536729812622
+            },
+            "0.01": {
+              "accuracy": 68.13,
+              "drop_from_clean": 0.030000000000001137,
+              "elapsed_sec": 25.29367232322693
+            },
+            "0.05": {
+              "accuracy": 68.08,
+              "drop_from_clean": 0.0799999999999983,
+              "elapsed_sec": 25.277279376983643
+            },
+            "0.1": {
+              "accuracy": 67.88,
+              "drop_from_clean": 0.28000000000000114,
+              "elapsed_sec": 25.29508066177368
+            },
+            "0.2": {
+              "accuracy": 67.45,
+              "drop_from_clean": 0.7099999999999937,
+              "elapsed_sec": 25.29352593421936
+            },
+            "0.5": {
+              "accuracy": 66.13,
+              "drop_from_clean": 2.030000000000001,
+              "elapsed_sec": 25.243133783340454
+            },
+            "1.0": {
+              "accuracy": 61.86,
+              "drop_from_clean": 6.299999999999997,
+              "elapsed_sec": 25.239062547683716
+            }
+          }
+        },
+        "regime_both": {
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 68.16,
+              "drop_from_clean": 0.0,
+              "elapsed_sec": 25.317723512649536
+            },
+            "0.005": {
+              "accuracy": 67.93,
+              "drop_from_clean": 0.22999999999998977,
+              "elapsed_sec": 25.4052255153656
+            },
+            "0.01": {
+              "accuracy": 67.53,
+              "drop_from_clean": 0.6299999999999955,
+              "elapsed_sec": 25.400593757629395
+            },
+            "0.05": {
+              "accuracy": 52.31,
+              "drop_from_clean": 15.849999999999994,
+              "elapsed_sec": 25.361664056777954
+            },
+            "0.1": {
+              "accuracy": 26.77,
+              "drop_from_clean": 41.39,
+              "elapsed_sec": 25.386133432388306
+            },
+            "0.2": {
+              "accuracy": 14.46,
+              "drop_from_clean": 53.699999999999996,
+              "elapsed_sec": 25.403623342514038
+            },
+            "0.5": {
+              "accuracy": 2.81,
+              "drop_from_clean": 65.35,
+              "elapsed_sec": 25.382256984710693
+            },
+            "1.0": {
+              "accuracy": 1.98,
+              "drop_from_clean": 66.17999999999999,
+              "elapsed_sec": 25.36861777305603
+            }
+          }
+        }
+      },
+      "456": {
+        "clean_acc": 67.42,
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/alibi_seed456/best_model.pth",
+        "status": "ok",
+        "regime_slopes_only": {
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 67.39,
+              "drop_from_clean": 0.030000000000001137,
+              "elapsed_sec": 25.293216228485107
+            },
+            "0.005": {
+              "accuracy": 67.08,
+              "drop_from_clean": 0.3400000000000034,
+              "elapsed_sec": 25.32375168800354
+            },
+            "0.01": {
+              "accuracy": 66.46,
+              "drop_from_clean": 0.960000000000008,
+              "elapsed_sec": 25.30192732810974
+            },
+            "0.05": {
+              "accuracy": 46.47,
+              "drop_from_clean": 20.950000000000003,
+              "elapsed_sec": 25.28506636619568
+            },
+            "0.1": {
+              "accuracy": 26.33,
+              "drop_from_clean": 41.09,
+              "elapsed_sec": 25.33863639831543
+            },
+            "0.2": {
+              "accuracy": 11.8,
+              "drop_from_clean": 55.620000000000005,
+              "elapsed_sec": 25.275062799453735
+            },
+            "0.5": {
+              "accuracy": 4.56,
+              "drop_from_clean": 62.86,
+              "elapsed_sec": 25.292243480682373
+            },
+            "1.0": {
+              "accuracy": 1.94,
+              "drop_from_clean": 65.48,
+              "elapsed_sec": 25.2901508808136
+            }
+          }
+        },
+        "regime_reldist_only": {
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 67.41,
+              "drop_from_clean": 0.010000000000005116,
+              "elapsed_sec": 25.234533071517944
+            },
+            "0.005": {
+              "accuracy": 67.39,
+              "drop_from_clean": 0.030000000000001137,
+              "elapsed_sec": 25.275113105773926
+            },
+            "0.01": {
+              "accuracy": 67.35,
+              "drop_from_clean": 0.07000000000000739,
+              "elapsed_sec": 25.266085863113403
+            },
+            "0.05": {
+              "accuracy": 67.12,
+              "drop_from_clean": 0.29999999999999716,
+              "elapsed_sec": 25.22304630279541
+            },
+            "0.1": {
+              "accuracy": 67.0,
+              "drop_from_clean": 0.4200000000000017,
+              "elapsed_sec": 25.242820501327515
+            },
+            "0.2": {
+              "accuracy": 66.64,
+              "drop_from_clean": 0.7800000000000011,
+              "elapsed_sec": 25.27310848236084
+            },
+            "0.5": {
+              "accuracy": 65.33,
+              "drop_from_clean": 2.0900000000000034,
+              "elapsed_sec": 25.249935388565063
+            },
+            "1.0": {
+              "accuracy": 60.56,
+              "drop_from_clean": 6.859999999999999,
+              "elapsed_sec": 25.25525426864624
+            }
+          }
+        },
+        "regime_both": {
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 67.38,
+              "drop_from_clean": 0.04000000000000625,
+              "elapsed_sec": 25.287519931793213
+            },
+            "0.005": {
+              "accuracy": 67.04,
+              "drop_from_clean": 0.37999999999999545,
+              "elapsed_sec": 25.369035243988037
+            },
+            "0.01": {
+              "accuracy": 66.47,
+              "drop_from_clean": 0.9500000000000028,
+              "elapsed_sec": 25.3033127784729
+            },
+            "0.05": {
+              "accuracy": 46.04,
+              "drop_from_clean": 21.380000000000003,
+              "elapsed_sec": 25.328253746032715
+            },
+            "0.1": {
+              "accuracy": 25.8,
+              "drop_from_clean": 41.620000000000005,
+              "elapsed_sec": 25.312211990356445
+            },
+            "0.2": {
+              "accuracy": 11.39,
+              "drop_from_clean": 56.03,
+              "elapsed_sec": 25.35189962387085
+            },
+            "0.5": {
+              "accuracy": 3.56,
+              "drop_from_clean": 63.86,
+              "elapsed_sec": 25.366199731826782
+            },
+            "1.0": {
+              "accuracy": 1.14,
+              "drop_from_clean": 66.28,
+              "elapsed_sec": 25.288309812545776
+            }
+          }
+        }
+      }
+    }
+  }
+}
