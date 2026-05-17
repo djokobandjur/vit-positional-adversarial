@@ -153,9 +153,8 @@ through the full pipeline (attacks → E2 → E3 → noise ablation → figures)
 in seven sections. Each section can be re-run independently provided the
 prior JSON outputs are present on Drive.
 
-Expected wall-clock on a single T4/A100: roughly 10–14h for the complete
-pipeline. Most of that is the main attack sweep (`full_reanalysis.py`,
-~6–8h).
+Expected wall-clock on a single G4: roughly 11–13h for the complete
+pipeline. 
 
 ### Manual CLI workflow
 
