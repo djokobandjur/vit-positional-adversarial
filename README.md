@@ -2,7 +2,8 @@
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/djokobandjur/vit-positional-adversarial/blob/main/colab_quickstart.ipynb)
 [![Paper Status](https://img.shields.io/badge/paper-resubmission-orange)](#paper-and-citation)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Code License: MIT](https://img.shields.io/badge/Code%20License-MIT-yellow.svg)](LICENSE)
+[![Data License: CC BY 4.0](https://img.shields.io/badge/Data%20License-CC%20BY%204.0-blue.svg)](https://creativecommons.org/licenses/by/4.0/)
 
 Code, trained models, and reproducibility scripts for the paper
 *"Adversarial Vulnerability of Positional Encoding in Vision Transformers"*
@@ -153,8 +154,9 @@ through the full pipeline (attacks → E2 → E3 → noise ablation → figures)
 in seven sections. Each section can be re-run independently provided the
 prior JSON outputs are present on Drive.
 
-Expected wall-clock on a single G4: roughly 11–13h for the complete
-pipeline. 
+Expected wall-clock on a single T4/A100: roughly 10–14h for the complete
+pipeline. Most of that is the main attack sweep (`full_reanalysis.py`,
+~6–8h).
 
 ### Manual CLI workflow
 
@@ -352,10 +354,33 @@ this repository directly if you build on the code or use the corrected results.
 
 ## License
 
-Code and result files in this repository are released under the MIT License
-(see [LICENSE](LICENSE)). Trained model weights on Google Drive are
-released under the same terms.
+This repository uses a dual-licensing scheme that reflects the different
+nature of its contents:
 
-The ImageNet-1k validation images required to reproduce the ImageNet-100
-attacks are governed by the [ImageNet terms of access](https://www.image-net.org/download.php)
-and are not redistributed here.
+- **Source code** (all `.py` files, the `colab_quickstart.ipynb` notebook,
+  and any build/config scripts) is released under the **MIT License** — see
+  [`LICENSE`](LICENSE).
+
+- **Result files and documentation** (the JSON files under `data/`, the
+  generated figures under `figures/`, this README, `CHANGELOG.md`, and the
+  Zenodo deposit of this repository) are released under the
+  **Creative Commons Attribution 4.0 International License** (CC BY 4.0).
+  Full text: [creativecommons.org/licenses/by/4.0/](https://creativecommons.org/licenses/by/4.0/).
+
+- **Trained model weights** hosted on Google Drive (see *Trained models*
+  above) are released under **CC BY 4.0 for research purposes**. Note that
+  the ImageNet-100 models are derivative artifacts of the ImageNet-1k
+  dataset and remain subject to the
+  [ImageNet terms of access](https://www.image-net.org/download.php) for
+  any redistribution or commercial use. The CIFAR-100 models carry no such
+  upstream restriction (CIFAR-100 is freely available for research and
+  commercial use).
+
+- **The ImageNet-1k validation images** required to reproduce the
+  ImageNet-100 attacks are governed by the
+  [ImageNet terms of access](https://www.image-net.org/download.php) and
+  are not redistributed in this repository.
+
+If you use the code, cite the repository under MIT terms. If you use the
+results, figures, or trained models in a derivative work, cite under
+CC BY 4.0 terms (attribution required).
