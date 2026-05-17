@@ -6,7 +6,7 @@
 
 Code, trained models, and reproducibility scripts for the paper
 *"Adversarial Vulnerability of Positional Encoding in Vision Transformers"*
-(T-IFS-26532-2026, resubmission v24).
+(T-IFS-26532-2026, resubmission).
 
 ---
 
@@ -40,7 +40,7 @@ analysis (E3).
 
 ## What changed in this release
 
-The original submission was withdrawn from IEEE TIFS on May 6, 2026 after we
+The original manuscript was withdrawn from IEEE TIFS on May 6, 2026 after we
 identified a **multi-block bug** in the original attack implementation: the
 perturbation δ was applied only to `model.blocks[0].attn.rope.cos_cached`
 (and the analogous ALiBi slope buffer), hitting only 1/12 of the RoPE/ALiBi
@@ -48,15 +48,16 @@ mechanism. Learned and Sinusoidal results were unaffected because their PE
 parameters are top-level tensors shared across blocks. The bug therefore
 selectively understated RoPE and ALiBi vulnerability.
 
-The resubmission corrects this. The new attack pipeline (`full_reanalysis.py`) uses a
-single shared δ applied to **all 12 transformer blocks** for RoPE and ALiBi,
-matching the intent of the original protocol. Trained model weights are
-unchanged (the bug was in attack code, not training code), so the original submission 
-checkpoints remain valid; only the attack JSON outputs and the figures derived from them
-have been regenerated.
+The current release corrects this. The new attack pipeline (`full_reanalysis.py`)
+uses a single shared δ applied to **all 12 transformer blocks** for RoPE and
+ALiBi, matching the intent of the original protocol. Trained model weights
+are unchanged (the bug was in attack code, not training code), so the
+original checkpoints remain valid; only the attack JSON outputs and the
+figures derived from them have been regenerated.
 
-See [`CHANGELOG.md`](CHANGELOG.md) for the full list of changes between the original submission
-and this resubmission, including the addition of Experiment 2 (ALiBi structural ablation)
+See [`CHANGELOG.md`](CHANGELOG.md) for the full list of changes between the
+original release and the current one, including the addition of Experiment 2
+(ALiBi structural ablation)
 and Experiment 3 (attention reorganization and saturation), and the
 reframing of the thesis from "robustness inversion" to "robustness decoupling".
 
@@ -75,7 +76,7 @@ vit-positional-adversarial/
 ├── cifar100_experiment.py              # CIFAR-100 training (attack section deprecated)
 ├── 00_setup_imagenet.py                # Colab utility: build ImageNet-100 val/
 │
-├── full_reanalysis.py                  # The new attack script (IN + CF, multi-block corrected)
+├── full_reanalysis.py                  # corrected attacks (IN + CF, multi-block)
 ├── experiment2_alibi_ablation.py       # E2: ALiBi structural ablation
 ├── experiment3_attention_metrics_v3.py # E3: spatial attention metrics
 ├── experiment3_perturbation_norm_v4.py # E3: perturbation norms / saturation
@@ -104,9 +105,9 @@ vit-positional-adversarial/
 | Script | Purpose | Output |
 | --- | --- | --- |
 | `full_scale_experiment.py` | ViT model + 4 PE variants; ImageNet-100 training; helpers (`noise_ablation`, `probe_analysis`, `extract_positional_embedding`) imported by other scripts | Trained model checkpoints |
-| `cifar100_experiment.py` | CIFAR-100 training (12 models = 4 PE × 3 seeds); attack section is **deprecated** and exits early — use `full_reanalysis.py` for the attacks | Trained model checkpoints |
+| `cifar100_experiment.py` | CIFAR-100 training (12 models = 4 PE × 3 seeds); attack section is **deprecated** and exits early — use `full_reanalysis.py` for the corrected attack | Trained model checkpoints |
 | `00_setup_imagenet.py` | Colab-specific: extracts the 100 selected classes from ILSVRC2012 val tar into `/content/imagenet100/val/` (50 images per class). Hardcoded for the Colab pipeline; see *Adapting for Local Execution* below | `/content/imagenet100/val/<class>/` |
-| `full_reanalysis.py` | **Main v2.0 attack script.** Runs FGSM-PE, PGD-PE, VTA across 8 ε values, 3 seeds, both datasets. Multi-block corrected. Checkpoints after each (PE, seed) combination | `imagenet_results.json`, `cifar_results.json` |
+| `full_reanalysis.py` | **Main attack script (corrected, multi-block).** Runs FGSM-PE, PGD-PE, VTA across 8 ε values, 3 seeds, both datasets. Checkpoints after each (PE, seed) combination | `imagenet_results.json`, `cifar_results.json` |
 | `experiment2_alibi_ablation.py` | Decomposes ALiBi into slopes vs. relative-distance components; attacks each in isolation | `imagenet_alibi_ablation.json`, `cifar_alibi_ablation.json` |
 | `experiment3_attention_metrics_v3.py` | Spatial attention metrics under attack (concentration ratio, MAD) | `imagenet_spatial_metrics.json`, `cifar_spatial_metrics.json` |
 | `experiment3_perturbation_norm_v4.py` | Per-step PGD perturbation norm tracking; `frac@ceil` saturation profile | `imagenet_perturbation_norms.json`, `cifar_perturbation_norms.json` |
@@ -135,13 +136,13 @@ The folder structure expected by the scripts is:
 └── alibi_seed456/best_model.pth
 ```
 
-These are the same weights used in the original submission. The multi-block bug fixed in the resubmission
-was in attack code (inference time), not in training code, so retraining
-was not required.
+These are the same weights used in the original release. The multi-block
+bug fixed in the current release was in attack code (inference time), not
+in training code, so retraining was not required.
 
 ---
 
-## Reproducing the resubmission results
+## Reproducing the results
 
 ### Recommended: one-click Colab
 
@@ -152,7 +153,7 @@ through the full pipeline (attacks → E2 → E3 → noise ablation → figures)
 in seven sections. Each section can be re-run independently provided the
 prior JSON outputs are present on Drive.
 
-Expected wall-clock on a single G4: roughly 10–14h for the complete
+Expected wall-clock on a single T4/A100: roughly 10–14h for the complete
 pipeline. Most of that is the main attack sweep (`full_reanalysis.py`,
 ~6–8h).
 
@@ -300,7 +301,7 @@ A few practical notes for non-Colab execution:
 
 ---
 
-## Key resubmission results
+## Key results
 
 ### Inflection thresholds ε* (PGD-PE, ImageNet-100)
 
@@ -346,7 +347,7 @@ the paper and supplement.
 The paper is currently under resubmission to IEEE Transactions on Information
 Forensics and Security (T-IFS-26532-2026). Citation details will be added
 once the resubmission status is finalized. In the meantime, please reference
-this repository directly if you build on the code or use the resubmission results.
+this repository directly if you build on the code or use the corrected results.
 
 ---
 
