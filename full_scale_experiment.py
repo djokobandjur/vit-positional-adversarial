@@ -897,7 +897,7 @@ def compute_layer_entropy(model, val_loader, device, n_batches=50):
 def probe_analysis(pe_matrix, num_patches_per_side=14):
     """Train linear probes to predict row, column, exact position from PE."""
     from sklearn.linear_model import LogisticRegression
-    from sklearn.model_selection import cross_val_score
+    from sklearn.model_selection import cross_val_score, StratifiedKFold
 
     patches = pe_matrix[1:]  # Exclude CLS, shape (196, 768)
     num_patches = patches.shape[0]

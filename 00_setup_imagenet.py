@@ -93,19 +93,7 @@ for path, name in [(args.tar_path,    'ILSVRC2012_img_val.tar'),
         )
     print(f" Found: {name}")
 
-# Auto-download val_labels.txt if not present
-VAL_LABELS_URL = (
-    "https://raw.githubusercontent.com/tensorflow/models/"
-    "master/research/slim/datasets/"
-    "imagenet_2012_validation_synset_labels.txt"
-)
-if not os.path.exists(args.labels_path):
-    print(f" val_labels.txt not found — downloading automatically...")
-    import urllib.request
-    urllib.request.urlretrieve(VAL_LABELS_URL, args.labels_path)
-    print(f" Downloaded: val_labels.txt -> {args.labels_path}")
-else:
-    print(f" Found: val_labels.txt")
+print(f" Found: val_labels.txt at {args.labels_path}")
 
 # Load 100-class split 
 with open(args.classes_path) as f:

@@ -115,11 +115,15 @@ def run_extraction(models_dir, val_dir, output_path, batch_size, seeds):
             result = {}
 
             # 1. Noise ablation
+            # noise_ablation() in full_scale_experiment.py already prints
+            # per-level results internally; we just store the dict.
+            # Format returned:
+            #   {'noise_levels': [0.0, 0.1, ..., 5.0],
+            #    'accuracies':   [acc0, acc1, ..., acc7],
+            #    'accuracy_no_pe': acc_no_pe}
             print("  Running noise ablation...")
             noise_results = noise_ablation(model, val_loader, device, pe_type)
             result['noise_ablation'] = noise_results
-            for level, acc in noise_results.items():
-                print(f"    {level}: {acc:.2f}%")
 
             # 2. Probe analysis (auxiliary, not used in main paper narrative)
             print("  Running probe analysis...")
@@ -149,19 +153,31 @@ def print_summary(all_results, seeds):
 
     print("\n\nNOISE ABLATION SUMMARY (for Table 2):")
     print("-" * 80)
-    noise_levels = ['0.0x', '0.1x', '0.2x', '0.5x', '1.0x', '2.0x', '3.0x', '5.0x', 'no_pe']
+    noise_level_floats = [0.0, 0.1, 0.2, 0.5, 1.0, 2.0, 3.0, 5.0]
+    noise_level_labels = [f"{x:.1f}x" for x in noise_level_floats] + ['no_pe']
     header = f"{'Level':<10}" + "".join(f"{pe:<15}" for pe in PE_TYPES)
     print(header)
-    for level in noise_levels:
-        row = f"{level:<10}"
+    for label, level_val in zip(noise_level_labels,
+                                noise_level_floats + [None]):
+        row = f"{label:<10}"
         for pe in PE_TYPES:
             vals = []
             for s in seeds:
-                if s in all_results.get(pe, {}) and 'noise_ablation' in all_results[pe][s]:
-                    na = all_results[pe][s]['noise_ablation']
-                    for k, v in na.items():
-                        if level.replace('x', '') in k or (level == 'no_pe' and 'without' in k.lower()):
-                            vals.append(v)
+                pe_seed = all_results.get(pe, {}).get(s, {})
+                na = pe_seed.get('noise_ablation')
+                if na is None:
+                    continue
+                if level_val is None:
+                    # 'no_pe' row
+                    if 'accuracy_no_pe' in na:
+                        vals.append(float(na['accuracy_no_pe']))
+                else:
+                    # Match parallel-array index by noise level
+                    levels_arr = na.get('noise_levels', [])
+                    accs_arr = na.get('accuracies', [])
+                    for nl, ac in zip(levels_arr, accs_arr):
+                        if abs(float(nl) - level_val) < 1e-9:
+                            vals.append(float(ac))
                             break
             if vals:
                 row += f"{np.mean(vals):.2f}±{np.std(vals):.2f}  "
