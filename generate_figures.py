@@ -3,7 +3,7 @@
 generate_figures.py
 ===================
 
-Generate all figures for the Adversarial PE Attacks paper (v19/v20).
+Generate all figures for the Adversarial PE Attacks paper.
 Reads imagenet_results.json and cifar_results.json. Produces 6 figures
 covering attack curves, robustness inversion, three-attack comparison
 across both datasets, Gini + critical-epsilon summaries, VTA gain across
@@ -32,16 +32,6 @@ OUTPUTS (6 figures)
     fig6_degradation_rate.{pdf,png}         -- d acc / d log10(eps) (full width)
     fig7_cross_dataset.{pdf,png}            -- PGD curves IN vs CF (full width)
 
-NOTES
------
-- Random-noise data for the inversion figure (Fig 2 left panel) is NOT in
-  the results JSONs (the JSONs contain adversarial results only). The
-  left panel uses hardcoded values from the v15/v16 noise ablation
-  experiment. Update HARDCODED_NOISE_DATA below if your noise ablation
-  numbers have changed.
-- Gini coefficients (Fig 5 left panel) are also hardcoded from
-  tab:gini in the manuscript (they are weight properties, not in
-  results JSONs).
 """
 
 import json
