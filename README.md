@@ -172,6 +172,30 @@ shipped under `data/`.
 python 00_setup_imagenet.py
 # CIFAR-100 needs no preparation — torchvision auto-downloads on first use.
 ```
+---
+### Customizing paths
+
+`00_setup_imagenet.py` accepts CLI flags for all input/output paths.
+Default values target the original authors' Google Drive layout
+(`/content/drive/My Drive/pe_experiment/`); reviewers reproducing on
+a fresh Colab environment should override them explicitly:
+
+```bash
+%run /content/00_setup_imagenet.py \
+    --tar_path     "/path/to/ILSVRC2012_img_val.tar" \
+    --labels_path  "/path/to/val_labels.txt" \
+    --classes_path "/path/to/imagenet100_classes.txt" \
+    --output_dir   "/content/imagenet100"
+```
+
+`imagenet100_classes.txt` (the 100-class split from Tian et al., ECCV 2020)
+is shipped in this repository's `data/` folder. If you cloned the repo to
+`/content/vit-positional-adversarial/`, you can point `--classes_path` at
+`/content/vit-positional-adversarial/data/imagenet100_classes.txt` directly
+without copying to Drive.
+
+`val_labels.txt` is auto-downloaded from the TensorFlow Models repository
+on first run if missing.
 
 **2. Run the corrected attacks (Experiment 1)**
 
