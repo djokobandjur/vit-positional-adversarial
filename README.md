@@ -107,7 +107,7 @@ vit-positional-adversarial/
 | --- | --- | --- |
 | `full_scale_experiment.py` | ViT model + 4 PE variants; ImageNet-100 training; helpers (`noise_ablation`, `probe_analysis`, `extract_positional_embedding`) imported by other scripts | Trained model checkpoints |
 | `cifar100_experiment.py` | CIFAR-100 training (12 models = 4 PE × 3 seeds); attack section is **deprecated** and exits early — use `full_reanalysis.py` for the corrected attack | Trained model checkpoints |
-| `00_setup_imagenet.py` | Colab-specific: extracts the 100 selected classes from ILSVRC2012 val tar into `/content/imagenet100/val/` (50 images per class). Hardcoded for the Colab pipeline; see *Adapting for Local Execution* below | `/content/imagenet100/val/<class>/` |
+| `00_setup_imagenet.py` | Colab-specific: extracts the 100 selected classes from ILSVRC2012 val tar into `<output_dir>/val/` (50 images per class). All paths configurable via CLI; defaults target the Colab pipeline. See *Adapting for Local Execution* below | `<output_dir>/val/<class>/` |
 | `full_reanalysis.py` | **Main attack script (corrected, multi-block).** Runs FGSM-PE, PGD-PE, VTA across 8 ε values, 3 seeds, both datasets. Checkpoints after each (PE, seed) combination | `imagenet_results.json`, `cifar_results.json` |
 | `experiment2_alibi_ablation.py` | Decomposes ALiBi into slopes vs. relative-distance components; attacks each in isolation | `imagenet_alibi_ablation.json`, `cifar_alibi_ablation.json` |
 | `experiment3_attention_metrics_v3.py` | Spatial attention metrics under attack (concentration ratio, MAD) | `imagenet_spatial_metrics.json`, `cifar_spatial_metrics.json` |
@@ -169,33 +169,18 @@ shipped under `data/`.
 
 ```bash
 # ImageNet-100: extract 100 selected classes from ILSVRC2012 val tar
-python 00_setup_imagenet.py
-# CIFAR-100 needs no preparation — torchvision auto-downloads on first use.
-```
----
-### Customizing paths
-
-`00_setup_imagenet.py` accepts CLI flags for all input/output paths.
-Default values target the original authors' Google Drive layout
-(`/content/drive/My Drive/pe_experiment/`); reviewers reproducing on
-a fresh Colab environment should override them explicitly:
-
-```bash
-%run /content/00_setup_imagenet.py \
+python 00_setup_imagenet.py \
     --tar_path     "/path/to/ILSVRC2012_img_val.tar" \
     --labels_path  "/path/to/val_labels.txt" \
     --classes_path "/path/to/imagenet100_classes.txt" \
     --output_dir   "/content/imagenet100"
+# All four flags are optional; defaults target the original authors'
+# Google Drive layout (/content/drive/My Drive/pe_experiment/).
+# `imagenet100_classes.txt` is shipped in this repo's `data/` folder.
+# `val_labels.txt` is auto-downloaded on first run if missing.
+
+# CIFAR-100 needs no preparation — torchvision auto-downloads on first use.
 ```
-
-`imagenet100_classes.txt` (the 100-class split from Tian et al., ECCV 2020)
-is shipped in this repository's `data/` folder. If you cloned the repo to
-`/content/vit-positional-adversarial/`, you can point `--classes_path` at
-`/content/vit-positional-adversarial/data/imagenet100_classes.txt` directly
-without copying to Drive.
-
-`val_labels.txt` is auto-downloaded from the TensorFlow Models repository
-on first run if missing.
 
 **2. Run the corrected attacks (Experiment 1)**
 
@@ -301,12 +286,14 @@ experiment scripts.
 
 A few practical notes for non-Colab execution:
 
-- **`00_setup_imagenet.py`** is a Colab-specific utility. It hardcodes the
-  target directory (`/content/imagenet100/val`) and reads the ILSVRC2012 val
-  tar from a specific Drive path. For local execution, either edit the path
-  constants near the top of the script, or skip it entirely and assemble
-  an ImageFolder-compatible `val/` directory yourself with the 100 classes
-  used in this work (the class label list is embedded in the script).
+- **`00_setup_imagenet.py`** is a Colab-specific utility (extracts the 100
+  selected classes from ILSVRC2012 val tar into `<output_dir>/val/`).
+  All paths are configurable via CLI flags (`--tar_path`, `--labels_path`,
+  `--classes_path`, `--output_dir`); defaults target the authors' Google
+  Drive layout. For local execution, override the flags as needed, or
+  skip the script entirely and assemble an ImageFolder-compatible `val/`
+  directory yourself with the 100 classes used in this work
+  (`data/imagenet100_classes.txt`).
 
 - **ImageNet-100 dataset structure** required by the attack and analysis
   scripts is the standard ImageFolder layout: one subdirectory per class,
