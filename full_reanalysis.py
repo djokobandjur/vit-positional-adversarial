@@ -17,7 +17,7 @@ Scope:
     - Datasets: ImageNet-100, CIFAR-100
 
 Total runs: 2 PE x 3 seeds x 3 attacks x 8 epsilons x 2 datasets = 288 runs
-Estimated time: ~5-7 hours on T4 GPU (PGD dominates ~80% of compute)
+
 
 Output:
     - imagenet/full_reanalysis_results.json
