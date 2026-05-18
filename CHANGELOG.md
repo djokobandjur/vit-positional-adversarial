@@ -6,6 +6,45 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [2.0.1] — 2026-05-XX
+
+### Fixed
+
+- **`full_scale_experiment.py`** (`probe_analysis()`): Added missing
+  `StratifiedKFold` import. The function used the class on line 922 but
+  only imported `cross_val_score` from `sklearn.model_selection`, causing
+  `NameError: name 'StratifiedKFold' is not defined` whenever the per-class
+  sample count exceeded the 2-fold minimum (i.e. for `row` and `column`
+  probe tasks, but not `position`). Fix is a one-line import addition.
+
+- **`extract_tables_data.py`**: Fixed `TypeError: list.__format__` crash when
+  consuming `noise_ablation()` results. The script previously iterated over
+  `noise_results.items()` assuming a flat `{level_str: acc}` dict, but
+  `noise_ablation()` actually returns `{'noise_levels': [...], 'accuracies':
+  [...], 'accuracy_no_pe': float}`. The consumer now correctly stores the
+  dict as-is (per-level output is already printed inside `noise_ablation()`
+  itself), and `print_summary()` zips the parallel arrays. Output JSON
+  format (`analysis_data.json`) is unchanged and remains identical to the
+  shipped v2.0.0 artifact.
+
+- **`00_setup_imagenet.py`**: Removed duplicate auto-download block for
+  `val_labels.txt` (previously defined twice, lines 70–83 and 95–105).
+  Logic is unchanged; second block was dead code.
+
+### Notes
+
+- This is a code-only patch. All shipped JSON artifacts (`analysis_data.json`,
+  trained model checkpoints) are unchanged from v2.0.0. The companion
+  Concept DOI (`10.5281/zenodo.19154465`) continues to resolve to the
+  latest version; downstream citations in the ADS paper
+  (Bandjur & Bandjur, "Attention Divergence Score…", IEEE TIFS, 2026)
+  remain valid without modification.
+
+- Default paths in `00_setup_imagenet.py` still target a specific Google
+  Drive layout (`/content/drive/My Drive/pe_experiment/`). Reviewers and
+  external reproducers should override via CLI flags
+  (`--tar_path`, `--labels_path`, `--classes_path`, `--output_dir`).
+  See README "ImageNet-100 setup" section for examples.
 
 ## [2.0.0] — 2026-05-16
 
