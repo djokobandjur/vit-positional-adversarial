@@ -540,6 +540,7 @@ def train_model(model, train_loader, val_loader, config, device, output_dir):
                 'optimizer_state_dict': optimizer.state_dict(),
                 'scheduler_state_dict': scheduler.state_dict(),
                 'best_val_acc': best_val_acc,
+                'history': history,
                 'rng_state': torch.get_rng_state(),
                 'np_rng_state': np.random.get_state(),
             }

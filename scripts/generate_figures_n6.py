@@ -84,7 +84,7 @@ ATTACK_LINESTYLES = {
 COL_WIDTH = 3.5
 DOUBLE_WIDTH = 7.16
 
-# Real random-noise ablation data on ImageNet-100 (mean accuracy across 3 seeds).
+# Real random-noise ablation data on ImageNet-100 (mean accuracy across the original 3 seeds (fallback only)).
 # Source: analysis_data.json from full_scale_experiment.py noise_ablation function.
 # Each transformer block receives an independent Gaussian noise sample scaled by
 # per-PE sigma_PE (NOT shared across blocks, in contrast to the shared-delta
@@ -147,41 +147,82 @@ def load_results(path):
     return d
 
 
+def _sorted_seed_items(seed_dict):
+    """Return seed items sorted numerically, ignoring incomplete/missing runs."""
+    items = []
+    for seed, data in seed_dict.items():
+        try:
+            sort_key = int(seed)
+        except (TypeError, ValueError):
+            sort_key = seed
+        if not isinstance(data, dict):
+            continue
+        if data.get('status', 'ok') != 'ok':
+            continue
+        items.append((sort_key, str(seed), data))
+    items.sort(key=lambda x: x[0])
+    return [(seed, data) for _, seed, data in items]
+
+
+def _common_float_keys(dicts, positive_only=False):
+    """Common numeric JSON keys across a list of dictionaries."""
+    common = None
+    for d in dicts:
+        vals = {float(k) for k in d.keys() if (not positive_only or float(k) > 0)}
+        common = vals if common is None else common & vals
+    return sorted(common or [])
+
+
+def _key_for_float(d, value):
+    """Find the JSON key in d whose float value equals value."""
+    return next(k for k in d.keys() if float(k) == float(value))
+
+
+def _sample_std(matrix, axis=1):
+    """Sample std with a safe fallback when only one valid seed is present."""
+    counts = np.sum(~np.isnan(matrix), axis=axis)
+    with np.errstate(invalid='ignore'):
+        std = np.nanstd(matrix, axis=axis, ddof=1)
+    return np.where(counts > 1, std, 0.0)
+
+
+
 def aggregate_curve(results, pe, attack):
     """
     Return (eps_array, mean_acc, std_acc) for a given PE and attack,
-    aggregated across seeds. Clean accuracy is prepended at eps=0 (its
-    mean and std across the three seeds at the clean operating point).
+    aggregated across all completed seed runs found in the JSON. Clean
+    accuracy is prepended at eps=0.
     """
     pe_data = results['results'][pe]
-    seeds = sorted(pe_data.keys(), key=lambda s: int(s))
+    seed_items = [
+        (seed, data) for seed, data in _sorted_seed_items(pe_data)
+        if 'clean_acc' in data and 'attacks' in data and attack in data['attacks']
+    ]
+    if not seed_items:
+        raise ValueError(f'No completed seeds found for PE={pe}, attack={attack}')
 
-    # Clean accuracies
-    clean = np.array([pe_data[s]['clean_acc'] for s in seeds])
+    clean = np.array([data['clean_acc'] for _, data in seed_items], dtype=float)
+    attack_dicts = [data['attacks'][attack] for _, data in seed_items]
+    eps_floats = _common_float_keys(attack_dicts, positive_only=False)
 
-    # Identify eps points (string keys in JSON)
-    first_seed = seeds[0]
-    eps_strs = list(pe_data[first_seed]['attacks'][attack].keys())
-    eps_floats = sorted(float(e) for e in eps_strs)
-
-    # Collect (n_eps, n_seeds) accuracy matrix
-    acc_matrix = np.zeros((len(eps_floats), len(seeds)))
+    acc_matrix = np.full((len(eps_floats), len(seed_items)), np.nan, dtype=float)
     for i, eps_f in enumerate(eps_floats):
-        # Match the float back to its string key (JSON keys are strings)
-        eps_key = next(k for k in eps_strs if float(k) == eps_f)
-        for j, s in enumerate(seeds):
-            acc_matrix[i, j] = pe_data[s]['attacks'][attack][eps_key]['accuracy']
+        for j, (_, data) in enumerate(seed_items):
+            attack_data = data['attacks'][attack]
+            eps_key = _key_for_float(attack_data, eps_f)
+            acc = attack_data[eps_key].get('accuracy')
+            if acc is not None:
+                acc_matrix[i, j] = float(acc)
 
-    mean_acc = acc_matrix.mean(axis=1)
-    std_acc = acc_matrix.std(axis=1, ddof=1) if len(seeds) > 1 else np.zeros_like(mean_acc)
+    mean_acc = np.nanmean(acc_matrix, axis=1)
+    std_acc = _sample_std(acc_matrix, axis=1)
 
-    # Prepend the clean operating point at eps=0
     eps_with_clean = np.concatenate([[0.0], eps_floats])
-    mean_with_clean = np.concatenate([[clean.mean()], mean_acc])
-    std_with_clean = np.concatenate([[clean.std(ddof=1) if len(seeds) > 1 else 0.0], std_acc])
+    mean_with_clean = np.concatenate([[np.nanmean(clean)], mean_acc])
+    clean_std = float(np.nanstd(clean, ddof=1)) if len(clean) > 1 else 0.0
+    std_with_clean = np.concatenate([[clean_std], std_acc])
 
     return eps_with_clean, mean_with_clean, std_with_clean
-
 
 def compute_eps_crit(eps, acc, clean_acc):
     """
@@ -289,20 +330,67 @@ def fig1_attack_curves_imagenet(imagenet, outdir, fmt):
 # FIGURE 2: Robustness inversion (noise | adversarial)
 # =========================================================================
 
-def fig2_robustness_inversion(imagenet, outdir, fmt):
+
+def _aggregate_noise_ablation_from_analysis(analysis_data):
+    """Aggregate extract_tables_data.py output into per-PE noise curves."""
+    curves = {}
+    for pe in PE_DRAW_ORDER:
+        pe_data = analysis_data.get(pe, {})
+        seed_items = []
+        for seed, data in _sorted_seed_items(pe_data):
+            na = data.get('noise_ablation') if isinstance(data, dict) else None
+            if not na:
+                continue
+            levels = na.get('noise_levels', [])
+            accs = na.get('accuracies', [])
+            if levels and accs and len(levels) == len(accs):
+                seed_items.append((seed, {float(l): float(a) for l, a in zip(levels, accs)}))
+        if not seed_items:
+            continue
+        common_levels = sorted(set.intersection(*(set(d.keys()) for _, d in seed_items)))
+        matrix = np.full((len(common_levels), len(seed_items)), np.nan, dtype=float)
+        for i, level in enumerate(common_levels):
+            for j, (_, d) in enumerate(seed_items):
+                matrix[i, j] = d[level]
+        curves[pe] = {
+            'sigma': np.array(common_levels, dtype=float),
+            'mean': np.nanmean(matrix, axis=1),
+            'std': _sample_std(matrix, axis=1),
+            'n': len(seed_items),
+        }
+    return curves
+
+
+def fig2_robustness_inversion(imagenet, outdir, fmt, analysis_data=None):
     fig, axes = plt.subplots(1, 2, figsize=(DOUBLE_WIDTH, 2.8))
 
-    # Left: random Gaussian noise (hardcoded data)
+    # Left: random Gaussian noise. Prefer n=6 analysis_data when supplied;
+    # otherwise fall back to the original hardcoded n=3 ImageNet values.
     ax = axes[0]
-    for pe in PE_DRAW_ORDER:
-        data = HARDCODED_NOISE_DATA[pe]
-        sigma = sorted(data.keys())
-        acc = [data[s] for s in sigma]
-        ax.plot(
-            sigma, acc,
-            color=PE_COLORS[pe], label=PE_LABELS[pe],
-            marker='o', markersize=3.2,
-        )
+    noise_curves = (_aggregate_noise_ablation_from_analysis(analysis_data)
+                    if analysis_data is not None else None)
+    if noise_curves:
+        for pe in PE_DRAW_ORDER:
+            curve = noise_curves.get(pe)
+            if curve is None:
+                continue
+            ax.errorbar(
+                curve['sigma'], curve['mean'], yerr=curve['std'],
+                color=PE_COLORS[pe], label=PE_LABELS[pe],
+                marker='o', markersize=3.2,
+                capsize=2, elinewidth=0.6, capthick=0.6,
+            )
+    else:
+        print('  warning: using hardcoded n=3 noise-ablation values; pass --imagenet-analysis for n=6 Fig. 2 left panel')
+        for pe in PE_DRAW_ORDER:
+            data = HARDCODED_NOISE_DATA[pe]
+            sigma = sorted(data.keys())
+            acc = [data[s] for s in sigma]
+            ax.plot(
+                sigma, acc,
+                color=PE_COLORS[pe], label=PE_LABELS[pe],
+                marker='o', markersize=3.2,
+            )
     ax.set_xlabel(r'Noise scale ($\sigma / \sigma_\mathrm{PE}$)')
     ax.set_ylabel('Accuracy (\\%)')
     ax.set_ylim(0, 100)
@@ -324,11 +412,6 @@ def fig2_robustness_inversion(imagenet, outdir, fmt):
     )
 
     _save(fig, outdir, 'fig2_robustness_inversion', fmt)
-
-
-# =========================================================================
-# FIGURE 3: Three attacks per PE, both datasets (2x4 grid)
-# =========================================================================
 
 def fig3_three_attacks_both_datasets(imagenet, cifar, outdir, fmt):
     fig, axes = plt.subplots(2, 4, figsize=(DOUBLE_WIDTH, 4.4), sharex=True, sharey=True)
@@ -532,35 +615,43 @@ def fig7_cross_dataset(imagenet, cifar, outdir, fmt):
 # FIGURE 8 (Supplementary): ALiBi structural ablation
 # =========================================================================
 
+
 def _aggregate_ablation_curve(ablation_data, regime):
     """
-    Return (eps_array, mean_acc, std_acc) for an ablation regime
-    across the three seeds.
+    Return (eps_array, mean_acc, std_acc) for an ablation regime across all
+    completed seed runs found in the JSON.
     """
     alibi_data = ablation_data['results']['alibi']
-    seeds = sorted(alibi_data.keys(), key=lambda s: int(s))
-    clean = np.array([alibi_data[s]['clean_acc'] for s in seeds])
-
-    first_seed = seeds[0]
     regime_key = f'regime_{regime}'
-    eps_strs = list(alibi_data[first_seed][regime_key]['pgd_pe'].keys())
-    eps_floats = sorted(float(e) for e in eps_strs)
+    seed_items = [
+        (seed, data) for seed, data in _sorted_seed_items(alibi_data)
+        if 'clean_acc' in data and regime_key in data and 'pgd_pe' in data[regime_key]
+    ]
+    if not seed_items:
+        raise ValueError(f'No completed ALiBi ablation seeds for regime={regime}')
 
-    acc_matrix = np.zeros((len(eps_floats), len(seeds)))
+    clean = np.array([data['clean_acc'] for _, data in seed_items], dtype=float)
+    attack_dicts = [data[regime_key]['pgd_pe'] for _, data in seed_items]
+    eps_floats = _common_float_keys(attack_dicts, positive_only=False)
+
+    acc_matrix = np.full((len(eps_floats), len(seed_items)), np.nan, dtype=float)
     for i, eps_f in enumerate(eps_floats):
-        eps_key = next(k for k in eps_strs if float(k) == eps_f)
-        for j, s in enumerate(seeds):
-            acc_matrix[i, j] = alibi_data[s][regime_key]['pgd_pe'][eps_key]['accuracy']
+        for j, (_, data) in enumerate(seed_items):
+            attack_data = data[regime_key]['pgd_pe']
+            eps_key = _key_for_float(attack_data, eps_f)
+            acc = attack_data[eps_key].get('accuracy')
+            if acc is not None:
+                acc_matrix[i, j] = float(acc)
 
-    mean_acc = acc_matrix.mean(axis=1)
-    std_acc = acc_matrix.std(axis=1, ddof=1) if len(seeds) > 1 else np.zeros_like(mean_acc)
+    mean_acc = np.nanmean(acc_matrix, axis=1)
+    std_acc = _sample_std(acc_matrix, axis=1)
 
     eps_with_clean = np.concatenate([[0.0], eps_floats])
-    mean_with_clean = np.concatenate([[clean.mean()], mean_acc])
-    std_with_clean = np.concatenate([[clean.std(ddof=1) if len(seeds) > 1 else 0.0], std_acc])
+    mean_with_clean = np.concatenate([[np.nanmean(clean)], mean_acc])
+    clean_std = float(np.nanstd(clean, ddof=1)) if len(clean) > 1 else 0.0
+    std_with_clean = np.concatenate([[clean_std], std_acc])
 
     return eps_with_clean, mean_with_clean, std_with_clean
-
 
 def fig8_alibi_ablation(imagenet_abl, cifar_abl, outdir, fmt):
     """ALiBi structural ablation across both datasets (supplementary)."""
@@ -604,25 +695,33 @@ def fig8_alibi_ablation(imagenet_abl, cifar_abl, outdir, fmt):
 # EXPERIMENT 3 HELPERS: spatial metrics & perturbation norms
 # =========================================================================
 
+
 def _iso_accuracy_metric(pe_data, metric_key, target_acc=40.0):
     """
-    For each seed, linearly interpolate the metric value at the eps where
-    attacked_accuracy crosses target_acc. Returns (mean, std) over seeds.
+    For each completed seed, linearly interpolate the metric value at the eps
+    where attacked_accuracy crosses target_acc. Returns (mean, std) over seeds.
     Returns (nan, nan) if interpolation failed (no crossing).
     """
     seed_values = []
-    for seed in pe_data:
-        attacks = pe_data[seed]['attacks']
+    for seed, seed_data in _sorted_seed_items(pe_data):
+        attacks = seed_data.get('attacks')
+        if not attacks:
+            continue
         eps_list = sorted(float(e) for e in attacks.keys())
         accs, metrics = [], []
+        ok = True
         for e in eps_list:
-            key = str(e) if e != 0 else '0'
-            if key not in attacks:
-                key = str(int(e)) if e == 0 else key
-            accs.append(attacks[key]['attacked_accuracy'])
-            metrics.append(attacks[key][metric_key])
-        accs = np.array(accs)
-        metrics = np.array(metrics)
+            key = _key_for_float(attacks, e)
+            entry = attacks[key]
+            if 'attacked_accuracy' not in entry or metric_key not in entry:
+                ok = False
+                break
+            accs.append(entry['attacked_accuracy'])
+            metrics.append(entry[metric_key])
+        if not ok:
+            continue
+        accs = np.array(accs, dtype=float)
+        metrics = np.array(metrics, dtype=float)
         # Find crossing point (descending acc curve)
         for i in range(len(eps_list) - 1):
             if accs[i] >= target_acc and accs[i + 1] < target_acc:
@@ -635,7 +734,6 @@ def _iso_accuracy_metric(pe_data, metric_key, target_acc=40.0):
     mean = float(np.mean(seed_values))
     std = float(np.std(seed_values, ddof=1)) if len(seed_values) > 1 else 0.0
     return mean, std
-
 
 def _concentration_ratio(mass, R, grid_side):
     """
@@ -660,36 +758,36 @@ def _grid_side_for_dataset(dataset_name):
     return 14 if dataset_name == 'imagenet' else 8
 
 
+
 def _aggregate_norm_curve(perturbation_data, pe, buffer_name):
     """
     Return (eps_array, mean_frac_ceil, std_frac_ceil) for a given PE and
     specific buffer (e.g., 'cos_cached', 'inv_freq', 'slopes', 'pos_embed').
+    Uses all completed seed runs found in the JSON.
     """
     pe_data = perturbation_data['results'][pe]
-    seeds = sorted(pe_data.keys(), key=lambda s: int(s))
+    seed_items = [
+        (seed, data) for seed, data in _sorted_seed_items(pe_data)
+        if 'attacks' in data
+    ]
+    if not seed_items:
+        raise ValueError(f'No completed norm runs found for PE={pe}')
 
-    first_seed = seeds[0]
-    eps_strs = list(pe_data[first_seed]['attacks'].keys())
-    eps_floats = sorted(float(e) for e in eps_strs if float(e) > 0)
+    attack_dicts = [data['attacks'] for _, data in seed_items]
+    eps_floats = _common_float_keys(attack_dicts, positive_only=True)
 
-    matrix = np.zeros((len(eps_floats), len(seeds)))
+    matrix = np.full((len(eps_floats), len(seed_items)), np.nan, dtype=float)
     for i, eps_f in enumerate(eps_floats):
-        eps_key = next(k for k in eps_strs if float(k) == eps_f)
-        for j, s in enumerate(seeds):
-            entry = pe_data[s]['attacks'][eps_key]['norms_per_buffer'].get(buffer_name)
-            if entry is None:
-                matrix[i, j] = float('nan')
-            else:
-                matrix[i, j] = entry['fraction_at_ceiling']
+        for j, (_, data) in enumerate(seed_items):
+            attacks = data['attacks']
+            eps_key = _key_for_float(attacks, eps_f)
+            entry = attacks[eps_key].get('norms_per_buffer', {}).get(buffer_name)
+            if entry is not None:
+                matrix[i, j] = entry.get('fraction_at_ceiling', np.nan)
 
     mean = np.nanmean(matrix, axis=1)
-    std = np.nanstd(matrix, axis=1, ddof=1) if len(seeds) > 1 else np.zeros_like(mean)
+    std = _sample_std(matrix, axis=1)
     return np.array(eps_floats), mean, std
-
-
-# =========================================================================
-# FIGURE 9: Concentration ratio at iso-accuracy (40%) — main paper
-# =========================================================================
 
 def fig9_concentration_ratio(imagenet_spatial, cifar_spatial, outdir, fmt):
     """
@@ -852,8 +950,10 @@ def fig11_mad_vs_acc_drop_supp(imagenet_spatial, cifar_spatial, outdir, fmt):
         for ds_name, ds_data, ds_key, marker, alpha in datasets:
             pe_data = ds_data['results'][pe]
             xs, ys = [], []
-            for seed in pe_data:
-                attacks = pe_data[seed]['attacks']
+            for seed, seed_data in _sorted_seed_items(pe_data):
+                attacks = seed_data.get('attacks')
+                if not attacks:
+                    continue
                 clean = attacks['0']['clean_accuracy']
                 for eps_key, entry in attacks.items():
                     if float(eps_key) == 0:
@@ -882,8 +982,10 @@ def fig11_mad_vs_acc_drop_supp(imagenet_spatial, cifar_spatial, outdir, fmt):
         for pe in pe_order:
             pe_data = ds_data['results'][pe]
             seed_ratios = []
-            for seed in pe_data:
-                attacks = pe_data[seed]['attacks']
+            for seed, seed_data in _sorted_seed_items(pe_data):
+                attacks = seed_data.get('attacks')
+                if not attacks:
+                    continue
                 clean = attacks['0']['clean_accuracy']
                 # Find the eps that gets us closest to acc=40% (iso-accuracy point)
                 best_dist = float('inf')
@@ -945,6 +1047,7 @@ def fig11_mad_vs_acc_drop_supp(imagenet_spatial, cifar_spatial, outdir, fmt):
 # FIGURE 12 (Supplementary): ALiBi small-eps R-mass bump
 # =========================================================================
 
+
 def fig12_alibi_smalleps_bump_supp(imagenet_spatial, cifar_spatial, outdir, fmt):
     """
     For ALiBi: plot R1 and R3 attacked-minus-clean mass deltas as a function
@@ -959,25 +1062,30 @@ def fig12_alibi_smalleps_bump_supp(imagenet_spatial, cifar_spatial, outdir, fmt)
     for ax_idx, (name, data) in enumerate(datasets):
         ax = axes[ax_idx]
         pe_data = data['results']['alibi']
-        seeds = sorted(pe_data.keys(), key=lambda s: int(s))
-        first_seed = seeds[0]
-        eps_list = sorted(float(e) for e in pe_data[first_seed]['attacks'].keys() if float(e) > 0)
+        seed_items = [
+            (seed, seed_data) for seed, seed_data in _sorted_seed_items(pe_data)
+            if seed_data.get('attacks')
+        ]
+        if not seed_items:
+            raise ValueError(f'No completed ALiBi spatial seeds for {name}')
+        attack_dicts = [seed_data['attacks'] for _, seed_data in seed_items]
+        eps_list = _common_float_keys(attack_dicts, positive_only=True)
 
-        delta_R1_matrix = np.zeros((len(eps_list), len(seeds)))
-        delta_R3_matrix = np.zeros((len(eps_list), len(seeds)))
+        delta_R1_matrix = np.full((len(eps_list), len(seed_items)), np.nan, dtype=float)
+        delta_R3_matrix = np.full((len(eps_list), len(seed_items)), np.nan, dtype=float)
 
         for i, eps_f in enumerate(eps_list):
-            for j, s in enumerate(seeds):
-                attacks = pe_data[s]['attacks']
-                eps_key = next(k for k in attacks.keys() if float(k) == eps_f)
+            for j, (_, seed_data) in enumerate(seed_items):
+                attacks = seed_data['attacks']
+                eps_key = _key_for_float(attacks, eps_f)
                 entry = attacks[eps_key]
                 delta_R1_matrix[i, j] = entry['mean_mass_R1_attacked'] - entry['mean_mass_R1_clean']
                 delta_R3_matrix[i, j] = entry['mean_mass_R3_attacked'] - entry['mean_mass_R3_clean']
 
-        d1_mean = delta_R1_matrix.mean(axis=1)
-        d1_std = delta_R1_matrix.std(axis=1, ddof=1)
-        d3_mean = delta_R3_matrix.mean(axis=1)
-        d3_std = delta_R3_matrix.std(axis=1, ddof=1)
+        d1_mean = np.nanmean(delta_R1_matrix, axis=1)
+        d1_std = _sample_std(delta_R1_matrix, axis=1)
+        d3_mean = np.nanmean(delta_R3_matrix, axis=1)
+        d3_std = _sample_std(delta_R3_matrix, axis=1)
 
         ax.errorbar(eps_list, d1_mean, yerr=d1_std, color=color, marker='o',
                     markersize=3.2, capsize=2, elinewidth=0.6, capthick=0.6,
@@ -1004,11 +1112,6 @@ def fig12_alibi_smalleps_bump_supp(imagenet_spatial, cifar_spatial, outdir, fmt)
 
     _save(fig, outdir, 'fig12_alibi_smalleps_supp', fmt)
 
-
-# =========================================================================
-# SAVE HELPER
-# =========================================================================
-
 def _save(fig, outdir, basename, fmt):
     outdir = Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
@@ -1028,6 +1131,8 @@ def main():
     ap = argparse.ArgumentParser(description='Generate paper figures.')
     ap.add_argument('--imagenet', required=True, help='Path to imagenet_results.json')
     ap.add_argument('--cifar',    required=True, help='Path to cifar_results.json')
+    ap.add_argument('--imagenet-analysis', default=None,
+                    help='Path to ImageNet analysis_data.json from extract_tables_data.py (for n=6 Fig. 2 noise panel)')
     ap.add_argument('--imagenet-ablation', default=None,
                     help='Path to imagenet_alibi_ablation.json (for Fig 8 supplementary)')
     ap.add_argument('--cifar-ablation',    default=None,
@@ -1050,6 +1155,7 @@ def main():
     print('Loading data...')
     imagenet = load_results(args.imagenet)
     cifar = load_results(args.cifar)
+    imagenet_analysis = load_results(args.imagenet_analysis) if args.imagenet_analysis else None
 
     print('\nGenerating figures...')
 
@@ -1057,7 +1163,7 @@ def main():
     fig1_attack_curves_imagenet(imagenet, args.outdir, args.format)
 
     print('[2] Robustness inversion (noise | adversarial)')
-    fig2_robustness_inversion(imagenet, args.outdir, args.format)
+    fig2_robustness_inversion(imagenet, args.outdir, args.format, imagenet_analysis)
 
     print('[3] Three attacks across both datasets (2x4 grid)')
     fig3_three_attacks_both_datasets(imagenet, cifar, args.outdir, args.format)

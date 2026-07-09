@@ -10,13 +10,13 @@ with corrected multi-block attack implementation.
 Scope:
     - PE types: rope, alibi (Learned/Sinusoidal not affected, results from
       original paper can be retained for those)
-    - Seeds: [42, 123, 456]
+    - Seeds: [42, 123, 456, 789, 1011, 1213]
     - Attacks: FGSM-PE, PGD-PE, VTA
     - Epsilons: [0.001, 0.005, 0.01, 0.05, 0.1, 0.2, 0.5, 1.0]
       (full grid from original adversarial_pe_attacks.py)
     - Datasets: ImageNet-100, CIFAR-100
 
-Total runs: 2 PE x 3 seeds x 3 attacks x 8 epsilons x 2 datasets = 288 runs
+Total runs: 4 PE x 6 seeds x 3 attacks x 8 epsilons x 2 datasets = 1152 runs
 
 
 Output:
@@ -66,7 +66,8 @@ from full_scale_experiment import VisionTransformer, extract_positional_embeddin
 # CONFIG
 # ============================================================
 PE_TYPES = ['learned', 'sinusoidal', 'rope', 'alibi']  # all four PE types
-SEEDS = [42, 123, 456]
+DEFAULT_SEEDS = [42, 123, 456, 789, 1011, 1213]
+SEEDS = DEFAULT_SEEDS  # backward-compatible default
 ATTACKS = ['fgsm_pe', 'pgd_pe', 'vta']
 EPSILONS = [0.001, 0.005, 0.01, 0.05, 0.1, 0.2, 0.5, 1.0]
 
@@ -448,8 +449,12 @@ def run_full_reanalysis(args):
     print(f"Dataset: {args.dataset}")
     print(f"Models dir: {args.models_dir}")
     print(f"Output: {args.output_path}")
+    seeds = list(args.seeds)
+    print(f"Seeds: {seeds}  (n={len(seeds)})")
 
-    os.makedirs(os.path.dirname(args.output_path), exist_ok=True)
+    output_dir = os.path.dirname(args.output_path)
+    if output_dir:
+        os.makedirs(output_dir, exist_ok=True)
     cfg = DATASET_CONFIG[args.dataset]
 
     # Build val loader
@@ -462,6 +467,8 @@ def run_full_reanalysis(args):
     if existing is not None:
         print(f"\nFound existing results at {args.output_path} - will resume.")
         results = existing
+        results.setdefault("metadata", {}).setdefault("config", {})["seeds"] = seeds
+        results["metadata"]["resumed_with_seeds"] = seeds
     else:
         results = {
             "metadata": {
@@ -471,7 +478,7 @@ def run_full_reanalysis(args):
                 "n_val_images": n_val,
                 "config": {
                     "pe_types": PE_TYPES,
-                    "seeds": SEEDS,
+                    "seeds": seeds,
                     "attacks": ATTACKS,
                     "epsilons": EPSILONS,
                     "pgd_steps": PGD_STEPS,
@@ -489,7 +496,7 @@ def run_full_reanalysis(args):
         }
 
     # Run all combinations
-    total_combinations = len(PE_TYPES) * len(SEEDS)
+    total_combinations = len(PE_TYPES) * len(seeds)
     combo_idx = 0
     overall_start = time.time()
 
@@ -497,7 +504,7 @@ def run_full_reanalysis(args):
         if pe_type not in results["results"]:
             results["results"][pe_type] = {}
 
-        for seed in SEEDS:
+        for seed in seeds:
             combo_idx += 1
             print(f"\n{'='*70}")
             print(f"[{combo_idx}/{total_combinations}] {pe_type} seed={seed}")
@@ -586,7 +593,7 @@ def run_full_reanalysis(args):
         for pe_type in PE_TYPES:
             for eps in EPSILONS:
                 accs = []
-                for seed in SEEDS:
+                for seed in seeds:
                     try:
                         a = results["results"][pe_type][str(seed)]["attacks"][attack_name][str(eps)]["accuracy"]
                         if a is not None:
@@ -594,7 +601,7 @@ def run_full_reanalysis(args):
                     except (KeyError, TypeError):
                         pass
                 if accs:
-                    m, s = np.mean(accs), np.std(accs)
+                    m, s = np.mean(accs), (np.std(accs, ddof=1) if len(accs) > 1 else 0.0)
                     print(f"{attack_name:<10} {pe_type:<8} {eps:<8} "
                           f"{m:>5.1f}±{s:<5.1f}  (n={len(accs)})")
 
@@ -612,6 +619,13 @@ def main():
                         choices=['imagenet', 'cifar'])
     parser.add_argument("--batch_size", type=int, default=64)
     parser.add_argument("--num_workers", type=int, default=4)
+    parser.add_argument(
+        "--seeds",
+        type=int,
+        nargs="+",
+        default=DEFAULT_SEEDS,
+        help="Seeds to process (default: 42 123 456 789 1011 1213)",
+    )
     parser.add_argument("--device", default=None)
     args = parser.parse_args()
 

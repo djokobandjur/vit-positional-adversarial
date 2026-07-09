@@ -29,12 +29,12 @@ The comparison answers:
 
 Configuration:
     - PE type: alibi only
-    - Seeds: [42, 123, 456]
+    - Seeds: [42, 123, 456, 789, 1011, 1213]
     - Attack: PGD-PE only (T=20, alpha=eps/10)
     - Epsilons: standard 8-point grid (matches main paper tables)
     - Datasets: ImageNet-100 and CIFAR-100
 
-Total runs: 3 regimes x 3 seeds x 8 eps x 2 datasets = 144 runs
+Total runs: 3 regimes x 6 seeds x 8 eps x 2 datasets = 288 runs
 Estimated time: ~30 min per dataset on Blackwell, ~1 hour total.
 
 Output: experiment2_alibi_ablation_results.json
@@ -116,7 +116,8 @@ DATASET_CONFIG = {
 # ============================================================
 # CONFIG
 # ============================================================
-SEEDS = [42, 123, 456]
+DEFAULT_SEEDS = [42, 123, 456, 789, 1011, 1213]
+SEEDS = DEFAULT_SEEDS  # backward-compatible default
 EPSILONS = [0.001, 0.005, 0.01, 0.05, 0.1, 0.2, 0.5, 1.0]
 PGD_STEPS = 20
 PGD_ALPHA_RATIO = 0.1
@@ -346,8 +347,12 @@ def run_experiment2(args):
     print(f"Device: {device}")
     print(f"Dataset: {args.dataset}")
     print(f"Output: {args.output_path}")
+    seeds = list(args.seeds)
+    print(f"Seeds: {seeds}  (n={len(seeds)})")
 
-    os.makedirs(os.path.dirname(args.output_path), exist_ok=True)
+    output_dir = os.path.dirname(args.output_path)
+    if output_dir:
+        os.makedirs(output_dir, exist_ok=True)
     cfg = DATASET_CONFIG[args.dataset]
 
     print(f"\nLoading {args.dataset} validation data...")
@@ -358,6 +363,8 @@ def run_experiment2(args):
     if existing is not None:
         print(f"\nFound existing results - resuming.")
         results = existing
+        results.setdefault("metadata", {}).setdefault("config", {})["seeds"] = seeds
+        results["metadata"]["resumed_with_seeds"] = seeds
     else:
         results = {
             "metadata": {
@@ -373,7 +380,7 @@ def run_experiment2(args):
                     "both": "perturb both slopes and rel_dist",
                 },
                 "config": {
-                    "seeds": SEEDS,
+                    "seeds": seeds,
                     "attack": "pgd_pe",
                     "epsilons": EPSILONS,
                     "pgd_steps": PGD_STEPS,
@@ -392,10 +399,10 @@ def run_experiment2(args):
         }
 
     overall_start = time.time()
-    total_combinations = len(SEEDS) * len(REGIMES)
+    total_combinations = len(seeds) * len(REGIMES)
     combo_idx = 0
 
-    for seed in SEEDS:
+    for seed in seeds:
         if str(seed) not in results["results"]["alibi"]:
             results["results"]["alibi"][str(seed)] = {}
 
@@ -470,14 +477,14 @@ def run_experiment2(args):
 
     # Print comparison table
     import statistics
-    print(f"\nPGD-PE accuracy under three attack regimes (mean ± std over 3 seeds):")
+    print(f"\nPGD-PE accuracy under three attack regimes (mean ± std over selected seeds):")
     print(f"{'eps':<8} {'slopes_only':<16} {'reldist_only':<16} {'both':<16}")
     print("-" * 65)
     for eps in EPSILONS:
         row = [eps]
         for regime in REGIMES:
             accs = []
-            for seed in SEEDS:
+            for seed in seeds:
                 try:
                     a = results["results"]["alibi"][str(seed)][f"regime_{regime}"]["pgd_pe"][str(eps)]["accuracy"]
                     if a is not None:
@@ -501,6 +508,13 @@ def main():
     parser.add_argument("--dataset", required=True, choices=['imagenet', 'cifar'])
     parser.add_argument("--batch_size", type=int, default=64)
     parser.add_argument("--num_workers", type=int, default=4)
+    parser.add_argument(
+        "--seeds",
+        type=int,
+        nargs="+",
+        default=DEFAULT_SEEDS,
+        help="Seeds to process (default: 42 123 456 789 1011 1213)",
+    )
     parser.add_argument("--device", default=None)
     args = parser.parse_args()
 

@@ -71,7 +71,10 @@ from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
 # FIX: full_scale_experiment.py is in the PARENT folder of experiment3/
+sys.path.insert(0, str(Path(__file__).parent))
 sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, os.getcwd())
+sys.path.insert(0, "/content")
 from full_scale_experiment import VisionTransformer, TransformerBlock
 
 
@@ -79,7 +82,8 @@ from full_scale_experiment import VisionTransformer, TransformerBlock
 # CONFIG
 # ============================================================
 PE_TYPES = ['learned', 'sinusoidal', 'rope', 'alibi']
-SEEDS = [42, 123, 456]
+DEFAULT_SEEDS = [42, 123, 456, 789, 1011, 1213]
+SEEDS = DEFAULT_SEEDS  # backward-compatible default
 
 # v3: denser grid for learned (most jagged break-zone), modest expansion
 # for sinusoidal. RoPE and ALiBi already cover their break zones well.
@@ -638,8 +642,12 @@ def run_experiment3_v3(args):
     print(f"Dataset: {args.dataset}")
     print(f"Batch size: {args.batch_size}")
     print(f"Output: {args.output_path}")
+    seeds = list(args.seeds)
+    print(f"Seeds: {seeds}  (n={len(seeds)})")
 
-    os.makedirs(os.path.dirname(args.output_path), exist_ok=True)
+    output_dir = os.path.dirname(args.output_path)
+    if output_dir:
+        os.makedirs(output_dir, exist_ok=True)
     cfg = DATASET_CONFIG[args.dataset]
     grid_size = cfg['grid_size']
 
@@ -651,6 +659,8 @@ def run_experiment3_v3(args):
     if existing is not None:
         print(f"\nFound existing results - resuming.")
         results = existing
+        results.setdefault("metadata", {}).setdefault("config", {})["seeds"] = seeds
+        results["metadata"]["resumed_with_seeds"] = seeds
     else:
         results = {
             "metadata": {
@@ -665,7 +675,7 @@ def run_experiment3_v3(args):
                 "grid_size": grid_size,
                 "config": {
                     "pe_types": PE_TYPES,
-                    "seeds": SEEDS,
+                    "seeds": seeds,
                     "attack": "pgd_pe",
                     "epsilons_per_pe": EPSILONS_PER_PE,
                     "pgd_steps": PGD_STEPS,
@@ -759,14 +769,14 @@ def run_experiment3_v3(args):
         }
 
     overall_start = time.time()
-    total_combinations = len(PE_TYPES) * len(SEEDS)
+    total_combinations = len(PE_TYPES) * len(seeds)
     combo_idx = 0
 
     for pe_type in PE_TYPES:
         if pe_type not in results["results"]:
             results["results"][pe_type] = {}
 
-        for seed in SEEDS:
+        for seed in seeds:
             combo_idx += 1
             print(f"\n{'='*78}", flush=True)
             print(f"[{combo_idx}/{total_combinations}] {pe_type} seed={seed}", flush=True)
@@ -878,14 +888,14 @@ def run_experiment3_v3(args):
     print(f"Total time: {(time.time()-overall_start)/60:.1f} min", flush=True)
 
     import statistics
-    print(f"\nPer-PE summary (mean ± std over seeds):", flush=True)
+    print(f"\nPer-PE summary (mean ± std over selected seeds):", flush=True)
     print(f"{'PE':<11} {'eps':<6} {'att_acc':<14} {'top1':<14} "
           f"{'MAD_miss':<14} {'mass_R1':<14}", flush=True)
     print("-" * 90, flush=True)
     for pe_type in PE_TYPES:
         for eps in EPSILONS_PER_PE[pe_type]:
             accs, t1s, madms, m1s = [], [], [], []
-            for seed in SEEDS:
+            for seed in seeds:
                 try:
                     d = results["results"][pe_type][str(seed)]["attacks"][str(eps)]
                     if d.get("attacked_accuracy") is not None:
@@ -911,6 +921,13 @@ def main():
     parser.add_argument("--dataset", required=True, choices=['imagenet', 'cifar'])
     parser.add_argument("--batch_size", type=int, default=128)
     parser.add_argument("--num_workers", type=int, default=4)
+    parser.add_argument(
+        "--seeds",
+        type=int,
+        nargs="+",
+        default=DEFAULT_SEEDS,
+        help="Seeds to process (default: 42 123 456 789 1011 1213)",
+    )
     parser.add_argument("--device", default=None)
     args = parser.parse_args()
 

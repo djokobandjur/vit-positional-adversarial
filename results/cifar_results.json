@@ -1,0 +1,3246 @@
+{
+  "metadata": {
+    "timestamp": "2026-07-07T12:35:10.866227",
+    "dataset": "cifar",
+    "device": "cuda",
+    "n_val_images": 10000,
+    "config": {
+      "pe_types": [
+        "learned",
+        "sinusoidal",
+        "rope",
+        "alibi"
+      ],
+      "seeds": [
+        42,
+        123,
+        456,
+        789,
+        1011,
+        1213
+      ],
+      "attacks": [
+        "fgsm_pe",
+        "pgd_pe",
+        "vta"
+      ],
+      "epsilons": [
+        0.001,
+        0.005,
+        0.01,
+        0.05,
+        0.1,
+        0.2,
+        0.5,
+        1.0
+      ],
+      "pgd_steps": 20,
+      "pgd_alpha_ratio": 0.1,
+      "n_grad_batches": 20,
+      "attack_pattern": "shared_delta_all_12_blocks"
+    },
+    "purpose": "Full reanalysis of T-IFS-26532-2026 with corrected multi-block attack. Replaces RoPE and ALiBi columns in original Tables tab:fgsm, tab:pgd, tab:vta."
+  },
+  "results": {
+    "learned": {
+      "42": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/learned_seed42/best_model.pth",
+        "clean_acc": 68.7,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 68.59,
+              "drop_from_clean": 0.10999999999999943,
+              "elapsed_sec": 4.502296209335327
+            },
+            "0.005": {
+              "accuracy": 67.87,
+              "drop_from_clean": 0.8299999999999983,
+              "elapsed_sec": 4.45304274559021
+            },
+            "0.01": {
+              "accuracy": 66.81,
+              "drop_from_clean": 1.8900000000000006,
+              "elapsed_sec": 4.456688165664673
+            },
+            "0.05": {
+              "accuracy": 38.98,
+              "drop_from_clean": 29.720000000000006,
+              "elapsed_sec": 4.452521800994873
+            },
+            "0.1": {
+              "accuracy": 5.62,
+              "drop_from_clean": 63.080000000000005,
+              "elapsed_sec": 4.45690393447876
+            },
+            "0.2": {
+              "accuracy": 1.79,
+              "drop_from_clean": 66.91,
+              "elapsed_sec": 4.453312635421753
+            },
+            "0.5": {
+              "accuracy": 0.93,
+              "drop_from_clean": 67.77,
+              "elapsed_sec": 4.45186710357666
+            },
+            "1.0": {
+              "accuracy": 1.24,
+              "drop_from_clean": 67.46000000000001,
+              "elapsed_sec": 4.452077627182007
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 68.6,
+              "drop_from_clean": 0.10000000000000853,
+              "elapsed_sec": 24.511901140213013
+            },
+            "0.005": {
+              "accuracy": 67.78,
+              "drop_from_clean": 0.9200000000000017,
+              "elapsed_sec": 24.5139262676239
+            },
+            "0.01": {
+              "accuracy": 66.14,
+              "drop_from_clean": 2.5600000000000023,
+              "elapsed_sec": 24.488847017288208
+            },
+            "0.05": {
+              "accuracy": 6.88,
+              "drop_from_clean": 61.82,
+              "elapsed_sec": 24.50610876083374
+            },
+            "0.1": {
+              "accuracy": 1.44,
+              "drop_from_clean": 67.26,
+              "elapsed_sec": 24.537161111831665
+            },
+            "0.2": {
+              "accuracy": 1.0,
+              "drop_from_clean": 67.7,
+              "elapsed_sec": 24.518229007720947
+            },
+            "0.5": {
+              "accuracy": 1.01,
+              "drop_from_clean": 67.69,
+              "elapsed_sec": 24.51020574569702
+            },
+            "1.0": {
+              "accuracy": 1.0,
+              "drop_from_clean": 67.7,
+              "elapsed_sec": 24.5173921585083
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 68.68,
+              "drop_from_clean": 0.01999999999999602,
+              "elapsed_sec": 4.472450494766235
+            },
+            "0.005": {
+              "accuracy": 68.63,
+              "drop_from_clean": 0.07000000000000739,
+              "elapsed_sec": 4.455587148666382
+            },
+            "0.01": {
+              "accuracy": 68.6,
+              "drop_from_clean": 0.10000000000000853,
+              "elapsed_sec": 4.459264039993286
+            },
+            "0.05": {
+              "accuracy": 68.03,
+              "drop_from_clean": 0.6700000000000017,
+              "elapsed_sec": 4.4650678634643555
+            },
+            "0.1": {
+              "accuracy": 67.31,
+              "drop_from_clean": 1.3900000000000006,
+              "elapsed_sec": 4.457638263702393
+            },
+            "0.2": {
+              "accuracy": 65.19,
+              "drop_from_clean": 3.510000000000005,
+              "elapsed_sec": 4.4555583000183105
+            },
+            "0.5": {
+              "accuracy": 48.15,
+              "drop_from_clean": 20.550000000000004,
+              "elapsed_sec": 4.4575278759002686
+            },
+            "1.0": {
+              "accuracy": 5.42,
+              "drop_from_clean": 63.28,
+              "elapsed_sec": 4.467821836471558
+            }
+          }
+        }
+      },
+      "123": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/learned_seed123/best_model.pth",
+        "clean_acc": 68.08,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 67.95,
+              "drop_from_clean": 0.12999999999999545,
+              "elapsed_sec": 4.463719606399536
+            },
+            "0.005": {
+              "accuracy": 67.29,
+              "drop_from_clean": 0.789999999999992,
+              "elapsed_sec": 4.455767393112183
+            },
+            "0.01": {
+              "accuracy": 66.22,
+              "drop_from_clean": 1.8599999999999994,
+              "elapsed_sec": 4.472219705581665
+            },
+            "0.05": {
+              "accuracy": 36.34,
+              "drop_from_clean": 31.739999999999995,
+              "elapsed_sec": 4.4623801708221436
+            },
+            "0.1": {
+              "accuracy": 5.19,
+              "drop_from_clean": 62.89,
+              "elapsed_sec": 4.4650726318359375
+            },
+            "0.2": {
+              "accuracy": 1.27,
+              "drop_from_clean": 66.81,
+              "elapsed_sec": 4.462043046951294
+            },
+            "0.5": {
+              "accuracy": 1.16,
+              "drop_from_clean": 66.92,
+              "elapsed_sec": 4.457180738449097
+            },
+            "1.0": {
+              "accuracy": 1.38,
+              "drop_from_clean": 66.7,
+              "elapsed_sec": 4.453428268432617
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 67.94,
+              "drop_from_clean": 0.14000000000000057,
+              "elapsed_sec": 24.50675129890442
+            },
+            "0.005": {
+              "accuracy": 67.18,
+              "drop_from_clean": 0.8999999999999915,
+              "elapsed_sec": 24.522178173065186
+            },
+            "0.01": {
+              "accuracy": 65.9,
+              "drop_from_clean": 2.1799999999999926,
+              "elapsed_sec": 24.53633427619934
+            },
+            "0.05": {
+              "accuracy": 9.93,
+              "drop_from_clean": 58.15,
+              "elapsed_sec": 24.510398387908936
+            },
+            "0.1": {
+              "accuracy": 1.33,
+              "drop_from_clean": 66.75,
+              "elapsed_sec": 24.482518911361694
+            },
+            "0.2": {
+              "accuracy": 1.25,
+              "drop_from_clean": 66.83,
+              "elapsed_sec": 24.513029098510742
+            },
+            "0.5": {
+              "accuracy": 1.01,
+              "drop_from_clean": 67.07,
+              "elapsed_sec": 24.50292944908142
+            },
+            "1.0": {
+              "accuracy": 1.0,
+              "drop_from_clean": 67.08,
+              "elapsed_sec": 24.520126581192017
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 68.08,
+              "drop_from_clean": 0.0,
+              "elapsed_sec": 4.483156204223633
+            },
+            "0.005": {
+              "accuracy": 68.03,
+              "drop_from_clean": 0.04999999999999716,
+              "elapsed_sec": 4.457388162612915
+            },
+            "0.01": {
+              "accuracy": 67.96,
+              "drop_from_clean": 0.12000000000000455,
+              "elapsed_sec": 4.479262113571167
+            },
+            "0.05": {
+              "accuracy": 67.37,
+              "drop_from_clean": 0.7099999999999937,
+              "elapsed_sec": 4.477474927902222
+            },
+            "0.1": {
+              "accuracy": 66.68,
+              "drop_from_clean": 1.3999999999999915,
+              "elapsed_sec": 4.452729225158691
+            },
+            "0.2": {
+              "accuracy": 64.27,
+              "drop_from_clean": 3.8100000000000023,
+              "elapsed_sec": 4.460761308670044
+            },
+            "0.5": {
+              "accuracy": 42.16,
+              "drop_from_clean": 25.92,
+              "elapsed_sec": 4.462502717971802
+            },
+            "1.0": {
+              "accuracy": 2.67,
+              "drop_from_clean": 65.41,
+              "elapsed_sec": 4.461690425872803
+            }
+          }
+        }
+      },
+      "456": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/learned_seed456/best_model.pth",
+        "clean_acc": 68.03,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 67.93,
+              "drop_from_clean": 0.09999999999999432,
+              "elapsed_sec": 4.486245632171631
+            },
+            "0.005": {
+              "accuracy": 67.18,
+              "drop_from_clean": 0.8499999999999943,
+              "elapsed_sec": 4.4615256786346436
+            },
+            "0.01": {
+              "accuracy": 66.17,
+              "drop_from_clean": 1.8599999999999994,
+              "elapsed_sec": 4.449912786483765
+            },
+            "0.05": {
+              "accuracy": 37.01,
+              "drop_from_clean": 31.020000000000003,
+              "elapsed_sec": 4.4440553188323975
+            },
+            "0.1": {
+              "accuracy": 7.54,
+              "drop_from_clean": 60.49,
+              "elapsed_sec": 4.4725847244262695
+            },
+            "0.2": {
+              "accuracy": 1.68,
+              "drop_from_clean": 66.35,
+              "elapsed_sec": 4.451356649398804
+            },
+            "0.5": {
+              "accuracy": 1.16,
+              "drop_from_clean": 66.87,
+              "elapsed_sec": 4.4563703536987305
+            },
+            "1.0": {
+              "accuracy": 1.21,
+              "drop_from_clean": 66.82000000000001,
+              "elapsed_sec": 4.46277928352356
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 67.95,
+              "drop_from_clean": 0.0799999999999983,
+              "elapsed_sec": 24.49970531463623
+            },
+            "0.005": {
+              "accuracy": 67.12,
+              "drop_from_clean": 0.9099999999999966,
+              "elapsed_sec": 24.49495506286621
+            },
+            "0.01": {
+              "accuracy": 65.74,
+              "drop_from_clean": 2.2900000000000063,
+              "elapsed_sec": 24.52597188949585
+            },
+            "0.05": {
+              "accuracy": 13.66,
+              "drop_from_clean": 54.370000000000005,
+              "elapsed_sec": 24.54150366783142
+            },
+            "0.1": {
+              "accuracy": 1.26,
+              "drop_from_clean": 66.77,
+              "elapsed_sec": 24.52365517616272
+            },
+            "0.2": {
+              "accuracy": 1.07,
+              "drop_from_clean": 66.96000000000001,
+              "elapsed_sec": 24.527066946029663
+            },
+            "0.5": {
+              "accuracy": 1.0,
+              "drop_from_clean": 67.03,
+              "elapsed_sec": 24.51041603088379
+            },
+            "1.0": {
+              "accuracy": 1.0,
+              "drop_from_clean": 67.03,
+              "elapsed_sec": 24.51073122024536
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 68.06,
+              "drop_from_clean": -0.030000000000001137,
+              "elapsed_sec": 4.463557481765747
+            },
+            "0.005": {
+              "accuracy": 68.02,
+              "drop_from_clean": 0.010000000000005116,
+              "elapsed_sec": 4.4527976512908936
+            },
+            "0.01": {
+              "accuracy": 67.94,
+              "drop_from_clean": 0.09000000000000341,
+              "elapsed_sec": 4.483170747756958
+            },
+            "0.05": {
+              "accuracy": 67.16,
+              "drop_from_clean": 0.8700000000000045,
+              "elapsed_sec": 4.461189031600952
+            },
+            "0.1": {
+              "accuracy": 66.11,
+              "drop_from_clean": 1.9200000000000017,
+              "elapsed_sec": 4.456162929534912
+            },
+            "0.2": {
+              "accuracy": 62.92,
+              "drop_from_clean": 5.109999999999999,
+              "elapsed_sec": 4.475383281707764
+            },
+            "0.5": {
+              "accuracy": 31.41,
+              "drop_from_clean": 36.620000000000005,
+              "elapsed_sec": 4.461855173110962
+            },
+            "1.0": {
+              "accuracy": 2.64,
+              "drop_from_clean": 65.39,
+              "elapsed_sec": 4.457847833633423
+            }
+          }
+        }
+      },
+      "789": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/learned_seed789/best_model.pth",
+        "clean_acc": 67.63,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 67.35,
+              "drop_from_clean": 0.28000000000000114,
+              "elapsed_sec": 4.4723711013793945
+            },
+            "0.005": {
+              "accuracy": 66.68,
+              "drop_from_clean": 0.9499999999999886,
+              "elapsed_sec": 4.478679656982422
+            },
+            "0.01": {
+              "accuracy": 65.38,
+              "drop_from_clean": 2.25,
+              "elapsed_sec": 4.4590418338775635
+            },
+            "0.05": {
+              "accuracy": 31.73,
+              "drop_from_clean": 35.89999999999999,
+              "elapsed_sec": 4.450596570968628
+            },
+            "0.1": {
+              "accuracy": 4.41,
+              "drop_from_clean": 63.22,
+              "elapsed_sec": 4.474102258682251
+            },
+            "0.2": {
+              "accuracy": 2.08,
+              "drop_from_clean": 65.55,
+              "elapsed_sec": 4.457276344299316
+            },
+            "0.5": {
+              "accuracy": 1.49,
+              "drop_from_clean": 66.14,
+              "elapsed_sec": 4.451710224151611
+            },
+            "1.0": {
+              "accuracy": 0.73,
+              "drop_from_clean": 66.89999999999999,
+              "elapsed_sec": 4.451190233230591
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 67.35,
+              "drop_from_clean": 0.28000000000000114,
+              "elapsed_sec": 24.476661682128906
+            },
+            "0.005": {
+              "accuracy": 66.67,
+              "drop_from_clean": 0.9599999999999937,
+              "elapsed_sec": 24.51491618156433
+            },
+            "0.01": {
+              "accuracy": 65.32,
+              "drop_from_clean": 2.3100000000000023,
+              "elapsed_sec": 24.50882863998413
+            },
+            "0.05": {
+              "accuracy": 11.49,
+              "drop_from_clean": 56.13999999999999,
+              "elapsed_sec": 24.47866177558899
+            },
+            "0.1": {
+              "accuracy": 1.2,
+              "drop_from_clean": 66.42999999999999,
+              "elapsed_sec": 24.46516251564026
+            },
+            "0.2": {
+              "accuracy": 1.03,
+              "drop_from_clean": 66.6,
+              "elapsed_sec": 24.49346947669983
+            },
+            "0.5": {
+              "accuracy": 1.0,
+              "drop_from_clean": 66.63,
+              "elapsed_sec": 24.47031021118164
+            },
+            "1.0": {
+              "accuracy": 1.0,
+              "drop_from_clean": 66.63,
+              "elapsed_sec": 24.488038301467896
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 67.59,
+              "drop_from_clean": 0.03999999999999204,
+              "elapsed_sec": 4.457439184188843
+            },
+            "0.005": {
+              "accuracy": 67.53,
+              "drop_from_clean": 0.09999999999999432,
+              "elapsed_sec": 4.45337700843811
+            },
+            "0.01": {
+              "accuracy": 67.46,
+              "drop_from_clean": 0.1700000000000017,
+              "elapsed_sec": 4.471329927444458
+            },
+            "0.05": {
+              "accuracy": 66.75,
+              "drop_from_clean": 0.8799999999999955,
+              "elapsed_sec": 4.462026357650757
+            },
+            "0.1": {
+              "accuracy": 65.95,
+              "drop_from_clean": 1.6799999999999926,
+              "elapsed_sec": 4.475396156311035
+            },
+            "0.2": {
+              "accuracy": 63.31,
+              "drop_from_clean": 4.319999999999993,
+              "elapsed_sec": 4.459035634994507
+            },
+            "0.5": {
+              "accuracy": 41.86,
+              "drop_from_clean": 25.769999999999996,
+              "elapsed_sec": 4.461205244064331
+            },
+            "1.0": {
+              "accuracy": 3.68,
+              "drop_from_clean": 63.949999999999996,
+              "elapsed_sec": 4.4531683921813965
+            }
+          }
+        }
+      },
+      "1011": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/learned_seed1011/best_model.pth",
+        "clean_acc": 67.64,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 67.49,
+              "drop_from_clean": 0.15000000000000568,
+              "elapsed_sec": 4.470017910003662
+            },
+            "0.005": {
+              "accuracy": 67.07,
+              "drop_from_clean": 0.5700000000000074,
+              "elapsed_sec": 4.464593887329102
+            },
+            "0.01": {
+              "accuracy": 66.22,
+              "drop_from_clean": 1.4200000000000017,
+              "elapsed_sec": 4.462233304977417
+            },
+            "0.05": {
+              "accuracy": 37.24,
+              "drop_from_clean": 30.4,
+              "elapsed_sec": 4.477399587631226
+            },
+            "0.1": {
+              "accuracy": 5.83,
+              "drop_from_clean": 61.81,
+              "elapsed_sec": 4.46507453918457
+            },
+            "0.2": {
+              "accuracy": 1.94,
+              "drop_from_clean": 65.7,
+              "elapsed_sec": 4.460303544998169
+            },
+            "0.5": {
+              "accuracy": 1.02,
+              "drop_from_clean": 66.62,
+              "elapsed_sec": 4.4620537757873535
+            },
+            "1.0": {
+              "accuracy": 1.15,
+              "drop_from_clean": 66.49,
+              "elapsed_sec": 4.46714973449707
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 67.48,
+              "drop_from_clean": 0.1599999999999966,
+              "elapsed_sec": 24.584813833236694
+            },
+            "0.005": {
+              "accuracy": 66.94,
+              "drop_from_clean": 0.7000000000000028,
+              "elapsed_sec": 24.53429889678955
+            },
+            "0.01": {
+              "accuracy": 65.66,
+              "drop_from_clean": 1.980000000000004,
+              "elapsed_sec": 24.48168444633484
+            },
+            "0.05": {
+              "accuracy": 12.86,
+              "drop_from_clean": 54.78,
+              "elapsed_sec": 24.468074083328247
+            },
+            "0.1": {
+              "accuracy": 1.09,
+              "drop_from_clean": 66.55,
+              "elapsed_sec": 24.522013187408447
+            },
+            "0.2": {
+              "accuracy": 1.04,
+              "drop_from_clean": 66.6,
+              "elapsed_sec": 24.50167441368103
+            },
+            "0.5": {
+              "accuracy": 1.0,
+              "drop_from_clean": 66.64,
+              "elapsed_sec": 24.49666166305542
+            },
+            "1.0": {
+              "accuracy": 1.0,
+              "drop_from_clean": 66.64,
+              "elapsed_sec": 24.494322061538696
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 67.64,
+              "drop_from_clean": 0.0,
+              "elapsed_sec": 4.455261468887329
+            },
+            "0.005": {
+              "accuracy": 67.55,
+              "drop_from_clean": 0.09000000000000341,
+              "elapsed_sec": 4.463388919830322
+            },
+            "0.01": {
+              "accuracy": 67.55,
+              "drop_from_clean": 0.09000000000000341,
+              "elapsed_sec": 4.456362724304199
+            },
+            "0.05": {
+              "accuracy": 67.23,
+              "drop_from_clean": 0.4099999999999966,
+              "elapsed_sec": 4.476628541946411
+            },
+            "0.1": {
+              "accuracy": 66.81,
+              "drop_from_clean": 0.8299999999999983,
+              "elapsed_sec": 4.458132982254028
+            },
+            "0.2": {
+              "accuracy": 65.14,
+              "drop_from_clean": 2.5,
+              "elapsed_sec": 4.459873676300049
+            },
+            "0.5": {
+              "accuracy": 51.23,
+              "drop_from_clean": 16.410000000000004,
+              "elapsed_sec": 4.4593665599823
+            },
+            "1.0": {
+              "accuracy": 5.02,
+              "drop_from_clean": 62.620000000000005,
+              "elapsed_sec": 4.4793219566345215
+            }
+          }
+        }
+      },
+      "1213": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/learned_seed1213/best_model.pth",
+        "clean_acc": 67.44,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 67.24,
+              "drop_from_clean": 0.20000000000000284,
+              "elapsed_sec": 4.479536771774292
+            },
+            "0.005": {
+              "accuracy": 66.62,
+              "drop_from_clean": 0.8199999999999932,
+              "elapsed_sec": 4.457834243774414
+            },
+            "0.01": {
+              "accuracy": 65.58,
+              "drop_from_clean": 1.8599999999999994,
+              "elapsed_sec": 4.4749436378479
+            },
+            "0.05": {
+              "accuracy": 36.01,
+              "drop_from_clean": 31.43,
+              "elapsed_sec": 4.449744701385498
+            },
+            "0.1": {
+              "accuracy": 4.52,
+              "drop_from_clean": 62.92,
+              "elapsed_sec": 4.4748053550720215
+            },
+            "0.2": {
+              "accuracy": 1.87,
+              "drop_from_clean": 65.57,
+              "elapsed_sec": 4.461036443710327
+            },
+            "0.5": {
+              "accuracy": 1.53,
+              "drop_from_clean": 65.91,
+              "elapsed_sec": 4.458103895187378
+            },
+            "1.0": {
+              "accuracy": 1.08,
+              "drop_from_clean": 66.36,
+              "elapsed_sec": 4.451886177062988
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 67.22,
+              "drop_from_clean": 0.21999999999999886,
+              "elapsed_sec": 24.473960399627686
+            },
+            "0.005": {
+              "accuracy": 66.62,
+              "drop_from_clean": 0.8199999999999932,
+              "elapsed_sec": 24.49574065208435
+            },
+            "0.01": {
+              "accuracy": 65.1,
+              "drop_from_clean": 2.3400000000000034,
+              "elapsed_sec": 24.497547149658203
+            },
+            "0.05": {
+              "accuracy": 15.63,
+              "drop_from_clean": 51.809999999999995,
+              "elapsed_sec": 24.480557680130005
+            },
+            "0.1": {
+              "accuracy": 1.26,
+              "drop_from_clean": 66.17999999999999,
+              "elapsed_sec": 24.491585969924927
+            },
+            "0.2": {
+              "accuracy": 1.01,
+              "drop_from_clean": 66.42999999999999,
+              "elapsed_sec": 24.469511032104492
+            },
+            "0.5": {
+              "accuracy": 1.0,
+              "drop_from_clean": 66.44,
+              "elapsed_sec": 24.48063898086548
+            },
+            "1.0": {
+              "accuracy": 1.0,
+              "drop_from_clean": 66.44,
+              "elapsed_sec": 24.493135929107666
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 67.44,
+              "drop_from_clean": 0.0,
+              "elapsed_sec": 4.462972402572632
+            },
+            "0.005": {
+              "accuracy": 67.38,
+              "drop_from_clean": 0.060000000000002274,
+              "elapsed_sec": 4.458849191665649
+            },
+            "0.01": {
+              "accuracy": 67.25,
+              "drop_from_clean": 0.18999999999999773,
+              "elapsed_sec": 4.47316312789917
+            },
+            "0.05": {
+              "accuracy": 66.71,
+              "drop_from_clean": 0.730000000000004,
+              "elapsed_sec": 4.466214418411255
+            },
+            "0.1": {
+              "accuracy": 65.86,
+              "drop_from_clean": 1.5799999999999983,
+              "elapsed_sec": 4.467422723770142
+            },
+            "0.2": {
+              "accuracy": 62.93,
+              "drop_from_clean": 4.509999999999998,
+              "elapsed_sec": 4.454499244689941
+            },
+            "0.5": {
+              "accuracy": 29.89,
+              "drop_from_clean": 37.55,
+              "elapsed_sec": 4.458459377288818
+            },
+            "1.0": {
+              "accuracy": 3.06,
+              "drop_from_clean": 64.38,
+              "elapsed_sec": 4.49467396736145
+            }
+          }
+        }
+      }
+    },
+    "sinusoidal": {
+      "42": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/sinusoidal_seed42/best_model.pth",
+        "clean_acc": 67.4,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 67.3,
+              "drop_from_clean": 0.10000000000000853,
+              "elapsed_sec": 4.462216377258301
+            },
+            "0.005": {
+              "accuracy": 67.02,
+              "drop_from_clean": 0.38000000000000966,
+              "elapsed_sec": 4.453241586685181
+            },
+            "0.01": {
+              "accuracy": 66.81,
+              "drop_from_clean": 0.5900000000000034,
+              "elapsed_sec": 4.478177309036255
+            },
+            "0.05": {
+              "accuracy": 61.7,
+              "drop_from_clean": 5.700000000000003,
+              "elapsed_sec": 4.466031074523926
+            },
+            "0.1": {
+              "accuracy": 47.24,
+              "drop_from_clean": 20.160000000000004,
+              "elapsed_sec": 4.462801694869995
+            },
+            "0.2": {
+              "accuracy": 4.79,
+              "drop_from_clean": 62.61000000000001,
+              "elapsed_sec": 4.454558849334717
+            },
+            "0.5": {
+              "accuracy": 1.57,
+              "drop_from_clean": 65.83000000000001,
+              "elapsed_sec": 4.462209939956665
+            },
+            "1.0": {
+              "accuracy": 1.55,
+              "drop_from_clean": 65.85000000000001,
+              "elapsed_sec": 4.460727691650391
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 67.3,
+              "drop_from_clean": 0.10000000000000853,
+              "elapsed_sec": 24.494568347930908
+            },
+            "0.005": {
+              "accuracy": 67.01,
+              "drop_from_clean": 0.39000000000000057,
+              "elapsed_sec": 24.515284299850464
+            },
+            "0.01": {
+              "accuracy": 66.72,
+              "drop_from_clean": 0.6800000000000068,
+              "elapsed_sec": 24.556872606277466
+            },
+            "0.05": {
+              "accuracy": 59.86,
+              "drop_from_clean": 7.540000000000006,
+              "elapsed_sec": 24.511378526687622
+            },
+            "0.1": {
+              "accuracy": 38.93,
+              "drop_from_clean": 28.470000000000006,
+              "elapsed_sec": 24.50755786895752
+            },
+            "0.2": {
+              "accuracy": 1.13,
+              "drop_from_clean": 66.27000000000001,
+              "elapsed_sec": 24.50679636001587
+            },
+            "0.5": {
+              "accuracy": 1.0,
+              "drop_from_clean": 66.4,
+              "elapsed_sec": 24.484275817871094
+            },
+            "1.0": {
+              "accuracy": 1.0,
+              "drop_from_clean": 66.4,
+              "elapsed_sec": 24.479473114013672
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 67.33,
+              "drop_from_clean": 0.07000000000000739,
+              "elapsed_sec": 4.475980281829834
+            },
+            "0.005": {
+              "accuracy": 67.26,
+              "drop_from_clean": 0.14000000000000057,
+              "elapsed_sec": 4.453340530395508
+            },
+            "0.01": {
+              "accuracy": 67.01,
+              "drop_from_clean": 0.39000000000000057,
+              "elapsed_sec": 4.464630365371704
+            },
+            "0.05": {
+              "accuracy": 65.34,
+              "drop_from_clean": 2.0600000000000023,
+              "elapsed_sec": 4.48318886756897
+            },
+            "0.1": {
+              "accuracy": 61.57,
+              "drop_from_clean": 5.830000000000005,
+              "elapsed_sec": 4.465842247009277
+            },
+            "0.2": {
+              "accuracy": 48.14,
+              "drop_from_clean": 19.260000000000005,
+              "elapsed_sec": 4.469735860824585
+            },
+            "0.5": {
+              "accuracy": 2.83,
+              "drop_from_clean": 64.57000000000001,
+              "elapsed_sec": 4.473806858062744
+            },
+            "1.0": {
+              "accuracy": 1.39,
+              "drop_from_clean": 66.01,
+              "elapsed_sec": 4.458604335784912
+            }
+          }
+        }
+      },
+      "123": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/sinusoidal_seed123/best_model.pth",
+        "clean_acc": 66.42,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 66.37,
+              "drop_from_clean": 0.04999999999999716,
+              "elapsed_sec": 4.460744142532349
+            },
+            "0.005": {
+              "accuracy": 66.0,
+              "drop_from_clean": 0.4200000000000017,
+              "elapsed_sec": 4.454225301742554
+            },
+            "0.01": {
+              "accuracy": 65.63,
+              "drop_from_clean": 0.7900000000000063,
+              "elapsed_sec": 4.45656681060791
+            },
+            "0.05": {
+              "accuracy": 61.26,
+              "drop_from_clean": 5.160000000000004,
+              "elapsed_sec": 4.455852746963501
+            },
+            "0.1": {
+              "accuracy": 48.52,
+              "drop_from_clean": 17.9,
+              "elapsed_sec": 4.4652745723724365
+            },
+            "0.2": {
+              "accuracy": 13.29,
+              "drop_from_clean": 53.13,
+              "elapsed_sec": 4.458042144775391
+            },
+            "0.5": {
+              "accuracy": 1.46,
+              "drop_from_clean": 64.96000000000001,
+              "elapsed_sec": 4.478411912918091
+            },
+            "1.0": {
+              "accuracy": 1.11,
+              "drop_from_clean": 65.31,
+              "elapsed_sec": 4.455235481262207
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 66.38,
+              "drop_from_clean": 0.04000000000000625,
+              "elapsed_sec": 24.49039363861084
+            },
+            "0.005": {
+              "accuracy": 66.01,
+              "drop_from_clean": 0.4099999999999966,
+              "elapsed_sec": 24.48444390296936
+            },
+            "0.01": {
+              "accuracy": 65.62,
+              "drop_from_clean": 0.7999999999999972,
+              "elapsed_sec": 24.515916109085083
+            },
+            "0.05": {
+              "accuracy": 59.6,
+              "drop_from_clean": 6.82,
+              "elapsed_sec": 24.533324241638184
+            },
+            "0.1": {
+              "accuracy": 33.11,
+              "drop_from_clean": 33.31,
+              "elapsed_sec": 24.481135368347168
+            },
+            "0.2": {
+              "accuracy": 1.37,
+              "drop_from_clean": 65.05,
+              "elapsed_sec": 24.485106945037842
+            },
+            "0.5": {
+              "accuracy": 1.04,
+              "drop_from_clean": 65.38,
+              "elapsed_sec": 24.483642101287842
+            },
+            "1.0": {
+              "accuracy": 1.01,
+              "drop_from_clean": 65.41,
+              "elapsed_sec": 24.469243049621582
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 66.4,
+              "drop_from_clean": 0.01999999999999602,
+              "elapsed_sec": 4.457442760467529
+            },
+            "0.005": {
+              "accuracy": 66.18,
+              "drop_from_clean": 0.23999999999999488,
+              "elapsed_sec": 4.447299242019653
+            },
+            "0.01": {
+              "accuracy": 66.02,
+              "drop_from_clean": 0.4000000000000057,
+              "elapsed_sec": 4.454157829284668
+            },
+            "0.05": {
+              "accuracy": 64.17,
+              "drop_from_clean": 2.25,
+              "elapsed_sec": 4.457150936126709
+            },
+            "0.1": {
+              "accuracy": 60.92,
+              "drop_from_clean": 5.5,
+              "elapsed_sec": 4.457458257675171
+            },
+            "0.2": {
+              "accuracy": 47.75,
+              "drop_from_clean": 18.67,
+              "elapsed_sec": 4.45888352394104
+            },
+            "0.5": {
+              "accuracy": 5.7,
+              "drop_from_clean": 60.72,
+              "elapsed_sec": 4.476381063461304
+            },
+            "1.0": {
+              "accuracy": 1.88,
+              "drop_from_clean": 64.54,
+              "elapsed_sec": 4.4652979373931885
+            }
+          }
+        }
+      },
+      "456": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/sinusoidal_seed456/best_model.pth",
+        "clean_acc": 66.93,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 66.88,
+              "drop_from_clean": 0.05000000000001137,
+              "elapsed_sec": 4.465651512145996
+            },
+            "0.005": {
+              "accuracy": 66.55,
+              "drop_from_clean": 0.38000000000000966,
+              "elapsed_sec": 4.4603517055511475
+            },
+            "0.01": {
+              "accuracy": 66.26,
+              "drop_from_clean": 0.6700000000000017,
+              "elapsed_sec": 4.4577038288116455
+            },
+            "0.05": {
+              "accuracy": 60.61,
+              "drop_from_clean": 6.320000000000007,
+              "elapsed_sec": 4.461198329925537
+            },
+            "0.1": {
+              "accuracy": 47.58,
+              "drop_from_clean": 19.35000000000001,
+              "elapsed_sec": 4.471816062927246
+            },
+            "0.2": {
+              "accuracy": 12.45,
+              "drop_from_clean": 54.480000000000004,
+              "elapsed_sec": 4.473717451095581
+            },
+            "0.5": {
+              "accuracy": 1.15,
+              "drop_from_clean": 65.78,
+              "elapsed_sec": 4.4692702293396
+            },
+            "1.0": {
+              "accuracy": 1.0,
+              "drop_from_clean": 65.93,
+              "elapsed_sec": 4.468724727630615
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 66.88,
+              "drop_from_clean": 0.05000000000001137,
+              "elapsed_sec": 24.48495078086853
+            },
+            "0.005": {
+              "accuracy": 66.54,
+              "drop_from_clean": 0.39000000000000057,
+              "elapsed_sec": 24.547006607055664
+            },
+            "0.01": {
+              "accuracy": 66.13,
+              "drop_from_clean": 0.8000000000000114,
+              "elapsed_sec": 24.52181100845337
+            },
+            "0.05": {
+              "accuracy": 58.9,
+              "drop_from_clean": 8.030000000000008,
+              "elapsed_sec": 24.536648988723755
+            },
+            "0.1": {
+              "accuracy": 35.64,
+              "drop_from_clean": 31.290000000000006,
+              "elapsed_sec": 24.5027277469635
+            },
+            "0.2": {
+              "accuracy": 1.57,
+              "drop_from_clean": 65.36000000000001,
+              "elapsed_sec": 24.482630491256714
+            },
+            "0.5": {
+              "accuracy": 1.04,
+              "drop_from_clean": 65.89,
+              "elapsed_sec": 24.49956202507019
+            },
+            "1.0": {
+              "accuracy": 1.0,
+              "drop_from_clean": 65.93,
+              "elapsed_sec": 24.48194169998169
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 66.9,
+              "drop_from_clean": 0.030000000000001137,
+              "elapsed_sec": 4.4625654220581055
+            },
+            "0.005": {
+              "accuracy": 66.76,
+              "drop_from_clean": 0.1700000000000017,
+              "elapsed_sec": 4.462144136428833
+            },
+            "0.01": {
+              "accuracy": 66.51,
+              "drop_from_clean": 0.4200000000000017,
+              "elapsed_sec": 4.47751784324646
+            },
+            "0.05": {
+              "accuracy": 64.72,
+              "drop_from_clean": 2.210000000000008,
+              "elapsed_sec": 4.4651923179626465
+            },
+            "0.1": {
+              "accuracy": 60.41,
+              "drop_from_clean": 6.52000000000001,
+              "elapsed_sec": 4.462305068969727
+            },
+            "0.2": {
+              "accuracy": 46.8,
+              "drop_from_clean": 20.13000000000001,
+              "elapsed_sec": 4.47870135307312
+            },
+            "0.5": {
+              "accuracy": 7.28,
+              "drop_from_clean": 59.650000000000006,
+              "elapsed_sec": 4.456132173538208
+            },
+            "1.0": {
+              "accuracy": 1.69,
+              "drop_from_clean": 65.24000000000001,
+              "elapsed_sec": 4.4687819480896
+            }
+          }
+        }
+      },
+      "789": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/sinusoidal_seed789/best_model.pth",
+        "clean_acc": 67.72,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 67.68,
+              "drop_from_clean": 0.03999999999999204,
+              "elapsed_sec": 4.460269451141357
+            },
+            "0.005": {
+              "accuracy": 67.54,
+              "drop_from_clean": 0.1799999999999926,
+              "elapsed_sec": 4.462573289871216
+            },
+            "0.01": {
+              "accuracy": 67.3,
+              "drop_from_clean": 0.4200000000000017,
+              "elapsed_sec": 4.455237150192261
+            },
+            "0.05": {
+              "accuracy": 62.17,
+              "drop_from_clean": 5.549999999999997,
+              "elapsed_sec": 4.45871901512146
+            },
+            "0.1": {
+              "accuracy": 48.27,
+              "drop_from_clean": 19.449999999999996,
+              "elapsed_sec": 4.4597742557525635
+            },
+            "0.2": {
+              "accuracy": 7.02,
+              "drop_from_clean": 60.7,
+              "elapsed_sec": 4.45525050163269
+            },
+            "0.5": {
+              "accuracy": 1.02,
+              "drop_from_clean": 66.7,
+              "elapsed_sec": 4.456141948699951
+            },
+            "1.0": {
+              "accuracy": 1.21,
+              "drop_from_clean": 66.51,
+              "elapsed_sec": 4.455518007278442
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 67.67,
+              "drop_from_clean": 0.04999999999999716,
+              "elapsed_sec": 24.491536378860474
+            },
+            "0.005": {
+              "accuracy": 67.56,
+              "drop_from_clean": 0.1599999999999966,
+              "elapsed_sec": 24.525312423706055
+            },
+            "0.01": {
+              "accuracy": 67.16,
+              "drop_from_clean": 0.5600000000000023,
+              "elapsed_sec": 24.48108148574829
+            },
+            "0.05": {
+              "accuracy": 60.57,
+              "drop_from_clean": 7.149999999999999,
+              "elapsed_sec": 24.501383304595947
+            },
+            "0.1": {
+              "accuracy": 32.67,
+              "drop_from_clean": 35.05,
+              "elapsed_sec": 24.50883674621582
+            },
+            "0.2": {
+              "accuracy": 1.31,
+              "drop_from_clean": 66.41,
+              "elapsed_sec": 24.51278591156006
+            },
+            "0.5": {
+              "accuracy": 1.0,
+              "drop_from_clean": 66.72,
+              "elapsed_sec": 24.489587545394897
+            },
+            "1.0": {
+              "accuracy": 1.0,
+              "drop_from_clean": 66.72,
+              "elapsed_sec": 24.548621892929077
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 67.7,
+              "drop_from_clean": 0.01999999999999602,
+              "elapsed_sec": 4.45847225189209
+            },
+            "0.005": {
+              "accuracy": 67.57,
+              "drop_from_clean": 0.15000000000000568,
+              "elapsed_sec": 4.464091539382935
+            },
+            "0.01": {
+              "accuracy": 67.51,
+              "drop_from_clean": 0.20999999999999375,
+              "elapsed_sec": 4.493299245834351
+            },
+            "0.05": {
+              "accuracy": 65.85,
+              "drop_from_clean": 1.8700000000000045,
+              "elapsed_sec": 4.458110570907593
+            },
+            "0.1": {
+              "accuracy": 61.92,
+              "drop_from_clean": 5.799999999999997,
+              "elapsed_sec": 4.47677755355835
+            },
+            "0.2": {
+              "accuracy": 47.92,
+              "drop_from_clean": 19.799999999999997,
+              "elapsed_sec": 4.456381797790527
+            },
+            "0.5": {
+              "accuracy": 3.35,
+              "drop_from_clean": 64.37,
+              "elapsed_sec": 4.455127954483032
+            },
+            "1.0": {
+              "accuracy": 1.05,
+              "drop_from_clean": 66.67,
+              "elapsed_sec": 4.46063756942749
+            }
+          }
+        }
+      },
+      "1011": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/sinusoidal_seed1011/best_model.pth",
+        "clean_acc": 67.47,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 67.39,
+              "drop_from_clean": 0.0799999999999983,
+              "elapsed_sec": 4.463386535644531
+            },
+            "0.005": {
+              "accuracy": 67.07,
+              "drop_from_clean": 0.4000000000000057,
+              "elapsed_sec": 4.456419229507446
+            },
+            "0.01": {
+              "accuracy": 66.64,
+              "drop_from_clean": 0.8299999999999983,
+              "elapsed_sec": 4.456607103347778
+            },
+            "0.05": {
+              "accuracy": 61.72,
+              "drop_from_clean": 5.75,
+              "elapsed_sec": 4.455613851547241
+            },
+            "0.1": {
+              "accuracy": 46.55,
+              "drop_from_clean": 20.92,
+              "elapsed_sec": 4.482013940811157
+            },
+            "0.2": {
+              "accuracy": 7.92,
+              "drop_from_clean": 59.55,
+              "elapsed_sec": 4.475347518920898
+            },
+            "0.5": {
+              "accuracy": 1.4,
+              "drop_from_clean": 66.07,
+              "elapsed_sec": 4.453899145126343
+            },
+            "1.0": {
+              "accuracy": 1.51,
+              "drop_from_clean": 65.96,
+              "elapsed_sec": 4.468953371047974
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 67.39,
+              "drop_from_clean": 0.0799999999999983,
+              "elapsed_sec": 24.53398108482361
+            },
+            "0.005": {
+              "accuracy": 67.1,
+              "drop_from_clean": 0.37000000000000455,
+              "elapsed_sec": 24.54305863380432
+            },
+            "0.01": {
+              "accuracy": 66.71,
+              "drop_from_clean": 0.7600000000000051,
+              "elapsed_sec": 24.51985001564026
+            },
+            "0.05": {
+              "accuracy": 60.11,
+              "drop_from_clean": 7.359999999999999,
+              "elapsed_sec": 24.49922013282776
+            },
+            "0.1": {
+              "accuracy": 37.72,
+              "drop_from_clean": 29.75,
+              "elapsed_sec": 24.50063157081604
+            },
+            "0.2": {
+              "accuracy": 1.39,
+              "drop_from_clean": 66.08,
+              "elapsed_sec": 24.489532232284546
+            },
+            "0.5": {
+              "accuracy": 1.07,
+              "drop_from_clean": 66.4,
+              "elapsed_sec": 24.491670846939087
+            },
+            "1.0": {
+              "accuracy": 1.0,
+              "drop_from_clean": 66.47,
+              "elapsed_sec": 24.536460876464844
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 67.46,
+              "drop_from_clean": 0.010000000000005116,
+              "elapsed_sec": 4.454850435256958
+            },
+            "0.005": {
+              "accuracy": 67.29,
+              "drop_from_clean": 0.1799999999999926,
+              "elapsed_sec": 4.4459168910980225
+            },
+            "0.01": {
+              "accuracy": 67.09,
+              "drop_from_clean": 0.37999999999999545,
+              "elapsed_sec": 4.458313226699829
+            },
+            "0.05": {
+              "accuracy": 65.28,
+              "drop_from_clean": 2.1899999999999977,
+              "elapsed_sec": 4.456004619598389
+            },
+            "0.1": {
+              "accuracy": 61.12,
+              "drop_from_clean": 6.350000000000001,
+              "elapsed_sec": 4.458803653717041
+            },
+            "0.2": {
+              "accuracy": 45.3,
+              "drop_from_clean": 22.17,
+              "elapsed_sec": 4.452244758605957
+            },
+            "0.5": {
+              "accuracy": 3.71,
+              "drop_from_clean": 63.76,
+              "elapsed_sec": 4.453167676925659
+            },
+            "1.0": {
+              "accuracy": 1.51,
+              "drop_from_clean": 65.96,
+              "elapsed_sec": 4.478231906890869
+            }
+          }
+        }
+      },
+      "1213": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/sinusoidal_seed1213/best_model.pth",
+        "clean_acc": 67.35,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 67.32,
+              "drop_from_clean": 0.030000000000001137,
+              "elapsed_sec": 4.4605326652526855
+            },
+            "0.005": {
+              "accuracy": 66.98,
+              "drop_from_clean": 0.36999999999999034,
+              "elapsed_sec": 4.466418743133545
+            },
+            "0.01": {
+              "accuracy": 66.69,
+              "drop_from_clean": 0.6599999999999966,
+              "elapsed_sec": 4.461799621582031
+            },
+            "0.05": {
+              "accuracy": 61.87,
+              "drop_from_clean": 5.479999999999997,
+              "elapsed_sec": 4.459466934204102
+            },
+            "0.1": {
+              "accuracy": 48.66,
+              "drop_from_clean": 18.689999999999998,
+              "elapsed_sec": 4.462732315063477
+            },
+            "0.2": {
+              "accuracy": 12.31,
+              "drop_from_clean": 55.03999999999999,
+              "elapsed_sec": 4.4613282680511475
+            },
+            "0.5": {
+              "accuracy": 2.38,
+              "drop_from_clean": 64.97,
+              "elapsed_sec": 4.483121156692505
+            },
+            "1.0": {
+              "accuracy": 1.56,
+              "drop_from_clean": 65.78999999999999,
+              "elapsed_sec": 4.4630820751190186
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 67.32,
+              "drop_from_clean": 0.030000000000001137,
+              "elapsed_sec": 24.47378420829773
+            },
+            "0.005": {
+              "accuracy": 66.94,
+              "drop_from_clean": 0.4099999999999966,
+              "elapsed_sec": 24.50636625289917
+            },
+            "0.01": {
+              "accuracy": 66.62,
+              "drop_from_clean": 0.7299999999999898,
+              "elapsed_sec": 24.490633964538574
+            },
+            "0.05": {
+              "accuracy": 59.71,
+              "drop_from_clean": 7.6399999999999935,
+              "elapsed_sec": 24.482626914978027
+            },
+            "0.1": {
+              "accuracy": 36.95,
+              "drop_from_clean": 30.39999999999999,
+              "elapsed_sec": 24.505319595336914
+            },
+            "0.2": {
+              "accuracy": 1.19,
+              "drop_from_clean": 66.16,
+              "elapsed_sec": 24.494927644729614
+            },
+            "0.5": {
+              "accuracy": 1.04,
+              "drop_from_clean": 66.30999999999999,
+              "elapsed_sec": 24.4864284992218
+            },
+            "1.0": {
+              "accuracy": 1.0,
+              "drop_from_clean": 66.35,
+              "elapsed_sec": 24.503388166427612
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 67.32,
+              "drop_from_clean": 0.030000000000001137,
+              "elapsed_sec": 4.472791433334351
+            },
+            "0.005": {
+              "accuracy": 67.22,
+              "drop_from_clean": 0.12999999999999545,
+              "elapsed_sec": 4.449816465377808
+            },
+            "0.01": {
+              "accuracy": 67.07,
+              "drop_from_clean": 0.28000000000000114,
+              "elapsed_sec": 4.465276718139648
+            },
+            "0.05": {
+              "accuracy": 65.27,
+              "drop_from_clean": 2.0799999999999983,
+              "elapsed_sec": 4.472484588623047
+            },
+            "0.1": {
+              "accuracy": 61.49,
+              "drop_from_clean": 5.859999999999992,
+              "elapsed_sec": 4.455605983734131
+            },
+            "0.2": {
+              "accuracy": 47.03,
+              "drop_from_clean": 20.319999999999993,
+              "elapsed_sec": 4.460551023483276
+            },
+            "0.5": {
+              "accuracy": 4.98,
+              "drop_from_clean": 62.36999999999999,
+              "elapsed_sec": 4.455813407897949
+            },
+            "1.0": {
+              "accuracy": 1.32,
+              "drop_from_clean": 66.03,
+              "elapsed_sec": 4.4589362144470215
+            }
+          }
+        }
+      }
+    },
+    "rope": {
+      "42": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/rope_seed42/best_model.pth",
+        "clean_acc": 73.08,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 73.09,
+              "drop_from_clean": -0.010000000000005116,
+              "elapsed_sec": 4.797178268432617
+            },
+            "0.005": {
+              "accuracy": 73.05,
+              "drop_from_clean": 0.030000000000001137,
+              "elapsed_sec": 4.77852988243103
+            },
+            "0.01": {
+              "accuracy": 73.02,
+              "drop_from_clean": 0.060000000000002274,
+              "elapsed_sec": 4.791195869445801
+            },
+            "0.05": {
+              "accuracy": 72.17,
+              "drop_from_clean": 0.9099999999999966,
+              "elapsed_sec": 4.7744433879852295
+            },
+            "0.1": {
+              "accuracy": 70.58,
+              "drop_from_clean": 2.5,
+              "elapsed_sec": 4.784180641174316
+            },
+            "0.2": {
+              "accuracy": 65.62,
+              "drop_from_clean": 7.459999999999994,
+              "elapsed_sec": 4.767021656036377
+            },
+            "0.5": {
+              "accuracy": 32.43,
+              "drop_from_clean": 40.65,
+              "elapsed_sec": 4.779254674911499
+            },
+            "1.0": {
+              "accuracy": 6.89,
+              "drop_from_clean": 66.19,
+              "elapsed_sec": 4.781458377838135
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 73.09,
+              "drop_from_clean": -0.010000000000005116,
+              "elapsed_sec": 27.258307218551636
+            },
+            "0.005": {
+              "accuracy": 73.06,
+              "drop_from_clean": 0.01999999999999602,
+              "elapsed_sec": 27.275254487991333
+            },
+            "0.01": {
+              "accuracy": 73.0,
+              "drop_from_clean": 0.0799999999999983,
+              "elapsed_sec": 27.267820119857788
+            },
+            "0.05": {
+              "accuracy": 72.17,
+              "drop_from_clean": 0.9099999999999966,
+              "elapsed_sec": 27.218807458877563
+            },
+            "0.1": {
+              "accuracy": 70.0,
+              "drop_from_clean": 3.0799999999999983,
+              "elapsed_sec": 27.222455501556396
+            },
+            "0.2": {
+              "accuracy": 60.11,
+              "drop_from_clean": 12.969999999999999,
+              "elapsed_sec": 27.25445866584778
+            },
+            "0.5": {
+              "accuracy": 10.12,
+              "drop_from_clean": 62.96,
+              "elapsed_sec": 27.275673389434814
+            },
+            "1.0": {
+              "accuracy": 1.95,
+              "drop_from_clean": 71.13,
+              "elapsed_sec": 27.260388612747192
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 73.09,
+              "drop_from_clean": -0.010000000000005116,
+              "elapsed_sec": 4.78229546546936
+            },
+            "0.005": {
+              "accuracy": 73.05,
+              "drop_from_clean": 0.030000000000001137,
+              "elapsed_sec": 4.776806354522705
+            },
+            "0.01": {
+              "accuracy": 73.02,
+              "drop_from_clean": 0.060000000000002274,
+              "elapsed_sec": 4.786112070083618
+            },
+            "0.05": {
+              "accuracy": 72.32,
+              "drop_from_clean": 0.7600000000000051,
+              "elapsed_sec": 4.785532236099243
+            },
+            "0.1": {
+              "accuracy": 71.35,
+              "drop_from_clean": 1.730000000000004,
+              "elapsed_sec": 4.78889012336731
+            },
+            "0.2": {
+              "accuracy": 67.98,
+              "drop_from_clean": 5.099999999999994,
+              "elapsed_sec": 4.778841257095337
+            },
+            "0.5": {
+              "accuracy": 40.58,
+              "drop_from_clean": 32.5,
+              "elapsed_sec": 4.770376682281494
+            },
+            "1.0": {
+              "accuracy": 7.5,
+              "drop_from_clean": 65.58,
+              "elapsed_sec": 4.795116901397705
+            }
+          }
+        }
+      },
+      "123": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/rope_seed123/best_model.pth",
+        "clean_acc": 73.34,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 73.33,
+              "drop_from_clean": 0.010000000000005116,
+              "elapsed_sec": 4.787486553192139
+            },
+            "0.005": {
+              "accuracy": 73.25,
+              "drop_from_clean": 0.09000000000000341,
+              "elapsed_sec": 4.801723480224609
+            },
+            "0.01": {
+              "accuracy": 73.15,
+              "drop_from_clean": 0.18999999999999773,
+              "elapsed_sec": 4.783123254776001
+            },
+            "0.05": {
+              "accuracy": 72.41,
+              "drop_from_clean": 0.9300000000000068,
+              "elapsed_sec": 4.794562578201294
+            },
+            "0.1": {
+              "accuracy": 70.75,
+              "drop_from_clean": 2.5900000000000034,
+              "elapsed_sec": 4.77437424659729
+            },
+            "0.2": {
+              "accuracy": 65.75,
+              "drop_from_clean": 7.590000000000003,
+              "elapsed_sec": 4.7725183963775635
+            },
+            "0.5": {
+              "accuracy": 33.75,
+              "drop_from_clean": 39.59,
+              "elapsed_sec": 4.78206729888916
+            },
+            "1.0": {
+              "accuracy": 9.04,
+              "drop_from_clean": 64.30000000000001,
+              "elapsed_sec": 4.777550458908081
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 73.33,
+              "drop_from_clean": 0.010000000000005116,
+              "elapsed_sec": 27.25496196746826
+            },
+            "0.005": {
+              "accuracy": 73.25,
+              "drop_from_clean": 0.09000000000000341,
+              "elapsed_sec": 27.269470930099487
+            },
+            "0.01": {
+              "accuracy": 73.11,
+              "drop_from_clean": 0.23000000000000398,
+              "elapsed_sec": 27.26286506652832
+            },
+            "0.05": {
+              "accuracy": 72.25,
+              "drop_from_clean": 1.0900000000000034,
+              "elapsed_sec": 27.26444101333618
+            },
+            "0.1": {
+              "accuracy": 69.91,
+              "drop_from_clean": 3.430000000000007,
+              "elapsed_sec": 27.243842124938965
+            },
+            "0.2": {
+              "accuracy": 56.4,
+              "drop_from_clean": 16.940000000000005,
+              "elapsed_sec": 27.211467266082764
+            },
+            "0.5": {
+              "accuracy": 10.25,
+              "drop_from_clean": 63.09,
+              "elapsed_sec": 27.227779626846313
+            },
+            "1.0": {
+              "accuracy": 2.42,
+              "drop_from_clean": 70.92,
+              "elapsed_sec": 27.240407705307007
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 73.32,
+              "drop_from_clean": 0.020000000000010232,
+              "elapsed_sec": 4.798929929733276
+            },
+            "0.005": {
+              "accuracy": 73.28,
+              "drop_from_clean": 0.060000000000002274,
+              "elapsed_sec": 4.785192489624023
+            },
+            "0.01": {
+              "accuracy": 73.14,
+              "drop_from_clean": 0.20000000000000284,
+              "elapsed_sec": 4.7993857860565186
+            },
+            "0.05": {
+              "accuracy": 72.52,
+              "drop_from_clean": 0.8200000000000074,
+              "elapsed_sec": 4.7829296588897705
+            },
+            "0.1": {
+              "accuracy": 71.51,
+              "drop_from_clean": 1.8299999999999983,
+              "elapsed_sec": 4.78137993812561
+            },
+            "0.2": {
+              "accuracy": 67.65,
+              "drop_from_clean": 5.689999999999998,
+              "elapsed_sec": 4.78289270401001
+            },
+            "0.5": {
+              "accuracy": 44.54,
+              "drop_from_clean": 28.800000000000004,
+              "elapsed_sec": 4.785064697265625
+            },
+            "1.0": {
+              "accuracy": 11.53,
+              "drop_from_clean": 61.81,
+              "elapsed_sec": 4.793868541717529
+            }
+          }
+        }
+      },
+      "456": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/rope_seed456/best_model.pth",
+        "clean_acc": 73.47,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 73.45,
+              "drop_from_clean": 0.01999999999999602,
+              "elapsed_sec": 4.780620813369751
+            },
+            "0.005": {
+              "accuracy": 73.38,
+              "drop_from_clean": 0.09000000000000341,
+              "elapsed_sec": 4.787521839141846
+            },
+            "0.01": {
+              "accuracy": 73.29,
+              "drop_from_clean": 0.1799999999999926,
+              "elapsed_sec": 4.780384302139282
+            },
+            "0.05": {
+              "accuracy": 72.72,
+              "drop_from_clean": 0.75,
+              "elapsed_sec": 4.775799512863159
+            },
+            "0.1": {
+              "accuracy": 71.64,
+              "drop_from_clean": 1.8299999999999983,
+              "elapsed_sec": 4.784853219985962
+            },
+            "0.2": {
+              "accuracy": 67.52,
+              "drop_from_clean": 5.950000000000003,
+              "elapsed_sec": 4.781198978424072
+            },
+            "0.5": {
+              "accuracy": 35.83,
+              "drop_from_clean": 37.64,
+              "elapsed_sec": 4.781904220581055
+            },
+            "1.0": {
+              "accuracy": 6.84,
+              "drop_from_clean": 66.63,
+              "elapsed_sec": 4.78405237197876
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 73.45,
+              "drop_from_clean": 0.01999999999999602,
+              "elapsed_sec": 27.23499321937561
+            },
+            "0.005": {
+              "accuracy": 73.36,
+              "drop_from_clean": 0.10999999999999943,
+              "elapsed_sec": 27.24638819694519
+            },
+            "0.01": {
+              "accuracy": 73.3,
+              "drop_from_clean": 0.1700000000000017,
+              "elapsed_sec": 27.25424814224243
+            },
+            "0.05": {
+              "accuracy": 72.54,
+              "drop_from_clean": 0.9299999999999926,
+              "elapsed_sec": 27.263793468475342
+            },
+            "0.1": {
+              "accuracy": 70.24,
+              "drop_from_clean": 3.230000000000004,
+              "elapsed_sec": 27.23960828781128
+            },
+            "0.2": {
+              "accuracy": 56.32,
+              "drop_from_clean": 17.15,
+              "elapsed_sec": 27.229099988937378
+            },
+            "0.5": {
+              "accuracy": 11.52,
+              "drop_from_clean": 61.95,
+              "elapsed_sec": 27.21929430961609
+            },
+            "1.0": {
+              "accuracy": 2.91,
+              "drop_from_clean": 70.56,
+              "elapsed_sec": 27.245027780532837
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 73.45,
+              "drop_from_clean": 0.01999999999999602,
+              "elapsed_sec": 4.788124084472656
+            },
+            "0.005": {
+              "accuracy": 73.41,
+              "drop_from_clean": 0.060000000000002274,
+              "elapsed_sec": 4.788071393966675
+            },
+            "0.01": {
+              "accuracy": 73.34,
+              "drop_from_clean": 0.12999999999999545,
+              "elapsed_sec": 4.782259702682495
+            },
+            "0.05": {
+              "accuracy": 72.96,
+              "drop_from_clean": 0.5100000000000051,
+              "elapsed_sec": 4.784784555435181
+            },
+            "0.1": {
+              "accuracy": 72.23,
+              "drop_from_clean": 1.2399999999999949,
+              "elapsed_sec": 4.783505916595459
+            },
+            "0.2": {
+              "accuracy": 69.68,
+              "drop_from_clean": 3.789999999999992,
+              "elapsed_sec": 4.787617921829224
+            },
+            "0.5": {
+              "accuracy": 45.64,
+              "drop_from_clean": 27.83,
+              "elapsed_sec": 4.775825262069702
+            },
+            "1.0": {
+              "accuracy": 8.32,
+              "drop_from_clean": 65.15,
+              "elapsed_sec": 4.794599533081055
+            }
+          }
+        }
+      },
+      "789": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/rope_seed789/best_model.pth",
+        "clean_acc": 73.0,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 72.98,
+              "drop_from_clean": 0.01999999999999602,
+              "elapsed_sec": 4.804413795471191
+            },
+            "0.005": {
+              "accuracy": 72.96,
+              "drop_from_clean": 0.04000000000000625,
+              "elapsed_sec": 4.779803276062012
+            },
+            "0.01": {
+              "accuracy": 72.85,
+              "drop_from_clean": 0.15000000000000568,
+              "elapsed_sec": 4.772748947143555
+            },
+            "0.05": {
+              "accuracy": 71.83,
+              "drop_from_clean": 1.1700000000000017,
+              "elapsed_sec": 4.773963928222656
+            },
+            "0.1": {
+              "accuracy": 70.33,
+              "drop_from_clean": 2.6700000000000017,
+              "elapsed_sec": 4.774179697036743
+            },
+            "0.2": {
+              "accuracy": 65.06,
+              "drop_from_clean": 7.939999999999998,
+              "elapsed_sec": 4.78624701499939
+            },
+            "0.5": {
+              "accuracy": 34.38,
+              "drop_from_clean": 38.62,
+              "elapsed_sec": 4.77746844291687
+            },
+            "1.0": {
+              "accuracy": 9.83,
+              "drop_from_clean": 63.17,
+              "elapsed_sec": 4.785712003707886
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 72.98,
+              "drop_from_clean": 0.01999999999999602,
+              "elapsed_sec": 27.229755401611328
+            },
+            "0.005": {
+              "accuracy": 72.96,
+              "drop_from_clean": 0.04000000000000625,
+              "elapsed_sec": 27.243653059005737
+            },
+            "0.01": {
+              "accuracy": 72.83,
+              "drop_from_clean": 0.1700000000000017,
+              "elapsed_sec": 27.259124517440796
+            },
+            "0.05": {
+              "accuracy": 71.44,
+              "drop_from_clean": 1.5600000000000023,
+              "elapsed_sec": 27.251973867416382
+            },
+            "0.1": {
+              "accuracy": 68.83,
+              "drop_from_clean": 4.170000000000002,
+              "elapsed_sec": 27.262255668640137
+            },
+            "0.2": {
+              "accuracy": 52.23,
+              "drop_from_clean": 20.770000000000003,
+              "elapsed_sec": 27.279057264328003
+            },
+            "0.5": {
+              "accuracy": 8.99,
+              "drop_from_clean": 64.01,
+              "elapsed_sec": 27.263708353042603
+            },
+            "1.0": {
+              "accuracy": 2.58,
+              "drop_from_clean": 70.42,
+              "elapsed_sec": 27.2804696559906
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 72.98,
+              "drop_from_clean": 0.01999999999999602,
+              "elapsed_sec": 4.801433801651001
+            },
+            "0.005": {
+              "accuracy": 72.95,
+              "drop_from_clean": 0.04999999999999716,
+              "elapsed_sec": 4.772752523422241
+            },
+            "0.01": {
+              "accuracy": 72.92,
+              "drop_from_clean": 0.0799999999999983,
+              "elapsed_sec": 4.798346042633057
+            },
+            "0.05": {
+              "accuracy": 72.22,
+              "drop_from_clean": 0.7800000000000011,
+              "elapsed_sec": 4.803786754608154
+            },
+            "0.1": {
+              "accuracy": 71.15,
+              "drop_from_clean": 1.8499999999999943,
+              "elapsed_sec": 4.785301685333252
+            },
+            "0.2": {
+              "accuracy": 67.41,
+              "drop_from_clean": 5.590000000000003,
+              "elapsed_sec": 4.781895875930786
+            },
+            "0.5": {
+              "accuracy": 43.87,
+              "drop_from_clean": 29.130000000000003,
+              "elapsed_sec": 4.788487672805786
+            },
+            "1.0": {
+              "accuracy": 9.8,
+              "drop_from_clean": 63.2,
+              "elapsed_sec": 4.776116371154785
+            }
+          }
+        }
+      },
+      "1011": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/rope_seed1011/best_model.pth",
+        "clean_acc": 73.05,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 73.02,
+              "drop_from_clean": 0.030000000000001137,
+              "elapsed_sec": 4.789635419845581
+            },
+            "0.005": {
+              "accuracy": 72.99,
+              "drop_from_clean": 0.060000000000002274,
+              "elapsed_sec": 4.787877798080444
+            },
+            "0.01": {
+              "accuracy": 72.88,
+              "drop_from_clean": 0.1700000000000017,
+              "elapsed_sec": 4.8007566928863525
+            },
+            "0.05": {
+              "accuracy": 72.22,
+              "drop_from_clean": 0.8299999999999983,
+              "elapsed_sec": 4.799493789672852
+            },
+            "0.1": {
+              "accuracy": 70.71,
+              "drop_from_clean": 2.3400000000000034,
+              "elapsed_sec": 4.78588604927063
+            },
+            "0.2": {
+              "accuracy": 64.71,
+              "drop_from_clean": 8.340000000000003,
+              "elapsed_sec": 4.778746604919434
+            },
+            "0.5": {
+              "accuracy": 27.42,
+              "drop_from_clean": 45.629999999999995,
+              "elapsed_sec": 4.774886608123779
+            },
+            "1.0": {
+              "accuracy": 6.41,
+              "drop_from_clean": 66.64,
+              "elapsed_sec": 4.775029420852661
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 73.02,
+              "drop_from_clean": 0.030000000000001137,
+              "elapsed_sec": 27.261361598968506
+            },
+            "0.005": {
+              "accuracy": 73.02,
+              "drop_from_clean": 0.030000000000001137,
+              "elapsed_sec": 27.364337682724
+            },
+            "0.01": {
+              "accuracy": 72.91,
+              "drop_from_clean": 0.14000000000000057,
+              "elapsed_sec": 27.264229774475098
+            },
+            "0.05": {
+              "accuracy": 72.2,
+              "drop_from_clean": 0.8499999999999943,
+              "elapsed_sec": 27.289257764816284
+            },
+            "0.1": {
+              "accuracy": 70.25,
+              "drop_from_clean": 2.799999999999997,
+              "elapsed_sec": 27.28403925895691
+            },
+            "0.2": {
+              "accuracy": 59.85,
+              "drop_from_clean": 13.199999999999996,
+              "elapsed_sec": 27.24668288230896
+            },
+            "0.5": {
+              "accuracy": 10.47,
+              "drop_from_clean": 62.58,
+              "elapsed_sec": 27.268535614013672
+            },
+            "1.0": {
+              "accuracy": 2.34,
+              "drop_from_clean": 70.71,
+              "elapsed_sec": 27.26602029800415
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 73.03,
+              "drop_from_clean": 0.01999999999999602,
+              "elapsed_sec": 4.81890082359314
+            },
+            "0.005": {
+              "accuracy": 73.04,
+              "drop_from_clean": 0.009999999999990905,
+              "elapsed_sec": 4.788132905960083
+            },
+            "0.01": {
+              "accuracy": 72.94,
+              "drop_from_clean": 0.10999999999999943,
+              "elapsed_sec": 4.7953667640686035
+            },
+            "0.05": {
+              "accuracy": 72.42,
+              "drop_from_clean": 0.6299999999999955,
+              "elapsed_sec": 4.783706426620483
+            },
+            "0.1": {
+              "accuracy": 71.3,
+              "drop_from_clean": 1.75,
+              "elapsed_sec": 4.797817230224609
+            },
+            "0.2": {
+              "accuracy": 67.74,
+              "drop_from_clean": 5.310000000000002,
+              "elapsed_sec": 4.773432016372681
+            },
+            "0.5": {
+              "accuracy": 36.09,
+              "drop_from_clean": 36.959999999999994,
+              "elapsed_sec": 4.773421287536621
+            },
+            "1.0": {
+              "accuracy": 6.94,
+              "drop_from_clean": 66.11,
+              "elapsed_sec": 4.805140972137451
+            }
+          }
+        }
+      },
+      "1213": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/rope_seed1213/best_model.pth",
+        "clean_acc": 73.13,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 73.12,
+              "drop_from_clean": 0.009999999999990905,
+              "elapsed_sec": 4.777261257171631
+            },
+            "0.005": {
+              "accuracy": 73.1,
+              "drop_from_clean": 0.030000000000001137,
+              "elapsed_sec": 4.779337167739868
+            },
+            "0.01": {
+              "accuracy": 73.06,
+              "drop_from_clean": 0.06999999999999318,
+              "elapsed_sec": 4.78041934967041
+            },
+            "0.05": {
+              "accuracy": 72.2,
+              "drop_from_clean": 0.9299999999999926,
+              "elapsed_sec": 4.772754192352295
+            },
+            "0.1": {
+              "accuracy": 70.53,
+              "drop_from_clean": 2.5999999999999943,
+              "elapsed_sec": 4.777106523513794
+            },
+            "0.2": {
+              "accuracy": 66.0,
+              "drop_from_clean": 7.1299999999999955,
+              "elapsed_sec": 4.778695583343506
+            },
+            "0.5": {
+              "accuracy": 36.93,
+              "drop_from_clean": 36.199999999999996,
+              "elapsed_sec": 4.79112434387207
+            },
+            "1.0": {
+              "accuracy": 9.57,
+              "drop_from_clean": 63.559999999999995,
+              "elapsed_sec": 4.793702602386475
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 73.12,
+              "drop_from_clean": 0.009999999999990905,
+              "elapsed_sec": 27.241790294647217
+            },
+            "0.005": {
+              "accuracy": 73.09,
+              "drop_from_clean": 0.03999999999999204,
+              "elapsed_sec": 27.27312207221985
+            },
+            "0.01": {
+              "accuracy": 73.06,
+              "drop_from_clean": 0.06999999999999318,
+              "elapsed_sec": 27.293765544891357
+            },
+            "0.05": {
+              "accuracy": 71.76,
+              "drop_from_clean": 1.3699999999999903,
+              "elapsed_sec": 27.284360885620117
+            },
+            "0.1": {
+              "accuracy": 69.03,
+              "drop_from_clean": 4.099999999999994,
+              "elapsed_sec": 27.2491557598114
+            },
+            "0.2": {
+              "accuracy": 55.51,
+              "drop_from_clean": 17.619999999999997,
+              "elapsed_sec": 27.281474351882935
+            },
+            "0.5": {
+              "accuracy": 8.42,
+              "drop_from_clean": 64.71,
+              "elapsed_sec": 27.289427757263184
+            },
+            "1.0": {
+              "accuracy": 2.25,
+              "drop_from_clean": 70.88,
+              "elapsed_sec": 27.263656616210938
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 73.14,
+              "drop_from_clean": -0.010000000000005116,
+              "elapsed_sec": 4.779121398925781
+            },
+            "0.005": {
+              "accuracy": 73.14,
+              "drop_from_clean": -0.010000000000005116,
+              "elapsed_sec": 4.781408786773682
+            },
+            "0.01": {
+              "accuracy": 73.06,
+              "drop_from_clean": 0.06999999999999318,
+              "elapsed_sec": 4.774715423583984
+            },
+            "0.05": {
+              "accuracy": 72.44,
+              "drop_from_clean": 0.6899999999999977,
+              "elapsed_sec": 4.78480339050293
+            },
+            "0.1": {
+              "accuracy": 71.27,
+              "drop_from_clean": 1.8599999999999994,
+              "elapsed_sec": 4.798752546310425
+            },
+            "0.2": {
+              "accuracy": 67.91,
+              "drop_from_clean": 5.219999999999999,
+              "elapsed_sec": 4.785005331039429
+            },
+            "0.5": {
+              "accuracy": 46.32,
+              "drop_from_clean": 26.809999999999995,
+              "elapsed_sec": 4.791514158248901
+            },
+            "1.0": {
+              "accuracy": 12.68,
+              "drop_from_clean": 60.449999999999996,
+              "elapsed_sec": 4.779951572418213
+            }
+          }
+        }
+      }
+    },
+    "alibi": {
+      "42": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/alibi_seed42/best_model.pth",
+        "clean_acc": 67.4,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 67.4,
+              "drop_from_clean": 0.0,
+              "elapsed_sec": 4.535797595977783
+            },
+            "0.005": {
+              "accuracy": 67.13,
+              "drop_from_clean": 0.27000000000001023,
+              "elapsed_sec": 4.5229222774505615
+            },
+            "0.01": {
+              "accuracy": 66.96,
+              "drop_from_clean": 0.44000000000001194,
+              "elapsed_sec": 4.528502941131592
+            },
+            "0.05": {
+              "accuracy": 58.77,
+              "drop_from_clean": 8.630000000000003,
+              "elapsed_sec": 4.513775587081909
+            },
+            "0.1": {
+              "accuracy": 34.22,
+              "drop_from_clean": 33.18000000000001,
+              "elapsed_sec": 4.539235353469849
+            },
+            "0.2": {
+              "accuracy": 13.1,
+              "drop_from_clean": 54.300000000000004,
+              "elapsed_sec": 4.517123460769653
+            },
+            "0.5": {
+              "accuracy": 4.11,
+              "drop_from_clean": 63.290000000000006,
+              "elapsed_sec": 4.529269695281982
+            },
+            "1.0": {
+              "accuracy": 1.66,
+              "drop_from_clean": 65.74000000000001,
+              "elapsed_sec": 4.521976709365845
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 67.41,
+              "drop_from_clean": -0.009999999999990905,
+              "elapsed_sec": 25.007095336914062
+            },
+            "0.005": {
+              "accuracy": 67.18,
+              "drop_from_clean": 0.21999999999999886,
+              "elapsed_sec": 24.959393739700317
+            },
+            "0.01": {
+              "accuracy": 66.88,
+              "drop_from_clean": 0.5200000000000102,
+              "elapsed_sec": 24.966259479522705
+            },
+            "0.05": {
+              "accuracy": 55.64,
+              "drop_from_clean": 11.760000000000005,
+              "elapsed_sec": 25.047149419784546
+            },
+            "0.1": {
+              "accuracy": 26.12,
+              "drop_from_clean": 41.28,
+              "elapsed_sec": 24.978320360183716
+            },
+            "0.2": {
+              "accuracy": 8.14,
+              "drop_from_clean": 59.260000000000005,
+              "elapsed_sec": 24.9878351688385
+            },
+            "0.5": {
+              "accuracy": 2.82,
+              "drop_from_clean": 64.58000000000001,
+              "elapsed_sec": 25.02356457710266
+            },
+            "1.0": {
+              "accuracy": 2.02,
+              "drop_from_clean": 65.38000000000001,
+              "elapsed_sec": 24.98168683052063
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 67.37,
+              "drop_from_clean": 0.030000000000001137,
+              "elapsed_sec": 4.514709711074829
+            },
+            "0.005": {
+              "accuracy": 67.41,
+              "drop_from_clean": -0.009999999999990905,
+              "elapsed_sec": 4.5324273109436035
+            },
+            "0.01": {
+              "accuracy": 67.34,
+              "drop_from_clean": 0.060000000000002274,
+              "elapsed_sec": 4.523845672607422
+            },
+            "0.05": {
+              "accuracy": 67.11,
+              "drop_from_clean": 0.29000000000000625,
+              "elapsed_sec": 4.516229152679443
+            },
+            "0.1": {
+              "accuracy": 66.29,
+              "drop_from_clean": 1.1099999999999994,
+              "elapsed_sec": 4.513980388641357
+            },
+            "0.2": {
+              "accuracy": 63.51,
+              "drop_from_clean": 3.8900000000000077,
+              "elapsed_sec": 4.520685911178589
+            },
+            "0.5": {
+              "accuracy": 39.15,
+              "drop_from_clean": 28.250000000000007,
+              "elapsed_sec": 4.525991201400757
+            },
+            "1.0": {
+              "accuracy": 9.18,
+              "drop_from_clean": 58.220000000000006,
+              "elapsed_sec": 4.515898704528809
+            }
+          }
+        }
+      },
+      "123": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/alibi_seed123/best_model.pth",
+        "clean_acc": 68.16,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 68.16,
+              "drop_from_clean": 0.0,
+              "elapsed_sec": 4.5187342166900635
+            },
+            "0.005": {
+              "accuracy": 67.95,
+              "drop_from_clean": 0.20999999999999375,
+              "elapsed_sec": 4.512525796890259
+            },
+            "0.01": {
+              "accuracy": 67.59,
+              "drop_from_clean": 0.5699999999999932,
+              "elapsed_sec": 4.515149831771851
+            },
+            "0.05": {
+              "accuracy": 52.76,
+              "drop_from_clean": 15.399999999999999,
+              "elapsed_sec": 4.5250585079193115
+            },
+            "0.1": {
+              "accuracy": 26.98,
+              "drop_from_clean": 41.17999999999999,
+              "elapsed_sec": 4.529797792434692
+            },
+            "0.2": {
+              "accuracy": 11.0,
+              "drop_from_clean": 57.16,
+              "elapsed_sec": 4.539530038833618
+            },
+            "0.5": {
+              "accuracy": 3.33,
+              "drop_from_clean": 64.83,
+              "elapsed_sec": 4.526816368103027
+            },
+            "1.0": {
+              "accuracy": 1.65,
+              "drop_from_clean": 66.50999999999999,
+              "elapsed_sec": 4.524906396865845
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 68.16,
+              "drop_from_clean": 0.0,
+              "elapsed_sec": 25.13260269165039
+            },
+            "0.005": {
+              "accuracy": 67.96,
+              "drop_from_clean": 0.20000000000000284,
+              "elapsed_sec": 25.124207258224487
+            },
+            "0.01": {
+              "accuracy": 67.56,
+              "drop_from_clean": 0.5999999999999943,
+              "elapsed_sec": 25.100402355194092
+            },
+            "0.05": {
+              "accuracy": 52.75,
+              "drop_from_clean": 15.409999999999997,
+              "elapsed_sec": 25.102227926254272
+            },
+            "0.1": {
+              "accuracy": 27.5,
+              "drop_from_clean": 40.66,
+              "elapsed_sec": 25.08728575706482
+            },
+            "0.2": {
+              "accuracy": 15.07,
+              "drop_from_clean": 53.089999999999996,
+              "elapsed_sec": 25.07232141494751
+            },
+            "0.5": {
+              "accuracy": 3.32,
+              "drop_from_clean": 64.84,
+              "elapsed_sec": 25.092538595199585
+            },
+            "1.0": {
+              "accuracy": 1.73,
+              "drop_from_clean": 66.42999999999999,
+              "elapsed_sec": 25.096760034561157
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 68.16,
+              "drop_from_clean": 0.0,
+              "elapsed_sec": 4.5463526248931885
+            },
+            "0.005": {
+              "accuracy": 68.09,
+              "drop_from_clean": 0.06999999999999318,
+              "elapsed_sec": 4.545881271362305
+            },
+            "0.01": {
+              "accuracy": 68.11,
+              "drop_from_clean": 0.04999999999999716,
+              "elapsed_sec": 4.517225503921509
+            },
+            "0.05": {
+              "accuracy": 67.63,
+              "drop_from_clean": 0.5300000000000011,
+              "elapsed_sec": 4.521889925003052
+            },
+            "0.1": {
+              "accuracy": 67.03,
+              "drop_from_clean": 1.1299999999999955,
+              "elapsed_sec": 4.5242321491241455
+            },
+            "0.2": {
+              "accuracy": 64.84,
+              "drop_from_clean": 3.319999999999993,
+              "elapsed_sec": 4.535570383071899
+            },
+            "0.5": {
+              "accuracy": 44.61,
+              "drop_from_clean": 23.549999999999997,
+              "elapsed_sec": 4.532752275466919
+            },
+            "1.0": {
+              "accuracy": 12.7,
+              "drop_from_clean": 55.459999999999994,
+              "elapsed_sec": 4.528063774108887
+            }
+          }
+        }
+      },
+      "456": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/alibi_seed456/best_model.pth",
+        "clean_acc": 67.43,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 67.39,
+              "drop_from_clean": 0.04000000000000625,
+              "elapsed_sec": 4.527024745941162
+            },
+            "0.005": {
+              "accuracy": 67.08,
+              "drop_from_clean": 0.3500000000000085,
+              "elapsed_sec": 4.529237985610962
+            },
+            "0.01": {
+              "accuracy": 66.56,
+              "drop_from_clean": 0.8700000000000045,
+              "elapsed_sec": 4.533121824264526
+            },
+            "0.05": {
+              "accuracy": 47.31,
+              "drop_from_clean": 20.120000000000005,
+              "elapsed_sec": 4.523585796356201
+            },
+            "0.1": {
+              "accuracy": 24.55,
+              "drop_from_clean": 42.88000000000001,
+              "elapsed_sec": 4.522106170654297
+            },
+            "0.2": {
+              "accuracy": 10.94,
+              "drop_from_clean": 56.49000000000001,
+              "elapsed_sec": 4.547685146331787
+            },
+            "0.5": {
+              "accuracy": 2.69,
+              "drop_from_clean": 64.74000000000001,
+              "elapsed_sec": 4.529382228851318
+            },
+            "1.0": {
+              "accuracy": 1.63,
+              "drop_from_clean": 65.80000000000001,
+              "elapsed_sec": 4.524041414260864
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 67.39,
+              "drop_from_clean": 0.04000000000000625,
+              "elapsed_sec": 25.12029266357422
+            },
+            "0.005": {
+              "accuracy": 67.08,
+              "drop_from_clean": 0.3500000000000085,
+              "elapsed_sec": 25.07975149154663
+            },
+            "0.01": {
+              "accuracy": 66.48,
+              "drop_from_clean": 0.9500000000000028,
+              "elapsed_sec": 25.109045028686523
+            },
+            "0.05": {
+              "accuracy": 46.48,
+              "drop_from_clean": 20.95000000000001,
+              "elapsed_sec": 25.08086609840393
+            },
+            "0.1": {
+              "accuracy": 26.35,
+              "drop_from_clean": 41.080000000000005,
+              "elapsed_sec": 25.129377841949463
+            },
+            "0.2": {
+              "accuracy": 11.81,
+              "drop_from_clean": 55.620000000000005,
+              "elapsed_sec": 25.109305381774902
+            },
+            "0.5": {
+              "accuracy": 4.56,
+              "drop_from_clean": 62.870000000000005,
+              "elapsed_sec": 25.09601926803589
+            },
+            "1.0": {
+              "accuracy": 1.94,
+              "drop_from_clean": 65.49000000000001,
+              "elapsed_sec": 25.13167428970337
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 67.4,
+              "drop_from_clean": 0.030000000000001137,
+              "elapsed_sec": 4.544363260269165
+            },
+            "0.005": {
+              "accuracy": 67.37,
+              "drop_from_clean": 0.060000000000002274,
+              "elapsed_sec": 4.546951055526733
+            },
+            "0.01": {
+              "accuracy": 67.18,
+              "drop_from_clean": 0.25,
+              "elapsed_sec": 4.518887281417847
+            },
+            "0.05": {
+              "accuracy": 66.71,
+              "drop_from_clean": 0.7200000000000131,
+              "elapsed_sec": 4.518531560897827
+            },
+            "0.1": {
+              "accuracy": 65.91,
+              "drop_from_clean": 1.5200000000000102,
+              "elapsed_sec": 4.533965110778809
+            },
+            "0.2": {
+              "accuracy": 63.59,
+              "drop_from_clean": 3.8400000000000034,
+              "elapsed_sec": 4.5257673263549805
+            },
+            "0.5": {
+              "accuracy": 37.55,
+              "drop_from_clean": 29.88000000000001,
+              "elapsed_sec": 4.522822141647339
+            },
+            "1.0": {
+              "accuracy": 7.34,
+              "drop_from_clean": 60.09,
+              "elapsed_sec": 4.529245138168335
+            }
+          }
+        }
+      },
+      "789": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/alibi_seed789/best_model.pth",
+        "clean_acc": 67.72,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 67.7,
+              "drop_from_clean": 0.01999999999999602,
+              "elapsed_sec": 4.528104543685913
+            },
+            "0.005": {
+              "accuracy": 67.54,
+              "drop_from_clean": 0.1799999999999926,
+              "elapsed_sec": 4.521164894104004
+            },
+            "0.01": {
+              "accuracy": 67.12,
+              "drop_from_clean": 0.5999999999999943,
+              "elapsed_sec": 4.52490496635437
+            },
+            "0.05": {
+              "accuracy": 54.49,
+              "drop_from_clean": 13.229999999999997,
+              "elapsed_sec": 4.532332420349121
+            },
+            "0.1": {
+              "accuracy": 29.9,
+              "drop_from_clean": 37.82,
+              "elapsed_sec": 4.518265008926392
+            },
+            "0.2": {
+              "accuracy": 12.69,
+              "drop_from_clean": 55.03,
+              "elapsed_sec": 4.527486562728882
+            },
+            "0.5": {
+              "accuracy": 4.04,
+              "drop_from_clean": 63.68,
+              "elapsed_sec": 4.52453875541687
+            },
+            "1.0": {
+              "accuracy": 2.17,
+              "drop_from_clean": 65.55,
+              "elapsed_sec": 4.516194820404053
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 67.7,
+              "drop_from_clean": 0.01999999999999602,
+              "elapsed_sec": 25.09512758255005
+            },
+            "0.005": {
+              "accuracy": 67.54,
+              "drop_from_clean": 0.1799999999999926,
+              "elapsed_sec": 25.099251985549927
+            },
+            "0.01": {
+              "accuracy": 67.12,
+              "drop_from_clean": 0.5999999999999943,
+              "elapsed_sec": 25.09361982345581
+            },
+            "0.05": {
+              "accuracy": 58.29,
+              "drop_from_clean": 9.43,
+              "elapsed_sec": 25.10169243812561
+            },
+            "0.1": {
+              "accuracy": 37.97,
+              "drop_from_clean": 29.75,
+              "elapsed_sec": 25.112534284591675
+            },
+            "0.2": {
+              "accuracy": 14.25,
+              "drop_from_clean": 53.47,
+              "elapsed_sec": 25.074547052383423
+            },
+            "0.5": {
+              "accuracy": 5.5,
+              "drop_from_clean": 62.22,
+              "elapsed_sec": 25.10683274269104
+            },
+            "1.0": {
+              "accuracy": 3.72,
+              "drop_from_clean": 64.0,
+              "elapsed_sec": 25.05605173110962
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 67.71,
+              "drop_from_clean": 0.010000000000005116,
+              "elapsed_sec": 4.526305437088013
+            },
+            "0.005": {
+              "accuracy": 67.69,
+              "drop_from_clean": 0.030000000000001137,
+              "elapsed_sec": 4.529045104980469
+            },
+            "0.01": {
+              "accuracy": 67.61,
+              "drop_from_clean": 0.10999999999999943,
+              "elapsed_sec": 4.530292749404907
+            },
+            "0.05": {
+              "accuracy": 67.37,
+              "drop_from_clean": 0.3499999999999943,
+              "elapsed_sec": 4.529841423034668
+            },
+            "0.1": {
+              "accuracy": 66.71,
+              "drop_from_clean": 1.0100000000000051,
+              "elapsed_sec": 4.549314022064209
+            },
+            "0.2": {
+              "accuracy": 64.11,
+              "drop_from_clean": 3.6099999999999994,
+              "elapsed_sec": 4.532183408737183
+            },
+            "0.5": {
+              "accuracy": 41.28,
+              "drop_from_clean": 26.439999999999998,
+              "elapsed_sec": 4.5312278270721436
+            },
+            "1.0": {
+              "accuracy": 12.75,
+              "drop_from_clean": 54.97,
+              "elapsed_sec": 4.5411787033081055
+            }
+          }
+        }
+      },
+      "1011": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/alibi_seed1011/best_model.pth",
+        "clean_acc": 67.99,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 68.02,
+              "drop_from_clean": -0.030000000000001137,
+              "elapsed_sec": 4.528004169464111
+            },
+            "0.005": {
+              "accuracy": 67.88,
+              "drop_from_clean": 0.10999999999999943,
+              "elapsed_sec": 4.517375230789185
+            },
+            "0.01": {
+              "accuracy": 67.49,
+              "drop_from_clean": 0.5,
+              "elapsed_sec": 4.530102252960205
+            },
+            "0.05": {
+              "accuracy": 56.55,
+              "drop_from_clean": 11.439999999999998,
+              "elapsed_sec": 4.534250020980835
+            },
+            "0.1": {
+              "accuracy": 28.28,
+              "drop_from_clean": 39.709999999999994,
+              "elapsed_sec": 4.5076141357421875
+            },
+            "0.2": {
+              "accuracy": 12.4,
+              "drop_from_clean": 55.589999999999996,
+              "elapsed_sec": 4.538429021835327
+            },
+            "0.5": {
+              "accuracy": 4.62,
+              "drop_from_clean": 63.37,
+              "elapsed_sec": 4.5227227210998535
+            },
+            "1.0": {
+              "accuracy": 1.78,
+              "drop_from_clean": 66.21,
+              "elapsed_sec": 4.522745847702026
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 68.02,
+              "drop_from_clean": -0.030000000000001137,
+              "elapsed_sec": 25.08389711380005
+            },
+            "0.005": {
+              "accuracy": 67.76,
+              "drop_from_clean": 0.22999999999998977,
+              "elapsed_sec": 25.103748083114624
+            },
+            "0.01": {
+              "accuracy": 67.15,
+              "drop_from_clean": 0.8399999999999892,
+              "elapsed_sec": 25.07738757133484
+            },
+            "0.05": {
+              "accuracy": 50.38,
+              "drop_from_clean": 17.609999999999992,
+              "elapsed_sec": 25.08760952949524
+            },
+            "0.1": {
+              "accuracy": 24.72,
+              "drop_from_clean": 43.269999999999996,
+              "elapsed_sec": 25.105421781539917
+            },
+            "0.2": {
+              "accuracy": 9.69,
+              "drop_from_clean": 58.3,
+              "elapsed_sec": 25.076173543930054
+            },
+            "0.5": {
+              "accuracy": 4.81,
+              "drop_from_clean": 63.17999999999999,
+              "elapsed_sec": 25.086634159088135
+            },
+            "1.0": {
+              "accuracy": 3.58,
+              "drop_from_clean": 64.41,
+              "elapsed_sec": 25.091082334518433
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 67.99,
+              "drop_from_clean": 0.0,
+              "elapsed_sec": 4.533195972442627
+            },
+            "0.005": {
+              "accuracy": 67.97,
+              "drop_from_clean": 0.01999999999999602,
+              "elapsed_sec": 4.5297417640686035
+            },
+            "0.01": {
+              "accuracy": 67.92,
+              "drop_from_clean": 0.06999999999999318,
+              "elapsed_sec": 4.526630878448486
+            },
+            "0.05": {
+              "accuracy": 67.69,
+              "drop_from_clean": 0.29999999999999716,
+              "elapsed_sec": 4.520890951156616
+            },
+            "0.1": {
+              "accuracy": 67.19,
+              "drop_from_clean": 0.7999999999999972,
+              "elapsed_sec": 4.5268237590789795
+            },
+            "0.2": {
+              "accuracy": 64.95,
+              "drop_from_clean": 3.039999999999992,
+              "elapsed_sec": 4.528329372406006
+            },
+            "0.5": {
+              "accuracy": 43.97,
+              "drop_from_clean": 24.019999999999996,
+              "elapsed_sec": 4.5458948612213135
+            },
+            "1.0": {
+              "accuracy": 13.53,
+              "drop_from_clean": 54.459999999999994,
+              "elapsed_sec": 4.543640613555908
+            }
+          }
+        }
+      },
+      "1213": {
+        "status": "ok",
+        "checkpoint": "/content/drive/MyDrive/Trained models_CIFAR100/alibi_seed1213/best_model.pth",
+        "clean_acc": 67.86,
+        "attacks": {
+          "fgsm_pe": {
+            "0.001": {
+              "accuracy": 67.85,
+              "drop_from_clean": 0.010000000000005116,
+              "elapsed_sec": 4.535163164138794
+            },
+            "0.005": {
+              "accuracy": 67.8,
+              "drop_from_clean": 0.060000000000002274,
+              "elapsed_sec": 4.540350914001465
+            },
+            "0.01": {
+              "accuracy": 67.58,
+              "drop_from_clean": 0.28000000000000114,
+              "elapsed_sec": 4.519106388092041
+            },
+            "0.05": {
+              "accuracy": 56.06,
+              "drop_from_clean": 11.799999999999997,
+              "elapsed_sec": 4.5205018520355225
+            },
+            "0.1": {
+              "accuracy": 27.66,
+              "drop_from_clean": 40.2,
+              "elapsed_sec": 4.53068208694458
+            },
+            "0.2": {
+              "accuracy": 11.09,
+              "drop_from_clean": 56.769999999999996,
+              "elapsed_sec": 4.5201416015625
+            },
+            "0.5": {
+              "accuracy": 3.87,
+              "drop_from_clean": 63.99,
+              "elapsed_sec": 4.521295547485352
+            },
+            "1.0": {
+              "accuracy": 1.88,
+              "drop_from_clean": 65.98,
+              "elapsed_sec": 4.522979497909546
+            }
+          },
+          "pgd_pe": {
+            "0.001": {
+              "accuracy": 67.85,
+              "drop_from_clean": 0.010000000000005116,
+              "elapsed_sec": 25.171428203582764
+            },
+            "0.005": {
+              "accuracy": 67.78,
+              "drop_from_clean": 0.0799999999999983,
+              "elapsed_sec": 25.083327531814575
+            },
+            "0.01": {
+              "accuracy": 67.42,
+              "drop_from_clean": 0.4399999999999977,
+              "elapsed_sec": 25.113311290740967
+            },
+            "0.05": {
+              "accuracy": 51.69,
+              "drop_from_clean": 16.17,
+              "elapsed_sec": 25.10316562652588
+            },
+            "0.1": {
+              "accuracy": 32.92,
+              "drop_from_clean": 34.94,
+              "elapsed_sec": 25.12852430343628
+            },
+            "0.2": {
+              "accuracy": 11.57,
+              "drop_from_clean": 56.29,
+              "elapsed_sec": 25.097978353500366
+            },
+            "0.5": {
+              "accuracy": 4.93,
+              "drop_from_clean": 62.93,
+              "elapsed_sec": 25.10303807258606
+            },
+            "1.0": {
+              "accuracy": 3.7,
+              "drop_from_clean": 64.16,
+              "elapsed_sec": 25.154670000076294
+            }
+          },
+          "vta": {
+            "0.001": {
+              "accuracy": 67.86,
+              "drop_from_clean": 0.0,
+              "elapsed_sec": 4.545307159423828
+            },
+            "0.005": {
+              "accuracy": 67.81,
+              "drop_from_clean": 0.04999999999999716,
+              "elapsed_sec": 4.531120777130127
+            },
+            "0.01": {
+              "accuracy": 67.82,
+              "drop_from_clean": 0.04000000000000625,
+              "elapsed_sec": 4.542552709579468
+            },
+            "0.05": {
+              "accuracy": 67.4,
+              "drop_from_clean": 0.45999999999999375,
+              "elapsed_sec": 4.52276349067688
+            },
+            "0.1": {
+              "accuracy": 66.91,
+              "drop_from_clean": 0.9500000000000028,
+              "elapsed_sec": 4.521440267562866
+            },
+            "0.2": {
+              "accuracy": 64.26,
+              "drop_from_clean": 3.5999999999999943,
+              "elapsed_sec": 4.5347349643707275
+            },
+            "0.5": {
+              "accuracy": 41.26,
+              "drop_from_clean": 26.6,
+              "elapsed_sec": 4.529837369918823
+            },
+            "1.0": {
+              "accuracy": 12.2,
+              "drop_from_clean": 55.66,
+              "elapsed_sec": 4.546416521072388
+            }
+          }
+        }
+      }
+    }
+  }
+}

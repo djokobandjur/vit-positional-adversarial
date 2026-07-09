@@ -221,8 +221,8 @@ def train_model(pe_type, seed):
         if epoch % 10 == 0 or epoch == 1:
             print(f"    Epoch {epoch:3d}/{cfg['epochs']}: loss={train_loss:.3f} acc={val_acc:.2f}% best={best_acc:.2f}% ({epoch_time:.1f}s)")
 
-        # Save checkpoint every 50 epochs
-        if epoch % 50 == 0:
+        # Save checkpoint every 5 epochs
+        if epoch % 5 == 0:
             torch.save({
                 'epoch': epoch,
                 'model_state_dict': model.state_dict(),
