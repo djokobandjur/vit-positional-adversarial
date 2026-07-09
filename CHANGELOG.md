@@ -6,6 +6,82 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [3.0.0] — 2026-07-09
+
+n=6 TIFS reproducibility update. This release updates the repository to the
+six-seed experimental version used for the current IEEE TIFS resubmission.
+
+### Added
+
+- Added `00_setup_cifar100.py`, an optional helper for preparing a local torchvision-compatible CIFAR-100 root from a cached `cifar-100-python` directory when public download is unavailable.
+- Added n=6 aggregate result files under `results/`:
+  - `imagenet_results.json`
+  - `cifar_results.json`
+  - `analysis_data.json`
+  - `imagenet_alibi_ablation.json`
+  - `cifar_alibi_ablation.json`
+  - `imagenet_spatial_metrics.json`
+  - `cifar_spatial_metrics.json`
+  - `imagenet_perturbation_norms.json`
+  - `cifar_perturbation_norms.json`
+- Added n=6 reproducibility scripts under `scripts/`:
+  - `full_reanalysis_n6.py`
+  - `extract_tables_data_n6.py`
+  - `experiment2_alibi_ablation_n6.py`
+  - `experiment3_attention_metrics_v3_n6.py`
+  - `experiment3_perturbation_norm_v4_n6.py`
+  - `generate_figures_n6.py`
+  - `colab_quickstart_n6.ipynb`
+- Added ImageNet-100 helper files under `data/`:
+  - `data/imagenet100_classes.txt`
+  - `data/val_labels.txt`
+
+### Changed
+
+- Increased the experimental seed count from 3 to 6:
+  - `42`
+  - `123`
+  - `456`
+  - `789`
+  - `1011`
+  - `1213`
+- Increased the trained-model count from 24 to 48 models
+  (`4 PE families × 6 seeds × 2 datasets`).
+- Updated `README.md` to document the n=6 workflow and current repository layout.
+- Moved aggregate JSON result files from `data/` to `results/`.
+- Regenerated all 12 paper/supplement figures from the n=6 JSON result files.
+- Updated `full_scale_experiment.py` so checkpoints include training `history`.
+- Updated `cifar100_experiment.py` to save checkpoints every 5 epochs instead
+  of every 50 epochs.
+- Documented VTA as a coordinate-weighted diagnostic attack rather than a
+  true variance-optimal attack.
+
+### Removed
+
+- Removed old aggregate result JSON files from `data/`.
+- Removed legacy root-level workflow scripts superseded by the n=6 scripts in
+  `scripts/`:
+  - `full_reanalysis.py`
+  - `extract_tables_data.py`
+  - `experiment2_alibi_ablation.py`
+  - `experiment3_attention_metrics_v3.py`
+  - `experiment3_perturbation_norm_v4.py`
+  - `generate_figures.py`
+  - `colab_quickstart.ipynb`
+- Removed root-level copies of:
+  - `imagenet100_classes.txt`
+  - `val_labels.txt`
+
+  These helper files are now stored under `data/`.
+
+### Notes
+
+- The manuscript `.tex` files, supplementary `.tex` file, bibliography file,
+  and submission PDFs are intentionally not included in this repository.
+- Earlier v2.x entries below are retained for historical traceability. They
+  describe the corrected multi-block n=3 release and should not be read as the
+  current repository layout.
+
 ## [2.0.1] — 2026-05-18
 
 ### Fixed
@@ -218,4 +294,3 @@ for historical reference; superseded by the new submission for all scientific pu
 - Reported VTA gain figures overstated the attack's effectiveness due to
   the same multi-block scoping
 - "Robustness inversion" framing was not fully supported by the corrected
-  numbers

@@ -1,5 +1,5 @@
 """
-Extract noise ablation and probe analysis data for all 12 ImageNet-100 models.
+Extract noise ablation and probe analysis data for all 24 ImageNet-100 models.
 
 Generates analysis_data.json containing:
   - noise_ablation: accuracy under Gaussian noise added to PE buffers
@@ -14,7 +14,7 @@ thesis figures rely on ImageNet-100 numbers from this script.
 
 Requires:
   - GPU
-  - Trained ImageNet-100 models (4 PE types × 3 seeds)
+  - Trained ImageNet-100 models (4 PE types × 6 seeds)
   - ImageNet-100 val/ directory in ImageFolder format
   - full_scale_experiment.py importable (provides VisionTransformer,
     extract_positional_embedding, probe_analysis, noise_ablation)
@@ -27,7 +27,7 @@ Usage:
 
 Optional:
     --batch_size 128       (default: 128)
-    --seeds 42 123 456     (default: 42 123 456)
+    --seeds 42 123 456 789 1011 1213     (default)
 """
 
 import os
@@ -45,6 +45,7 @@ from torch.utils.data import DataLoader
 # (either same directory, or full_scale_experiment.py's directory is on
 # sys.path). For Colab compatibility, '/content' is added as a fallback.
 sys.path.insert(0, os.getcwd())
+sys.path.insert(0, str(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, '/content')
 from full_scale_experiment import (
     VisionTransformer,
@@ -55,7 +56,7 @@ from full_scale_experiment import (
 
 
 PE_TYPES = ['learned', 'sinusoidal', 'rope', 'alibi']
-DEFAULT_SEEDS = [42, 123, 456]
+DEFAULT_SEEDS = [42, 123, 456, 789, 1011, 1213]
 
 
 def build_val_loader(val_dir, batch_size):
@@ -109,6 +110,8 @@ def run_extraction(models_dir, val_dir, output_path, batch_size, seeds):
             ).to(device)
 
             state = torch.load(model_path, map_location=device)
+            if isinstance(state, dict) and 'model_state_dict' in state:
+                state = state['model_state_dict']
             model.load_state_dict({k.replace('_orig_mod.', ''): v for k, v in state.items()})
             model.eval()
 
@@ -233,7 +236,7 @@ def parse_args():
         type=int,
         nargs='+',
         default=DEFAULT_SEEDS,
-        help='Seeds to process (default: 42 123 456)',
+        help='Seeds to process (default: 42 123 456 789 1011 1213)',
     )
     return parser.parse_args()
 
