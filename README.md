@@ -8,7 +8,7 @@
 Code, aggregate results, and figure-generation scripts for the n=6 experimental revision of:
 
 **“Adversarial Vulnerability of Positional Encoding in Vision Transformers”**  
-IEEE TIFS resubmission, T-IFS-26532-2026.
+IEEE TIFS resubmission, T-IFS-27150-2026.
 
 This repository is a reproducibility package for experiments, JSON outputs, and generated figures. It does **not** include the manuscript source, supplementary source, bibliography file, or submission PDFs.
 
@@ -164,9 +164,16 @@ These JSON files are small enough to be versioned directly in Git.
 
 ## Trained models
 
-Model checkpoints are not stored directly in this repository.
+Model checkpoints are not stored directly in this repository because they are
+large binary artifacts. They are available through shared Google Drive folders:
 
-To rerun the attacks from scratch, provide checkpoint folders with this structure:
+- **ImageNet-100 checkpoints:** https://drive.google.com/drive/folders/1QH3EG9mf6oSWwzwrhdp599S5VB_hShZx?usp=sharing
+- **CIFAR-100 checkpoints:** https://drive.google.com/drive/folders/1pPgYxOtHfBRwvuSPKCwSzbynNN65tSv7?usp=sharing
+
+To rerun the attacks from scratch, download or mount the corresponding folder
+and pass its path as `--models_dir`.
+
+The expected checkpoint structure is:
 
 ```text
 <models_dir>/
@@ -181,9 +188,11 @@ To rerun the attacks from scratch, provide checkpoint folders with this structur
 └── alibi_seed1213/best_model.pth
 ```
 
-The scripts expect the same structure for both ImageNet-100 and CIFAR-100 model directories.
+The scripts expect the same directory structure for both ImageNet-100 and
+CIFAR-100 model checkpoints.
 
-Do not commit model checkpoints to this repository. Use external storage such as Google Drive, GitHub Releases, or Zenodo for large checkpoint files.
+Do not commit model checkpoints to this repository. Keep them in external
+storage such as Google Drive, GitHub Releases, or Zenodo.
 
 ---
 
