@@ -242,6 +242,21 @@ The generated `paper_numbers_n6.json` and `paper_numbers_n6.md` files are deriva
 
 The included JSON files already contain the n=6 aggregate results. The commands below are only needed if you want to rerun the GPU-heavy experiments from model checkpoints.
 
+All commands in this section assume that the current working directory is the
+repository root. In Colab, after cloning the repository, run:
+
+```python
+%cd /content/vit-positional-adversarial
+```
+
+or, in bash cells:
+
+```bash
+cd /content/vit-positional-adversarial
+```
+
+Then invoke n=6 scripts with paths such as `python scripts/full_reanalysis_n6.py`.
+
 ### 1. Prepare ImageNet-100
 
 ```bash
@@ -249,13 +264,13 @@ python 00_setup_imagenet.py \
     --tar_path     "/path/to/ILSVRC2012_img_val.tar" \
     --labels_path  "data/val_labels.txt" \
     --classes_path "data/imagenet100_classes.txt" \
-    --output_dir   "/content/imagenet100"
+    --output_dir   "/content/imagenet100_resized"
 ```
 
 The attack scripts expect an ImageFolder-compatible directory:
 
 ```text
-/content/imagenet100/val/<class_name>/*.JPEG
+/content/imagenet100_resized/val/<class_name>/*.JPEG
 ```
 
 CIFAR-100 usually requires no manual dataset preparation because the scripts use
@@ -275,13 +290,14 @@ Then pass `--val_dir "/tmp/cifar100"` to CIFAR-100 scripts that accept `--val_di
 ```bash
 python scripts/full_reanalysis_n6.py \
     --models_dir  "/path/to/Trained models_ImageNet100" \
-    --val_dir     "/content/imagenet100/val" \
+    --val_dir     "/content/imagenet100_resized/val" \
     --output_path "results/imagenet_results.json" \
     --dataset     imagenet \
     --seeds       42 123 456 789 1011 1213
 
 python scripts/full_reanalysis_n6.py \
     --models_dir  "/path/to/Trained models_CIFAR100" \
+    --val_dir     "/tmp/cifar100" \
     --output_path "results/cifar_results.json" \
     --dataset     cifar \
     --seeds       42 123 456 789 1011 1213
@@ -292,7 +308,7 @@ python scripts/full_reanalysis_n6.py \
 ```bash
 python scripts/extract_tables_data_n6.py \
     --models_dir  "/path/to/Trained models_ImageNet100" \
-    --val_dir     "/content/imagenet100/val" \
+    --val_dir     "/content/imagenet100_resized/val" \
     --output_path "results/analysis_data.json" \
     --seeds       42 123 456 789 1011 1213
 ```
@@ -302,13 +318,14 @@ python scripts/extract_tables_data_n6.py \
 ```bash
 python scripts/experiment2_alibi_ablation_n6.py \
     --models_dir  "/path/to/Trained models_ImageNet100" \
-    --val_dir     "/content/imagenet100/val" \
+    --val_dir     "/content/imagenet100_resized/val" \
     --output_path "results/imagenet_alibi_ablation.json" \
     --dataset     imagenet \
     --seeds       42 123 456 789 1011 1213
 
 python scripts/experiment2_alibi_ablation_n6.py \
     --models_dir  "/path/to/Trained models_CIFAR100" \
+    --val_dir     "/tmp/cifar100" \
     --output_path "results/cifar_alibi_ablation.json" \
     --dataset     cifar \
     --seeds       42 123 456 789 1011 1213
@@ -319,7 +336,7 @@ python scripts/experiment2_alibi_ablation_n6.py \
 ```bash
 python scripts/experiment3_attention_metrics_v3_n6.py \
     --models_dir  "/path/to/Trained models_ImageNet100" \
-    --val_dir     "/content/imagenet100/val" \
+    --val_dir     "/content/imagenet100_resized/val" \
     --output_path "results/imagenet_spatial_metrics.json" \
     --dataset     imagenet \
     --batch_size  128 \
@@ -327,6 +344,7 @@ python scripts/experiment3_attention_metrics_v3_n6.py \
 
 python scripts/experiment3_attention_metrics_v3_n6.py \
     --models_dir  "/path/to/Trained models_CIFAR100" \
+    --val_dir     "/tmp/cifar100" \
     --output_path "results/cifar_spatial_metrics.json" \
     --dataset     cifar \
     --batch_size  128 \
@@ -338,7 +356,7 @@ python scripts/experiment3_attention_metrics_v3_n6.py \
 ```bash
 python scripts/experiment3_perturbation_norm_v4_n6.py \
     --models_dir  "/path/to/Trained models_ImageNet100" \
-    --val_dir     "/content/imagenet100/val" \
+    --val_dir     "/content/imagenet100_resized/val" \
     --output_path "results/imagenet_perturbation_norms.json" \
     --dataset     imagenet \
     --batch_size  128 \
@@ -346,6 +364,7 @@ python scripts/experiment3_perturbation_norm_v4_n6.py \
 
 python scripts/experiment3_perturbation_norm_v4_n6.py \
     --models_dir  "/path/to/Trained models_CIFAR100" \
+    --val_dir     "/tmp/cifar100" \
     --output_path "results/cifar_perturbation_norms.json" \
     --dataset     cifar \
     --batch_size  128 \
